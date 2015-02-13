@@ -1,0 +1,10 @@
+## Input Frontal Delaunay triangulation from boundaries
+#BoundaryMesh = rae2822.bgri
+
+#RemeshBoundary = AIRFOIL
+
+
+#OutputMesh = rae2822.gri
+
+BoundaryMesh = box_5x5.bgri
+OutputMesh = box_5x5.gri
