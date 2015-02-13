@@ -19,10 +19,10 @@
 int mg_limited_pair(const int x, const int y, int *z, const int ylim);
 
 /******************************************************************/
-/* function:  mg_limited_pair */
+/* function:  mg_limited_pair_inv */
 /* Decodes z=>(x,y) uniquely using ylim key.
  The maximum value for y is ylim. x >= 0; 0 =< y <= ylim.  */
-int xf_LimitedPairInv (int *x, int *y, const int z, const int ylim);
+int mg_limited_pair_inv(int *x, int *y, const int z, const int ylim);
 
 /******************************************************************/
 /* function:  mg_binary_search */
