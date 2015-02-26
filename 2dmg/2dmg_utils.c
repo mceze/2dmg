@@ -575,7 +575,7 @@ int mg_find_elem_frm_coord(mg_Mesh *Mesh, int elem_start,
   }
   X0[2] /= Mesh->Elem[elem_start].nNode;
   X0[3] /= Mesh->Elem[elem_start].nNode;
-  printf("%d %1.6e %1.6e %1.6e %1.6e\n",elem_start,X0[0],X0[1],X0[2],X0[3]);
+  //printf("%d %1.6e %1.6e %1.6e %1.6e\n",elem_start,X0[0],X0[1],X0[2],X0[3]);
   
   for (iface = 0; iface < Mesh->Elem[elem_start].nNode; iface++) {
     node0 = Mesh->Face[Mesh->Elem[elem_start].face[iface]]->node[0];
