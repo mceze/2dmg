@@ -446,6 +446,7 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
                          double *coord)
 {
   int ierr, elemID0, in, nodeID, faceID0, faceID1, faceID2, f, faceID, i, t;
+  int nbor;
   bool face0new, face1new, newnode, NodeIsFromStack, Face0IsFromStack;
   bool Face1IsFromStack;
   mg_FaceData *face;
@@ -637,6 +638,7 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     Mesh->Face[faceID0]->node[1] = FFace->face->node[1];
     Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX] = HOLLOWNEIGHTAG;
     Mesh->Face[faceID0]->elem[RIGHTNEIGHINDEX] = elemID0;
+    Mesh->Elem[elemID0].nbor[0] = Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX];
     //face info will be updated later
     //note: if face came from the stack, these will be NULL already
     Mesh->Face[faceID0]->normal = NULL;
@@ -651,6 +653,12 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
   else {
     //update elemental connectivity
     Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX] = elemID0;
+    Mesh->Elem[elemID0].nbor[0] = Mesh->Face[faceID0]->elem[RIGHTNEIGHINDEX];
+    if ((nbor = Mesh->Face[faceID0]->elem[RIGHTNEIGHINDEX]) >= 0) { //not a boundary
+      mg_check_exist(faceID0, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &i);
+      Mesh->Elem[nbor].nbor[i] = elemID0;
+    }
+    Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX] = elemID0;
   }
   if (face1new){
     if (!Face1IsFromStack){
@@ -664,6 +672,7 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     Mesh->Face[faceID1]->node[0] = FFace->face->node[0];
     Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX] = HOLLOWNEIGHTAG;
     Mesh->Face[faceID1]->elem[RIGHTNEIGHINDEX] = elemID0;
+    Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX];
     //face info will be updated later
     Mesh->Face[faceID1]->normal = NULL;
     Mesh->Face[faceID1]->centroid = NULL;
@@ -677,15 +686,31 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
   else {
     //update elemental connectivity
     Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX] = elemID0;
+    Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID1]->elem[RIGHTNEIGHINDEX];
+    if ((nbor = Mesh->Face[faceID1]->elem[RIGHTNEIGHINDEX]) >= 0) { //not a boundary
+      mg_check_exist(faceID1, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &i);
+      if (i < 0) return error(err_LOGIC_ERROR);
+      Mesh->Elem[nbor].nbor[i] = elemID0;
+    }
   }
   //calculate normals,areas and centroids for new faces
   //only calculates the uninitialized values (new faces)
   call(mg_calc_face_info(Mesh));
   
-  //update elem's neighbors
-  Mesh->Elem[elemID0].nbor[0] = Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX];
-  Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX];
+  Mesh->Face[faceID2]->elem[LEFTNEIGHINDEX] = elemID0;
   Mesh->Elem[elemID0].nbor[2] = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX];
+  if ((nbor = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX]) >= 0) { //not a boundary
+    mg_check_exist(faceID2, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &i);
+    if (i < 0) return error(err_LOGIC_ERROR);
+    Mesh->Elem[nbor].nbor[i] = elemID0;
+  }
+  
+  //update elem's neighbors
+  //if (elemID0 == 5)
+  //  printf("here\n");
+//  Mesh->Elem[elemID0].nbor[0] = Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX];
+//  Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX];
+//  Mesh->Elem[elemID0].nbor[2] = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX];
   
   return err_OK;
 }
@@ -977,50 +1002,6 @@ int mg_update_front(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace *FF2)
   }
   
   return err_OK;
-}
-
-/******************************************************************/
-/* function: mg_edges_intersect */
-/* checks if edges defined by *X0 and *X1 intersect, if so,
- xint receives the intersection point*/
-bool mg_edges_intersect(double *X0, double *X1, double *xint)
-{
-  double det, m11, m12, m21, m22, b0, b1, x00, x01, x10, x11;
-  double y00, y01, y10, y11, qsi0, qsi1;
-  
-  x00 = X0[0];
-  x01 = X0[2];
-  x10 = X1[0];
-  x11 = X1[2];
-  
-  y00 = X0[1];
-  y01 = X0[3];
-  y10 = X1[1];
-  y11 = X1[3];
-  
-  m11 = x01-x00;
-  m12 = -x11+x10;
-  m21 = y01-y00;
-  m22 = -y11+y10;
-  
-  det = m11*m22-m21*m12;
-  //check if edges are approximately parallel
-  if (fabs(det) <= 1e-7) return false;
-  
-  b0 = -x00+x10;
-  b1 = -y00+y10;
-  
-  qsi0 = (m22*b0-m12*b1)/det;
-  qsi1 = (-m21*b0+m11*b1)/det;
-  
-  if ((qsi0 >= 0.0 && qsi0 <= 1.0) &&
-      (qsi1 >= 0.0 && qsi1 <= 1.0)){
-    xint[0] = x00*(1.0-qsi0)+x01*qsi0;
-    xint[1] = y00*(1.0-qsi0)+y01*qsi0;
-    return true;
-  }
-  else
-    return false;
 }
 
 /******************************************************************/
@@ -1760,10 +1741,15 @@ int main(int argc, char *argv[])
     i++;
   }
   //sprintf(OutFile, "final.m",i);
-  call(mg_plot_mesh(Mesh));
+  //call(mg_plot_mesh(Mesh));
   call(mg_get_input_char("OutputMesh", &OutFile));
-  call(mg_mesh_2_matlab(Mesh, &Front, OutFile));
+  call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
   printf("Number of triangles: %d\nDone.\n",Mesh->nElem);
+  
+  double coord[2];
+  coord[0] = 0.55;coord[1] = 0.77;
+  int elem_c;
+  call(mg_find_elem_frm_coord(Mesh, 5, coord, &elem_c));
   
   
   mg_destroy_mesh(Mesh);

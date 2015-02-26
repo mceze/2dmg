@@ -20,7 +20,7 @@
 #define quadrant(cd,c)  1*(cd[0]>c[0])+2*(cd[1]>c[1])
 #define distance(a,b) sqrt((a[0]-b[0])*(a[0]-b[0])+(a[1]-b[1])*(a[1]-b[1]))
 //hardcode max capacity
-#define MAXCAPACITY 1
+#define MAXCAPACITY 10
 
 
 
