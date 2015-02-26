@@ -486,6 +486,127 @@ int mg_add_2_ord_data_list(int entry, void **Data,
 }
 
 /******************************************************************/
+/* function: mg_coord_inside_elem */
+/* checks if a coordinate is inside an element */
+bool mg_coord_inside_elem(mg_Mesh *Mesh, int elem, double coord[2])
+{
+  bool inside;
+  int nleft = 0, sgn, i, d, dim = Mesh->Dim;
+  double proj;
+  mg_FaceData *face;
+  //loop around element and if coord is to the left of all faces,
+  //element contains coord.
+  for (i = 0; i < Mesh->Elem[elem].nNode; i++) {
+    face = Mesh->Face[Mesh->Elem[elem].face[i]];
+    if (elem == face->elem[LEFTNEIGHINDEX]) sgn = 1;
+    else sgn = -1;
+    for (proj = 0.0, d = 0; d < dim; d++)
+      proj+=sgn*face->normal[d]*(coord[d]-face->centroid[d]);
+    if (proj > 1.0e-6) nleft++;
+  }
+  inside = (nleft == 3);
+  
+  return inside;
+}
+
+/******************************************************************/
+/* function: mg_edges_intersect */
+/* checks if edges defined by *X0 and *X1 intersect, if so,
+ xint receives the intersection point*/
+bool mg_edges_intersect(double X0[4], double X1[4], double *xint)
+{
+  double det, m11, m12, m21, m22, b0, b1, x00, x01, x10, x11;
+  double y00, y01, y10, y11, qsi0, qsi1;
+  
+  x00 = X0[0];
+  x01 = X0[2];
+  x10 = X1[0];
+  x11 = X1[2];
+  
+  y00 = X0[1];
+  y01 = X0[3];
+  y10 = X1[1];
+  y11 = X1[3];
+  
+  m11 = x01-x00;
+  m12 = -x11+x10;
+  m21 = y01-y00;
+  m22 = -y11+y10;
+  
+  det = m11*m22-m21*m12;
+  //check if edges are approximately parallel
+  if (fabs(det) <= 1e-7) return false;
+  
+  b0 = -x00+x10;
+  b1 = -y00+y10;
+  
+  qsi0 = (m22*b0-m12*b1)/det;
+  qsi1 = (-m21*b0+m11*b1)/det;
+  
+  if ((qsi0 >= 0.0 && qsi0 <= 1.0) &&
+      (qsi1 >= 0.0 && qsi1 <= 1.0)){
+    xint[0] = x00*(1.0-qsi0)+x01*qsi0;
+    xint[1] = y00*(1.0-qsi0)+y01*qsi0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/******************************************************************/
+/* function: mg_find_elem_frm_coord */
+/* finds element containing a point given by its coordinates  */
+int mg_find_elem_frm_coord(mg_Mesh *Mesh, int elem_start,
+                           double coord[2], int *pelem)
+{
+  int ierr, iface, i, dim, node0, node1;
+  double X0[4], X1[4], Xint[2];
+  bool intersect = false;
+  
+  dim = Mesh->Dim;
+  
+  X0[0] = coord[0]; X0[1] = coord[1];
+  X0[2] = X0[3] = 0.0;
+  //get elem centroid
+  for (i = 0; i < Mesh->Elem[elem_start].nNode; i++) {
+    node0 = Mesh->Elem[elem_start].node[i];
+    X0[2] += Mesh->Coord[node0*dim+0];
+    X0[3] += Mesh->Coord[node0*dim+1];
+  }
+  X0[2] /= Mesh->Elem[elem_start].nNode;
+  X0[3] /= Mesh->Elem[elem_start].nNode;
+  printf("%d %1.6e %1.6e %1.6e %1.6e\n",elem_start,X0[0],X0[1],X0[2],X0[3]);
+  
+  for (iface = 0; iface < Mesh->Elem[elem_start].nNode; iface++) {
+    node0 = Mesh->Face[Mesh->Elem[elem_start].face[iface]]->node[0];
+    node1 = Mesh->Face[Mesh->Elem[elem_start].face[iface]]->node[1];
+    X1[0] = Mesh->Coord[node0*dim+0];
+    X1[1] = Mesh->Coord[node0*dim+1];
+    X1[2] = Mesh->Coord[node1*dim+0];
+    X1[3] = Mesh->Coord[node1*dim+1];
+    if ((intersect = mg_edges_intersect(X0, X1, Xint)) == true)
+      break;
+  }
+  //if edges intersect, change elem_start to its neighbor accross iface
+  //and continue recurrence
+  if (intersect) {
+    if (Mesh->Elem[elem_start].nbor[iface] < 0) {
+      (*pelem) = elem_start;
+      return err_NOT_FOUND;
+    }
+    elem_start = Mesh->Elem[elem_start].nbor[iface];
+    call(mg_find_elem_frm_coord(Mesh, elem_start, coord, pelem));
+  }
+  else {
+    //found the element but let's verify
+    if (!mg_coord_inside_elem(Mesh, elem_start, coord))
+      return error(err_LOGIC_ERROR);
+    (*pelem) = elem_start;
+  }
+  return err_OK;
+}
+
+/******************************************************************/
 /* function: mg_check_exist */
 /* checks if "num" exists in "vector" and returns "index" */
 void mg_check_exist(int num, int size, int *vector, int *index)

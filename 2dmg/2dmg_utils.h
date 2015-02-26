@@ -104,6 +104,23 @@ int mg_add_2_ord_data_list(int entry, void **Data,
                            bool AllowRepeat);
 
 /******************************************************************/
+/* function: mg_edges_intersect */
+/* checks if edges defined by *X0 and *X1 intersect, if so,
+ xint receives the intersection point*/
+bool mg_edges_intersect(double X0[4], double X1[4], double *xint);
+
+/******************************************************************/
+/* function: mg_coord_inside_elem */
+/* checks if a coordinate is inside an element */
+bool mg_coord_inside_elem(mg_Mesh *Mesh, int elem, double coord[2]);
+
+/******************************************************************/
+/* function: mg_find_elem_frm_coord */
+/* finds element containing a point given by its coordinates  */
+int mg_find_elem_frm_coord(mg_Mesh *Mesh, int elem_start,
+                           double coord[2], int *pelem);
+
+/******************************************************************/
 /* function: mg_check_exist */
 /* checks if "num" exists in "vector" and returns "index" */
 void mg_check_exist(int num, int size, int *vector, int *index);
