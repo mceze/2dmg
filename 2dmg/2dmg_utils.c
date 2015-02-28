@@ -575,7 +575,7 @@ int mg_find_elem_frm_coord(mg_Mesh *Mesh, int elem_start,
   }
   X0[2] /= Mesh->Elem[elem_start].nNode;
   X0[3] /= Mesh->Elem[elem_start].nNode;
-  //printf("%d %1.6e %1.6e %1.6e %1.6e\n",elem_start,X0[0],X0[1],X0[2],X0[3]);
+//  printf("%d %1.6e %1.6e %1.6e %1.6e\n",elem_start,X0[0],X0[1],X0[2],X0[3]);
   
   for (iface = 0; iface < Mesh->Elem[elem_start].nNode; iface++) {
     node0 = Mesh->Face[Mesh->Elem[elem_start].face[iface]]->node[0];
@@ -686,4 +686,51 @@ int mg_mesh_2_matlab(mg_Mesh *Mesh, mg_Front *Front, char *FileName)
   
   return err_OK;
 }
+
+/******************************************************************/
+/* function: mg_write_mesh */
+/* writes mesh to a file with connectivities and boundary information */
+int mg_write_mesh(mg_Mesh *Mesh, char *FileName)
+{
+  int i, d;
+  FILE *fid;
+  
+  if ((fid = fopen(FileName, "w")) == NULL)
+    return error(err_READWRITE_ERROR);
+  //write header
+  fprintf(fid, "%% Dim nNode nFace nElem nBfg\n");
+  fprintf(fid, "%d %d %d %d %d\n", Mesh->Dim, Mesh->nNode, Mesh->nFace, Mesh->nElem, Mesh->nBfg);
+  //write nodal coordinates
+  fprintf(fid, "%% Node coordinates\n");
+  for (i = 0; i < Mesh->nNode; i++) {
+    for (d = 0; d < Mesh->Dim; d++)
+      fprintf(fid, "%1.12e ",Mesh->Coord[i*Mesh->Dim+d]);
+    fprintf(fid, "\n");
+  }
+  //write boundary grou information
+  fprintf(fid, "%% BGroup nBface\n");
+  for (i = 0; i < Mesh->nBfg; i++) {
+    fprintf(fid, "%s %d\n",Mesh->BNames[i],Mesh->nBface[i]);
+  }
+  //write element-to-node connectivity
+  fprintf(fid, "%% Element to node connectivity\n");
+  for (i = 0; i < Mesh->nElem; i++){
+    for (d = 0; d < Mesh->Elem[i].nNode; d++)
+      fprintf(fid, "%d ",Mesh->Elem[i].node[d]);
+    fprintf(fid, "\n");
+  }
+  //Face connectivity
+  fprintf(fid, "%% n0 n1 eL eR\n");
+  for (i = 0; i < Mesh->nFace; i++) {
+    fprintf(fid, "%d %d %d %d\n",Mesh->Face[i]->node[0],
+            Mesh->Face[i]->node[1],Mesh->Face[i]->elem[LEFTNEIGHINDEX],
+            Mesh->Face[i]->elem[RIGHTNEIGHINDEX]);
+  }
+  
+  fclose(fid);
+  
+  
+  return err_OK;
+}
+
 

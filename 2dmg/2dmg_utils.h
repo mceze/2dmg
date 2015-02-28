@@ -130,5 +130,10 @@ void mg_check_exist(int num, int size, int *vector, int *index);
 /* converts mesh to matlab format */
 int mg_mesh_2_matlab(mg_Mesh *Mesh, mg_Front *Front, char *FileName);
 
+/******************************************************************/
+/* function: mg_write_mesh */
+/* writes mesh to a file with connectivities and boundary information */
+int mg_write_mesh(mg_Mesh *Mesh, char *FileName);
+
 
 #endif /* defined(___dmg___dmg_utils__) */
