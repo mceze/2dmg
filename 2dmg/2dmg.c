@@ -445,7 +445,7 @@ int mg_build_circle_frm_face(mg_Mesh *Mesh, mg_FaceData *face,
 int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
                          double *coord)
 {
-  int ierr, elemID0, in, nodeID, faceID0, faceID1, faceID2, f, faceID, i, t;
+  int ierr, elemID0, in, nodeID, faceID0, faceID1, faceID2, f, faceID, i, t, idx;
   int nbor;
   bool face0new, face1new, newnode, NodeIsFromStack, Face0IsFromStack;
   bool Face1IsFromStack;
@@ -654,11 +654,11 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     //update elemental connectivity
     Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX] = elemID0;
     Mesh->Elem[elemID0].nbor[0] = Mesh->Face[faceID0]->elem[RIGHTNEIGHINDEX];
-    if ((nbor = Mesh->Face[faceID0]->elem[RIGHTNEIGHINDEX]) >= 0) { //not a boundary
-      mg_check_exist(faceID0, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &i);
-      Mesh->Elem[nbor].nbor[i] = elemID0;
+    nbor = Mesh->Face[faceID0]->elem[RIGHTNEIGHINDEX];
+    if (nbor >= 0) { //not a boundary
+      mg_check_exist(faceID0, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &idx);
+      Mesh->Elem[nbor].nbor[idx] = elemID0;
     }
-    Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX] = elemID0;
   }
   if (face1new){
     if (!Face1IsFromStack){
@@ -672,7 +672,7 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     Mesh->Face[faceID1]->node[0] = FFace->face->node[0];
     Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX] = HOLLOWNEIGHTAG;
     Mesh->Face[faceID1]->elem[RIGHTNEIGHINDEX] = elemID0;
-    Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX];
+    Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX];
     //face info will be updated later
     Mesh->Face[faceID1]->normal = NULL;
     Mesh->Face[faceID1]->centroid = NULL;
@@ -687,7 +687,8 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     //update elemental connectivity
     Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX] = elemID0;
     Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID1]->elem[RIGHTNEIGHINDEX];
-    if ((nbor = Mesh->Face[faceID1]->elem[RIGHTNEIGHINDEX]) >= 0) { //not a boundary
+    nbor = Mesh->Face[faceID1]->elem[RIGHTNEIGHINDEX];
+    if (nbor >= 0) { //not a boundary
       mg_check_exist(faceID1, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &i);
       if (i < 0) return error(err_LOGIC_ERROR);
       Mesh->Elem[nbor].nbor[i] = elemID0;
@@ -704,13 +705,6 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     if (i < 0) return error(err_LOGIC_ERROR);
     Mesh->Elem[nbor].nbor[i] = elemID0;
   }
-  
-  //update elem's neighbors
-  //if (elemID0 == 5)
-  //  printf("here\n");
-//  Mesh->Elem[elemID0].nbor[0] = Mesh->Face[faceID0]->elem[LEFTNEIGHINDEX];
-//  Mesh->Elem[elemID0].nbor[1] = Mesh->Face[faceID1]->elem[LEFTNEIGHINDEX];
-//  Mesh->Elem[elemID0].nbor[2] = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX];
   
   return err_OK;
 }
@@ -1250,7 +1244,7 @@ int mg_rm_broken_elems(mg_Mesh *Mesh, mg_Front *Front,
       }//has to be either left or right
       else return error(err_LOGIC_ERROR);
       //update neighbor lists in neighbors
-      nborID = Mesh->Elem[elem].nbor[f];
+      nborID = Mesh->Elem[elem].nbor[fIDX2kp[f]];
       if (nborID >= 0) { //not a boundary
         mg_check_exist(faceID, 3, Mesh->Elem[nborID].face, &idx);
         if (idx < 0) return error(err_MESH_ERROR);
@@ -1687,6 +1681,7 @@ int main(int argc, char *argv[])
 {
   int ierr, len, i;
   char ParFile[MAXSTRLEN], *InFile, *OutFile,*pext;
+  char MeshName[MAXSTRLEN];
   mg_Mesh *Mesh;
   mg_Front Front;
   
@@ -1730,27 +1725,17 @@ int main(int argc, char *argv[])
   call(mg_create_front(Mesh, &Front));
   i = 0;
   while (!mg_front_empty(&Front)){
-    //printf("[i elem] = %d %d\n",i,Mesh->nElem);
-    //call(mg_plot_mesh(Mesh));
-    //sprintf(MeshName, "mesh_at_it_%d.m",i);
-    //call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
     //advance front
     call(mg_advance_front(Mesh, &Front));
     //DEBUGGING
     //call(xf_VerifyFront2D(&Front));
     i++;
   }
-  //sprintf(OutFile, "final.m",i);
   //call(mg_plot_mesh(Mesh));
   call(mg_get_input_char("OutputMesh", &OutFile));
-  call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
+  call(mg_write_mesh(Mesh, OutFile));
+  //call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
   printf("Number of triangles: %d\nDone.\n",Mesh->nElem);
-  
-  double coord[2];
-  coord[0] = 0.55;coord[1] = 0.77;
-  int elem_c;
-  call(mg_find_elem_frm_coord(Mesh, 5, coord, &elem_c));
-  
   
   mg_destroy_mesh(Mesh);
   //destroy hash table
