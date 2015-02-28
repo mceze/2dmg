@@ -64,6 +64,10 @@
 		902B92971A65F40000355401 /* liberror.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = liberror.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		902B929C1A65F46000355401 /* 2dmg_error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = 2dmg_error.c; path = error/2dmg_error.c; sourceTree = "<group>"; };
 		902B929D1A65F46000355401 /* 2dmg_error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 2dmg_error.h; path = error/2dmg_error.h; sourceTree = "<group>"; };
+		90A2CCA71A9EE59C00BB32A7 /* plot_leanmesh.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leanmesh.m; sourceTree = "<group>"; };
+		90A2CCA81A9EE59C00BB32A7 /* plot_leanface.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leanface.m; sourceTree = "<group>"; };
+		90A2CCA91A9EE59C00BB32A7 /* plot_leannode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leannode.m; sourceTree = "<group>"; };
+		90A2CCAA1A9EE59C00BB32A7 /* plot_leanelem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leanelem.m; sourceTree = "<group>"; };
 		90E5C4F91A688658001C02FA /* test_qtree */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test_qtree; sourceTree = BUILT_PRODUCTS_DIR; };
 		90E5C4FB1A688658001C02FA /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,6 +134,7 @@
 		90013C761A128BBE006E83CC /* 2dmg */ = {
 			isa = PBXGroup;
 			children = (
+				90A2CCAB1A9EE5AF00BB32A7 /* matlab_files */,
 				90013C7F1A128C3B006E83CC /* src */,
 				90013C7E1A128C2C006E83CC /* include */,
 			);
@@ -193,6 +198,17 @@
 				902B929D1A65F46000355401 /* 2dmg_error.h */,
 			);
 			name = liberror;
+			sourceTree = "<group>";
+		};
+		90A2CCAB1A9EE5AF00BB32A7 /* matlab_files */ = {
+			isa = PBXGroup;
+			children = (
+				90A2CCA71A9EE59C00BB32A7 /* plot_leanmesh.m */,
+				90A2CCA81A9EE59C00BB32A7 /* plot_leanface.m */,
+				90A2CCA91A9EE59C00BB32A7 /* plot_leannode.m */,
+				90A2CCAA1A9EE59C00BB32A7 /* plot_leanelem.m */,
+			);
+			name = matlab_files;
 			sourceTree = "<group>";
 		};
 		90E5C4FA1A688658001C02FA /* test_qtree */ = {
@@ -454,6 +470,7 @@
 		90013C7C1A128BBE006E83CC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 0;
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/plplot/5.10.0/lib;
 				OTHER_LDFLAGS = "-lplplotd";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -464,6 +481,7 @@
 		90013C7D1A128BBE006E83CC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 0;
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/plplot/5.10.0/lib;
 				OTHER_LDFLAGS = "-lplplotd";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -592,6 +610,7 @@
 				90E5C4FE1A688658001C02FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
