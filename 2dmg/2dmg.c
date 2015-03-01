@@ -1247,7 +1247,8 @@ int mg_rm_broken_elems(mg_Mesh *Mesh, mg_Front *Front,
       nborID = Mesh->Elem[elem].nbor[fIDX2kp[f]];
       if (nborID >= 0) { //not a boundary
         mg_check_exist(faceID, 3, Mesh->Elem[nborID].face, &idx);
-        if (idx < 0) return error(err_MESH_ERROR);
+        if (idx < 0)
+          return error(err_MESH_ERROR);
         Mesh->Elem[nborID].nbor[idx] = HOLLOWNEIGHTAG;
       }
     }
