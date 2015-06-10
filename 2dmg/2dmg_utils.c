@@ -125,11 +125,11 @@ int mg_create_mesh(mg_Mesh **pMesh)
 {
   int ierr;
   call(mg_alloc((void**)pMesh, 1, sizeof(mg_Mesh)));
-  (*pMesh)->Dim = 0;
-  (*pMesh)->nBfg = 0;
-  (*pMesh)->nElem = 0;
-  (*pMesh)->nFace = 0;
-  (*pMesh)->nNode = 0;
+  (*pMesh)->Dim    = 0;
+  (*pMesh)->nBfg   = 0;
+  (*pMesh)->nElem  = 0;
+  (*pMesh)->nFace  = 0;
+  (*pMesh)->nNode  = 0;
   (*pMesh)->BNames = NULL;
   (*pMesh)->Elem = NULL;
   (*pMesh)->Face = NULL;
@@ -178,8 +178,10 @@ void mg_destroy_mesh(mg_Mesh *Mesh)
   mg_free((void*)Mesh->Face);
   //destroy connectivities
   for (i = 0; i < Mesh->nNode; i++) {
-    mg_free((void*)Mesh->Node2Elem[i].Item);
-    mg_free((void*)Mesh->Node2Face[i].Item);
+    if (Mesh->Node2Elem != NULL)
+      mg_free((void*)Mesh->Node2Elem[i].Item);
+    if (Mesh->Node2Face != NULL)
+      mg_free((void*)Mesh->Node2Face[i].Item);
   }
   mg_free((void*)Mesh->Node2Elem);
   mg_free((void*)Mesh->Node2Face);
@@ -205,6 +207,7 @@ void mg_init_face(mg_FaceData *face)
   face->nNode = 0;
   face->node = NULL;
   face->normal = NULL;
+  face->centroid = NULL;
   face->elem[LEFTNEIGHINDEX] = -1;
   face->elem[RIGHTNEIGHINDEX] = -1;
   face->area = -1.0;
@@ -623,114 +626,20 @@ void mg_check_exist(int num, int size, int *vector, int *index)
 }
 
 /******************************************************************/
-/* function: mg_mesh_2_matlab */
-/* converts mesh to matlab format */
-int mg_mesh_2_matlab(mg_Mesh *Mesh, mg_Front *Front, char *FileName)
+/* function: mg_value_2_enum */
+/* matches a enumerator with its name */
+int
+mg_value_2_enum(const char value[], char *EName[], int ELast,
+                int *ival)
 {
-  int nodeID, d, faceID, elemID, loopID;
-  mg_FrontFace *FFace;
-  FILE *fid;
-  
-  if ((fid=fopen(FileName ,"w"))==NULL)
-    return error(err_READWRITE_ERROR);
-  
-  //print node array
-  fprintf(fid,"coord=[");
-  for (nodeID = 0; nodeID < Mesh->nNode; nodeID++){
-    for (d = 0; d < Mesh->Dim; d++)
-      fprintf(fid, "%1.8e ",Mesh->Coord[nodeID*Mesh->Dim+d]);
-    fprintf(fid, "\n");
-  }
-  fprintf(fid, "];\n");
-  
-  //print face array
-  fprintf(fid,"face=[");
-  for (faceID = 0; faceID < Mesh->nFace; faceID++) {
-    for (d = 0; d < Mesh->Face[faceID]->nNode; d++)
-      fprintf(fid, "%d ",Mesh->Face[faceID]->node[d]+1);
-    fprintf(fid, "\n");
-  }
-  fprintf(fid, "];\n");
-  
-  //print element array
-  fprintf(fid,"elem=[");
-  for (elemID = 0; elemID < Mesh->nElem; elemID++) {
-    for (d = 0; d < Mesh->Elem[elemID].nNode; d++)
-      fprintf(fid, "%d ",Mesh->Elem[elemID].node[d]+1);
-    fprintf(fid, "\n");
-  }
-  fprintf(fid, "];\n");
-  
-  //print front
-  fprintf(fid,"front=[");
-  for (loopID = 0; loopID < Front->nloop; loopID++) {
-    if (Front->loop[loopID]->FacesInLoop->nEntry == 0)
-      continue;
-    FFace = Front->loop[loopID]->head;
-    if (FFace == NULL) continue;
-    for (d = 0; d < FFace->face->nNode; d++)
-      fprintf(fid, "%d ",FFace->face->node[d]+1);
-    fprintf(fid, "\n");
-    FFace = FFace->next;
-    while (FFace != Front->loop[loopID]->head) {
-      for (d = 0; d < FFace->face->nNode; d++)
-        fprintf(fid, "%d ",FFace->face->node[d]+1);
-      fprintf(fid, "\n");
-      FFace = FFace->next;
+  int k;
+  for (k=0; k<ELast; k++){
+    if (strcmp(EName[k], value) == 0){
+      *ival = k;
+      return err_OK;
     }
   }
-  fprintf(fid, "];\n");
   
-  fclose(fid);
-  
-  
-  return err_OK;
+  return err_NOT_FOUND;
 }
-
-/******************************************************************/
-/* function: mg_write_mesh */
-/* writes mesh to a file with connectivities and boundary information */
-int mg_write_mesh(mg_Mesh *Mesh, char *FileName)
-{
-  int i, d;
-  FILE *fid;
-  
-  if ((fid = fopen(FileName, "w")) == NULL)
-    return error(err_READWRITE_ERROR);
-  //write header
-  fprintf(fid, "%% Dim nNode nFace nElem nBfg\n");
-  fprintf(fid, "%d %d %d %d %d\n", Mesh->Dim, Mesh->nNode, Mesh->nFace, Mesh->nElem, Mesh->nBfg);
-  //write nodal coordinates
-  fprintf(fid, "%% Node coordinates\n");
-  for (i = 0; i < Mesh->nNode; i++) {
-    for (d = 0; d < Mesh->Dim; d++)
-      fprintf(fid, "%1.12e ",Mesh->Coord[i*Mesh->Dim+d]);
-    fprintf(fid, "\n");
-  }
-  //write boundary grou information
-  fprintf(fid, "%% BGroup nBface\n");
-  for (i = 0; i < Mesh->nBfg; i++) {
-    fprintf(fid, "%s %d\n",Mesh->BNames[i],Mesh->nBface[i]);
-  }
-  //write element-to-node connectivity
-  fprintf(fid, "%% Element to node connectivity\n");
-  for (i = 0; i < Mesh->nElem; i++){
-    for (d = 0; d < Mesh->Elem[i].nNode; d++)
-      fprintf(fid, "%d ",Mesh->Elem[i].node[d]);
-    fprintf(fid, "\n");
-  }
-  //Face connectivity
-  fprintf(fid, "%% n0 n1 eL eR\n");
-  for (i = 0; i < Mesh->nFace; i++) {
-    fprintf(fid, "%d %d %d %d\n",Mesh->Face[i]->node[0],
-            Mesh->Face[i]->node[1],Mesh->Face[i]->elem[LEFTNEIGHINDEX],
-            Mesh->Face[i]->elem[RIGHTNEIGHINDEX]);
-  }
-  
-  fclose(fid);
-  
-  
-  return err_OK;
-}
-
 

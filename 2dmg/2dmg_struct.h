@@ -9,6 +9,8 @@
 #ifndef _dmg__dmg_struct_h
 #define _dmg__dmg_struct_h
 
+#include <gsl/gsl_interp.h>
+
 /******************************************************************/
 /* List structure */
 typedef struct
@@ -85,13 +87,42 @@ mg_Loop;
 
 /******************************************************************/
 /* front structure: single structure containing possibly more than
- one loops (fronts) */
+ one loop (front) */
 typedef struct
 {
   int nloop;
   mg_Loop **loop;
 }
 mg_Front;
+
+enum mge_GeoInterp {
+  mge_Linear,
+  mge_Polynomial,
+  mge_CSpline,
+  mge_CSplinePeriodic,
+  mge_Akima,
+  mge_AkimaPeriodic,
+  mge_GeoInterpLast
+};
+static char *mge_GeoInterpName[mge_GeoInterpLast] = {
+  "Linear",
+  "Polynomial",
+  "CSpline",
+  "CSplinePeriodic",
+  "Akima",
+  "AkimaPeriodic"
+};
+
+/******************************************************************/
+/* mesh structure */
+typedef struct
+{
+  int nPoints;
+  int *Points;
+  gsl_interp *interp;
+  enum mge_GeoInterp interp_type;
+}
+mg_Boundary;
 
 /******************************************************************/
 /* mesh structure */

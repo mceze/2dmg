@@ -126,14 +126,12 @@ int mg_find_elem_frm_coord(mg_Mesh *Mesh, int elem_start,
 void mg_check_exist(int num, int size, int *vector, int *index);
 
 /******************************************************************/
-/* function: mg_mesh_2_matlab */
-/* converts mesh to matlab format */
-int mg_mesh_2_matlab(mg_Mesh *Mesh, mg_Front *Front, char *FileName);
+/* function: mg_value_2_enum */
+/* matches a enumerator with its name */
+int
+mg_value_2_enum(const char value[], char *EName[], int ELast,
+                int *ival);
 
-/******************************************************************/
-/* function: mg_write_mesh */
-/* writes mesh to a file with connectivities and boundary information */
-int mg_write_mesh(mg_Mesh *Mesh, char *FileName);
 
 
 #endif /* defined(___dmg___dmg_utils__) */

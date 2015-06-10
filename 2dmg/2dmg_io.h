@@ -36,4 +36,19 @@ int mg_read_input_file(char const ParamFile[]);
 /* function:  mg_read_input_file */
 int mg_get_input_char(char const ParamName[], char **pvalue);
 
+/******************************************************************/
+/* function: mg_mesh_2_matlab */
+/* converts mesh to matlab format */
+int mg_mesh_2_matlab(mg_Mesh *Mesh, mg_Front *Front, char *FileName);
+
+/******************************************************************/
+/* function: mg_write_mesh */
+/* writes mesh to a file with connectivities and boundary information */
+int mg_write_mesh(mg_Mesh *Mesh, char *FileName);
+
+/******************************************************************/
+/* function: mg_read_mesh */
+/* reads mesh from file with connectivities and boundary information */
+int mg_read_mesh(mg_Mesh **pMesh, char *FileName);
+
 #endif

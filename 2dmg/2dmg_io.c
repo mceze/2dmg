@@ -251,3 +251,248 @@ int mg_get_input_char(char const ParamName[], char **pvalue)
   return err_OK;
 }
 
+/******************************************************************/
+/* function: mg_mesh_2_matlab */
+/* converts mesh to matlab format */
+int mg_mesh_2_matlab(mg_Mesh *Mesh, mg_Front *Front, char *FileName)
+{
+  int nodeID, d, faceID, elemID, loopID;
+  mg_FrontFace *FFace;
+  FILE *fid;
+  
+  if ((fid=fopen(FileName ,"w"))==NULL)
+    return error(err_READWRITE_ERROR);
+  
+  //print node array
+  fprintf(fid,"coord=[");
+  for (nodeID = 0; nodeID < Mesh->nNode; nodeID++){
+    for (d = 0; d < Mesh->Dim; d++)
+      fprintf(fid, "%1.8e ",Mesh->Coord[nodeID*Mesh->Dim+d]);
+    fprintf(fid, "\n");
+  }
+  fprintf(fid, "];\n");
+  
+  //print face array
+  fprintf(fid,"face=[");
+  for (faceID = 0; faceID < Mesh->nFace; faceID++) {
+    for (d = 0; d < Mesh->Face[faceID]->nNode; d++)
+      fprintf(fid, "%d ",Mesh->Face[faceID]->node[d]+1);
+    fprintf(fid, "\n");
+  }
+  fprintf(fid, "];\n");
+  
+  //print element array
+  fprintf(fid,"elem=[");
+  for (elemID = 0; elemID < Mesh->nElem; elemID++) {
+    for (d = 0; d < Mesh->Elem[elemID].nNode; d++)
+      fprintf(fid, "%d ",Mesh->Elem[elemID].node[d]+1);
+    fprintf(fid, "\n");
+  }
+  fprintf(fid, "];\n");
+  
+  //print front
+  fprintf(fid,"front=[");
+  for (loopID = 0; loopID < Front->nloop; loopID++) {
+    if (Front->loop[loopID]->FacesInLoop->nEntry == 0)
+      continue;
+    FFace = Front->loop[loopID]->head;
+    if (FFace == NULL) continue;
+    for (d = 0; d < FFace->face->nNode; d++)
+      fprintf(fid, "%d ",FFace->face->node[d]+1);
+    fprintf(fid, "\n");
+    FFace = FFace->next;
+    while (FFace != Front->loop[loopID]->head) {
+      for (d = 0; d < FFace->face->nNode; d++)
+        fprintf(fid, "%d ",FFace->face->node[d]+1);
+      fprintf(fid, "\n");
+      FFace = FFace->next;
+    }
+  }
+  fprintf(fid, "];\n");
+  
+  fclose(fid);
+  
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_write_mesh */
+/* writes mesh to a file with connectivities and boundary information */
+int mg_write_mesh(mg_Mesh *Mesh, char *FileName)
+{
+  int i, d;
+  FILE *fid;
+  
+  if ((fid = fopen(FileName, "w")) == NULL)
+    return error(err_READWRITE_ERROR);
+  //write header
+  fprintf(fid, "%% Dim nNode nFace nElem nBfg\n");
+  fprintf(fid, "%d %d %d %d %d\n", Mesh->Dim, Mesh->nNode, Mesh->nFace, Mesh->nElem, Mesh->nBfg);
+  //write nodal coordinates
+  fprintf(fid, "%% Node coordinates\n");
+  for (i = 0; i < Mesh->nNode; i++) {
+    for (d = 0; d < Mesh->Dim; d++)
+      fprintf(fid, "%1.12e ",Mesh->Coord[i*Mesh->Dim+d]);
+    fprintf(fid, "\n");
+  }
+  //write boundary grou information
+  fprintf(fid, "%% BGroup nBface\n");
+  for (i = 0; i < Mesh->nBfg; i++) {
+    fprintf(fid, "%s %d\n",Mesh->BNames[i],Mesh->nBface[i]);
+  }
+  //write element-to-node connectivity
+  fprintf(fid, "%% Element to node connectivity\n");
+  for (i = 0; i < Mesh->nElem; i++){
+    for (d = 0; d < Mesh->Elem[i].nNode; d++)
+      fprintf(fid, "%d ",Mesh->Elem[i].node[d]);
+    fprintf(fid, "\n");
+  }
+  //Face connectivity
+  fprintf(fid, "%% n0 n1 eL eR\n");
+  for (i = 0; i < Mesh->nFace; i++) {
+    fprintf(fid, "%d %d %d %d\n",Mesh->Face[i]->node[0],
+            Mesh->Face[i]->node[1],Mesh->Face[i]->elem[LEFTNEIGHINDEX],
+            Mesh->Face[i]->elem[RIGHTNEIGHINDEX]);
+  }
+  
+  fclose(fid);
+  
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_read_mesh */
+/* reads mesh from file with connectivities and boundary information */
+int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
+{
+  int ierr, n, vi[10], i, j, elemL, elemR;
+  char line[MAXLINELEN];
+  mg_Mesh *Mesh;
+  mg_FaceData *Face;
+  FILE *fid = fopen(FileName, "r");
+  
+  call(mg_create_mesh(&Mesh));
+  
+  //get mesh info
+  fgets(line, MAXLINELEN, fid);
+  while (line[0] == '%') {//skip comments
+    fgets(line, MAXLINELEN, fid);
+  }
+  call(mg_scan_n_num(line, &n, vi, NULL));
+  if (n != 5) return error(err_READWRITE_ERROR);
+  Mesh->Dim   = vi[0];
+  Mesh->nNode = vi[1];
+  Mesh->nFace = vi[2];
+  Mesh->nElem = vi[3];
+  Mesh->nBfg  = vi[4];
+  call(mg_alloc((void **)&Mesh->Coord, Mesh->nNode*Mesh->Dim,
+                sizeof(double)));
+  call(mg_alloc((void**)&Mesh->Elem, Mesh->nElem, sizeof(mg_ElemData)));
+  call(mg_alloc2((void ***)&Mesh->BNames, Mesh->nBfg, MAXSTRLEN,
+                 sizeof(char)));
+  call(mg_alloc((void **)&Mesh->nBface, Mesh->nBfg,
+                sizeof(int)));
+  
+  //get coordinates
+  fgets(line, MAXLINELEN, fid);
+  while (line[0] == '%') {//skip comments
+    fgets(line, MAXLINELEN, fid);
+  }
+  for (i = 0 ; i < Mesh->nNode; i++) {
+    call(mg_scan_n_num(line, &n, NULL, Mesh->Coord+i*Mesh->Dim));
+    fgets(line, MAXLINELEN, fid);
+    if (n != Mesh->Dim) return error(err_READWRITE_ERROR);
+    //printf("%1.8e %1.8e\n",vr[0],vr[1]);
+    //Mesh->Coord[i*Mesh->Dim+0] = vr[0];
+    //Mesh->Coord[i*Mesh->Dim+1] = vr[1];
+    //printf("%1.12e %1.12e \n",Mesh->Coord[i*Mesh->Dim+0],Mesh->Coord[i*Mesh->Dim+1]);
+    //memcpy(&Mesh->Coord[(i*Mesh->Dim)], &vr[0], Mesh->Dim*sizeof(double));
+  }
+  //get boundary groups
+  while (line[0] == '%') {//skip comments
+    fgets(line, MAXLINELEN, fid);
+  }
+  for (i = 0; i < Mesh->nBfg; i++) {
+    sscanf(line,"%s %d",Mesh->BNames[i],&Mesh->nBface[i]);
+    fgets(line, MAXLINELEN, fid);
+  }
+  //element-to-node connectivity
+  while (line[0] == '%') {//skip comments
+    fgets(line, MAXLINELEN, fid);
+  }
+  for (i = 0; i < Mesh->nElem; i++) {
+    call(mg_scan_n_num(line, &n, vi, NULL));
+    //for now, complain if elem is not a triangle
+    if (n != 3) return error(err_NOT_SUPPORTED);
+    Mesh->Elem[i].nNode = n;
+    call(mg_alloc((void**)&Mesh->Elem[i].face, Mesh->Elem[i].nNode,
+                  sizeof(int)));
+    call(mg_alloc((void**)&Mesh->Elem[i].nbor, Mesh->Elem[i].nNode,
+                  sizeof(int)));
+    call(mg_alloc((void**)&Mesh->Elem[i].node, Mesh->Elem[i].nNode,
+                  sizeof(int)));
+    for (j = 0; j < Mesh->nNode; j++)
+      Mesh->Elem[i].node[j] = vi[j];
+    fgets(line, MAXLINELEN, fid);
+  }
+  //face information
+  call(mg_alloc((void**)&Mesh->Face, Mesh->nFace, sizeof(mg_FaceData)));
+  while (line[0] == '%') {//skip comments
+    fgets(line, MAXLINELEN, fid);
+  }
+  for (i = 0; i < Mesh->nFace; i++) {
+    call(mg_scan_n_num(line, &n, vi, NULL));
+    //may have to change this check because of multinode faces in the future
+    if (n != 4) return error(err_READWRITE_ERROR);
+    call(mg_alloc((void**)&Face, 1, sizeof(mg_FaceData)));
+    mg_init_face(Face);
+    Mesh->Face[i] = Face;
+    Face->nNode = n-2;//number of entries read minus element numbers
+    call(mg_alloc((void**)&Face->node, Face->nNode, sizeof(int)));
+    for (j = 0; j < Face->nNode; j++)
+      Face->node[j] = vi[j];
+    elemL = vi[n-2];
+    elemR = vi[n-1];
+    Face->elem[LEFTNEIGHINDEX] = elemL;
+    Face->elem[RIGHTNEIGHINDEX] = elemR;
+    Mesh->Face[i] = Face;
+    //figure out which face this is
+    //left element
+    if (elemL >= 0){
+      for (j = 0; j < Mesh->Elem[elemL].nNode; j++) {
+        if (Mesh->Elem[elemL].node[j] == Face->node[0]) {
+          n = nextincycle(j, Mesh->Elem[elemL].nNode);
+          if (Face->node[Face->nNode-1] != Mesh->Elem[elemL].node[n])
+            return error(err_LOGIC_ERROR);
+          n = previncycle(j, Mesh->Elem[elemL].nNode);
+          Mesh->Elem[elemL].face[n] = i;
+          Mesh->Elem[elemL].nbor[n] = elemR;
+        }
+      }
+    }
+    //right element
+    if (elemR >= 0){
+      for (j = 0; j < Mesh->Elem[elemR].nNode; j++) {
+        if (Mesh->Elem[elemR].node[j] == Face->node[0]) {
+          n = previncycle(j, Mesh->Elem[elemR].nNode);
+          if (Face->node[Face->nNode-1] != Mesh->Elem[elemR].node[n])
+            return error(err_LOGIC_ERROR);
+          n = nextincycle(j, Mesh->Elem[elemR].nNode);
+          Mesh->Elem[elemR].face[n] = i;
+          Mesh->Elem[elemR].nbor[n] = elemL;
+        }
+      }
+    }
+    fgets(line, MAXLINELEN, fid);
+  }
+  
+  
+  (*pMesh) = Mesh;
+  fclose(fid);
+  
+  return err_OK;
+}
+
+

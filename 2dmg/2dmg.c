@@ -1734,7 +1734,7 @@ int main(int argc, char *argv[])
   //call(mg_plot_mesh(Mesh));
   call(mg_get_input_char("OutputMesh", &OutFile));
   call(mg_write_mesh(Mesh, OutFile));
-  //call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
+  call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
   printf("Number of triangles: %d\nDone.\n",Mesh->nElem);
   
   mg_destroy_mesh(Mesh);
