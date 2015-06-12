@@ -12,6 +12,7 @@
 #include "2dmg_struct.h"
 #include "2dmg_utils.h"
 #include "2dmg_math.h"
+#include "2dmg_geo.h"
 #include "2dmg_io.h"
 
 /******************************************************************/
@@ -19,9 +20,9 @@
 /* scan "n" numbers from a string  */
 int mg_scan_n_num( const char *line, int *n, int *vi, double *vr)
 {
-  int ierr, pos, i;
+  int ierr, pos, i, k;
   int ndelim, iv=0;
-  const char delim[] = " \t";
+  const char delim[] = " ";
   char value[MAXSTRLEN];
   bool indelim, indelimcur;
   
@@ -39,7 +40,7 @@ int mg_scan_n_num( const char *line, int *n, int *vi, double *vr)
   ndelim = (int)strlen(delim);
   
   /* Loop until hit start of token # ntok */
-  (*n) = 0;
+  k = 0;
   pos = 0;
   indelim = true;
   while ((line[pos] != '\0') && (line[pos] != '\n')){
@@ -59,11 +60,11 @@ int mg_scan_n_num( const char *line, int *n, int *vi, double *vr)
       // hit end of token
       value[iv] = '\0';
       if (vi != NULL)
-        ierr = sscanf(value, "%d", vi+(*n));
+        ierr = sscanf(value, "%d", vi+k);
       else
-        ierr = sscanf(value, "%lf", vr+(*n));
+        ierr = sscanf(value, "%lf", vr+k);
       if (ierr != 1) return error(err_READWRITE_ERROR);
-      (*n)++;
+      k++;
     }
     indelim = indelimcur;
     if (!indelim){
@@ -76,12 +77,13 @@ int mg_scan_n_num( const char *line, int *n, int *vi, double *vr)
   if (!indelim){
     value[iv] = '\0';
     if (vi != NULL)
-      ierr = sscanf(value, "%d", vi+(*n));
+      ierr = sscanf(value, "%d", vi+k);
     else
-      ierr = sscanf(value, "%lf", vr+(*n));
+      ierr = sscanf(value, "%lf", vr+k);
     if (ierr != 1) return error(err_READWRITE_ERROR);
-    (*n)++;
+    k++;
   }
+  (*n) = k;
   
   return err_OK;
 }
@@ -367,7 +369,7 @@ int mg_write_mesh(mg_Mesh *Mesh, char *FileName)
 /* reads mesh from file with connectivities and boundary information */
 int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
 {
-  int ierr, n, vi[10], i, j, elemL, elemR;
+  int ierr, n, vi[5], i, j, elemL, elemR;
   char line[MAXLINELEN];
   mg_Mesh *Mesh;
   mg_FaceData *Face;
@@ -404,11 +406,6 @@ int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
     call(mg_scan_n_num(line, &n, NULL, Mesh->Coord+i*Mesh->Dim));
     fgets(line, MAXLINELEN, fid);
     if (n != Mesh->Dim) return error(err_READWRITE_ERROR);
-    //printf("%1.8e %1.8e\n",vr[0],vr[1]);
-    //Mesh->Coord[i*Mesh->Dim+0] = vr[0];
-    //Mesh->Coord[i*Mesh->Dim+1] = vr[1];
-    //printf("%1.12e %1.12e \n",Mesh->Coord[i*Mesh->Dim+0],Mesh->Coord[i*Mesh->Dim+1]);
-    //memcpy(&Mesh->Coord[(i*Mesh->Dim)], &vr[0], Mesh->Dim*sizeof(double));
   }
   //get boundary groups
   while (line[0] == '%') {//skip comments
@@ -427,13 +424,13 @@ int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
     //for now, complain if elem is not a triangle
     if (n != 3) return error(err_NOT_SUPPORTED);
     Mesh->Elem[i].nNode = n;
-    call(mg_alloc((void**)&Mesh->Elem[i].face, Mesh->Elem[i].nNode,
+    call(mg_alloc((void**)&(Mesh->Elem[i].face), Mesh->Elem[i].nNode,
                   sizeof(int)));
-    call(mg_alloc((void**)&Mesh->Elem[i].nbor, Mesh->Elem[i].nNode,
+    call(mg_alloc((void**)&(Mesh->Elem[i].nbor), Mesh->Elem[i].nNode,
                   sizeof(int)));
-    call(mg_alloc((void**)&Mesh->Elem[i].node, Mesh->Elem[i].nNode,
+    call(mg_alloc((void**)&(Mesh->Elem[i].node), Mesh->Elem[i].nNode,
                   sizeof(int)));
-    for (j = 0; j < Mesh->nNode; j++)
+    for (j = 0; j < Mesh->Elem[i].nNode; j++)
       Mesh->Elem[i].node[j] = vi[j];
     fgets(line, MAXLINELEN, fid);
   }
@@ -495,4 +492,73 @@ int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
   return err_OK;
 }
 
+/******************************************************************/
+/* function: mg_read_mesh */
+/* reads mesh from file with connectivities and boundary information */
+int mg_read_geo(mg_Geometry **pGeo, char *FileName)
+{
+  int ierr, n, vi[5], i, nB, id, nP, d;
+  double ds;
+  char line[MAXLINELEN], type[MAXSTRLEN];
+  FILE *fid = fopen(FileName, "r");
+  
+  //get geo info
+  fgets(line, MAXLINELEN, fid);
+  while (line[0] == '%') {//skip comments
+    fgets(line, MAXLINELEN, fid);
+  }
+  call(mg_scan_n_num(line, &n, vi, NULL));
+  if (n != 3) return error(err_READWRITE_ERROR);
+  //create geo structure
+  call(mg_create_geo(pGeo, vi[2], vi[1], vi[0]));
+  //read coordinates
+  fgets(line, MAXLINELEN, fid);
+  while (line[0] == '%') {//skip comments
+    fgets(line, MAXLINELEN, fid);
+  }
+  for (i = 0; i < (*pGeo)->nPoint; i++) {
+    call(mg_scan_n_num(line, &n, NULL, (*pGeo)->Coord+i*(*pGeo)->Dim));
+    fgets(line, MAXLINELEN, fid);
+    while (line[0] == '%') {//skip comments
+      fgets(line, MAXLINELEN, fid);
+    }
+  }
+  //read segments
+  for (nB = 0; nB < (*pGeo)->nBoundary; nB++) {
+    while (line[0] == '%') {//skip comments
+      fgets(line, MAXLINELEN, fid);
+    }
+    sscanf(line, "%s %s %d",(*pGeo)->Boundary[nB]->Name,type,&nP);
+    (*pGeo)->Boundary[nB]->nPoint = nP;
+    ds = 1.0/(nP-1);
+    call(mg_value_2_enum(type, mge_GeoInterpName,(int)mge_GeoInterpLast,
+                         (int*)&((*pGeo)->Boundary[nB]->interp_type)));
+    //allocate and read points
+    call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->Coord),
+                  (*pGeo)->Boundary[nB]->nPoint*(*pGeo)->Dim,
+                  sizeof(double)));
+    call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->s),
+                  (*pGeo)->Boundary[nB]->nPoint,sizeof(double)));
+    call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->interp),(*pGeo)->Dim,
+                  sizeof(gsl_interp)));
+    call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->accel),(*pGeo)->Dim,
+                  sizeof(gsl_interp_accel)));
+    for (i = 0; i < nP; i++) {
+      fscanf(fid, "%d\n",&id);
+      id--;
+      for (d = 0; d < (*pGeo)->Dim; d++){
+        (*pGeo)->Boundary[nB]->Coord[d*nP+i] = (*pGeo)->Coord[id*(*pGeo)->Dim+d];
+      }
+      (*pGeo)->Boundary[nB]->s[i] = i*ds;
+    }
+    //initialize interpolants
+    call(mg_init_segment((*pGeo), nB));
+    
+    fgets(line, MAXLINELEN, fid);
+  }
+  
+  fclose(fid);
+  
+  return err_OK;
+}
 

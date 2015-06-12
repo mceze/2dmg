@@ -51,4 +51,9 @@ int mg_write_mesh(mg_Mesh *Mesh, char *FileName);
 /* reads mesh from file with connectivities and boundary information */
 int mg_read_mesh(mg_Mesh **pMesh, char *FileName);
 
+/******************************************************************/
+/* function: mg_read_mesh */
+/* reads mesh from file with connectivities and boundary information */
+int mg_read_geo(mg_Geometry **pGeo, char *FileName);
+
 #endif

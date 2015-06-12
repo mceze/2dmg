@@ -95,6 +95,8 @@ typedef struct
 }
 mg_Front;
 
+/******************************************************************/
+/* enumerators for boundary types */
 enum mge_GeoInterp {
   mge_Linear,
   mge_Polynomial,
@@ -114,15 +116,28 @@ static char *mge_GeoInterpName[mge_GeoInterpLast] = {
 };
 
 /******************************************************************/
-/* mesh structure */
+/* segment structure */
 typedef struct
 {
-  int nPoints;
-  int *Points;
-  gsl_interp *interp;
+  int nPoint;
+  double *Coord;//first x, then y, then z
+  double *s; // (0->1) parametric coordinate
+  gsl_interp **interp;
+  gsl_interp_accel **accel;
   enum mge_GeoInterp interp_type;
+  char *Name;
 }
-mg_Boundary;
+mg_Segment;
+
+/******************************************************************/
+/* geometry structure */
+typedef struct
+{
+  int nBoundary, nPoint, Dim;
+  double *Coord;
+  mg_Segment **Boundary;
+}
+mg_Geometry;
 
 /******************************************************************/
 /* mesh structure */
