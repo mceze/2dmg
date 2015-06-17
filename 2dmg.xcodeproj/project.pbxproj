@@ -12,6 +12,19 @@
 		90013C871A129B3D006E83CC /* 2dmg_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C851A129B3D006E83CC /* 2dmg_utils.c */; };
 		90013C9D1A12E54C006E83CC /* 2dmg_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C9B1A12E54C006E83CC /* 2dmg_math.c */; };
 		90013CA01A195AC0006E83CC /* 2dmg_plot.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C9E1A195AC0006E83CC /* 2dmg_plot.c */; };
+		90027AFF1B158F4F00A4EF9A /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 90027AFE1B158F4F00A4EF9A /* main.c */; };
+		90027B031B15909200A4EF9A /* 2dmg_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C9B1A12E54C006E83CC /* 2dmg_math.c */; };
+		90027B041B15909200A4EF9A /* 2dmg_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C851A129B3D006E83CC /* 2dmg_utils.c */; };
+		90027B051B15909200A4EF9A /* 2dmg_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C831A129962006E83CC /* 2dmg_io.c */; };
+		90027B071B15909A00A4EF9A /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
+		90027B381B28FA8800A4EF9A /* 2dmg_geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 90027B371B28FA8800A4EF9A /* 2dmg_geo.c */; };
+		90027B391B28FA8800A4EF9A /* 2dmg_geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 90027B371B28FA8800A4EF9A /* 2dmg_geo.c */; };
+		90027B411B29039600A4EF9A /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 90027B401B29039600A4EF9A /* main.c */; };
+		90027B451B29047800A4EF9A /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
+		90027B461B29150B00A4EF9A /* 2dmg_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C9B1A12E54C006E83CC /* 2dmg_math.c */; };
+		90027B471B29150B00A4EF9A /* 2dmg_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C851A129B3D006E83CC /* 2dmg_utils.c */; };
+		90027B481B29150B00A4EF9A /* 2dmg_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C831A129962006E83CC /* 2dmg_io.c */; };
+		90027B4A1B29150B00A4EF9A /* 2dmg_geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 90027B371B28FA8800A4EF9A /* 2dmg_geo.c */; };
 		9012DCB81A4506AA008B4697 /* 2dmg_qtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 9012DCB61A4506AA008B4697 /* 2dmg_qtree.c */; };
 		9012DCB91A4506AA008B4697 /* 2dmg_qtree.h in Headers */ = {isa = PBXBuildFile; fileRef = 9012DCB71A4506AA008B4697 /* 2dmg_qtree.h */; };
 		902B929E1A65F46000355401 /* 2dmg_error.c in Sources */ = {isa = PBXBuildFile; fileRef = 902B929C1A65F46000355401 /* 2dmg_error.c */; };
@@ -26,6 +39,24 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		90013C721A128BBE006E83CC /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		90027AFA1B158F4F00A4EF9A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		90027B3C1B29039600A4EF9A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -58,6 +89,12 @@
 		90013C9C1A12E54C006E83CC /* 2dmg_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2dmg_math.h; sourceTree = "<group>"; };
 		90013C9E1A195AC0006E83CC /* 2dmg_plot.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2dmg_plot.c; sourceTree = "<group>"; };
 		90013C9F1A195AC0006E83CC /* 2dmg_plot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2dmg_plot.h; sourceTree = "<group>"; };
+		90027AFC1B158F4F00A4EF9A /* plot_mesh */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = plot_mesh; sourceTree = BUILT_PRODUCTS_DIR; };
+		90027AFE1B158F4F00A4EF9A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		90027B361B28F94500A4EF9A /* 2dmg_geo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2dmg_geo.h; sourceTree = "<group>"; };
+		90027B371B28FA8800A4EF9A /* 2dmg_geo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2dmg_geo.c; sourceTree = "<group>"; };
+		90027B3E1B29039600A4EF9A /* test_interp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test_interp; sourceTree = BUILT_PRODUCTS_DIR; };
+		90027B401B29039600A4EF9A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		9012DCAF1A450560008B4697 /* libqtree.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libqtree.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		9012DCB61A4506AA008B4697 /* 2dmg_qtree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = 2dmg_qtree.c; path = qtree/2dmg_qtree.c; sourceTree = "<group>"; };
 		9012DCB71A4506AA008B4697 /* 2dmg_qtree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 2dmg_qtree.h; path = qtree/2dmg_qtree.h; sourceTree = "<group>"; };
@@ -79,6 +116,22 @@
 			files = (
 				902B92A01A65F75100355401 /* liberror.dylib in Frameworks */,
 				9030DBD51A5F733600FFC754 /* libqtree.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		90027AF91B158F4F00A4EF9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90027B071B15909A00A4EF9A /* liberror.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		90027B3B1B29039600A4EF9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90027B451B29047800A4EF9A /* liberror.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +169,8 @@
 				9012DCB31A45056C008B4697 /* libqtree */,
 				902B929B1A65F40C00355401 /* liberror */,
 				90E5C4FA1A688658001C02FA /* test_qtree */,
+				90027AFD1B158F4F00A4EF9A /* plot_mesh */,
+				90027B3F1B29039600A4EF9A /* test_interp */,
 				90013C751A128BBE006E83CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -127,6 +182,8 @@
 				9012DCAF1A450560008B4697 /* libqtree.dylib */,
 				902B92971A65F40000355401 /* liberror.dylib */,
 				90E5C4F91A688658001C02FA /* test_qtree */,
+				90027AFC1B158F4F00A4EF9A /* plot_mesh */,
+				90027B3E1B29039600A4EF9A /* test_interp */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +207,7 @@
 				90013C811A129026006E83CC /* 2dmg_def.h */,
 				90013C801A128C5D006E83CC /* 2dmg_struct.h */,
 				90013C821A12961A006E83CC /* 2dmg_io.h */,
+				90027B361B28F94500A4EF9A /* 2dmg_geo.h */,
 			);
 			name = include;
 			sourceTree = "<group>";
@@ -162,8 +220,25 @@
 				90013C851A129B3D006E83CC /* 2dmg_utils.c */,
 				90013C831A129962006E83CC /* 2dmg_io.c */,
 				90013C9E1A195AC0006E83CC /* 2dmg_plot.c */,
+				90027B371B28FA8800A4EF9A /* 2dmg_geo.c */,
 			);
 			name = src;
+			sourceTree = "<group>";
+		};
+		90027AFD1B158F4F00A4EF9A /* plot_mesh */ = {
+			isa = PBXGroup;
+			children = (
+				90027AFE1B158F4F00A4EF9A /* main.c */,
+			);
+			path = plot_mesh;
+			sourceTree = "<group>";
+		};
+		90027B3F1B29039600A4EF9A /* test_interp */ = {
+			isa = PBXGroup;
+			children = (
+				90027B401B29039600A4EF9A /* main.c */,
+			);
+			path = test_interp;
 			sourceTree = "<group>";
 		};
 		9012DCB31A45056C008B4697 /* libqtree */ = {
@@ -258,6 +333,40 @@
 			productReference = 90013C741A128BBE006E83CC /* 2dmg */;
 			productType = "com.apple.product-type.tool";
 		};
+		90027AFB1B158F4F00A4EF9A /* plot_mesh */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 90027B021B158F4F00A4EF9A /* Build configuration list for PBXNativeTarget "plot_mesh" */;
+			buildPhases = (
+				90027AF81B158F4F00A4EF9A /* Sources */,
+				90027AF91B158F4F00A4EF9A /* Frameworks */,
+				90027AFA1B158F4F00A4EF9A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = plot_mesh;
+			productName = plot_mesh;
+			productReference = 90027AFC1B158F4F00A4EF9A /* plot_mesh */;
+			productType = "com.apple.product-type.tool";
+		};
+		90027B3D1B29039600A4EF9A /* test_interp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 90027B421B29039600A4EF9A /* Build configuration list for PBXNativeTarget "test_interp" */;
+			buildPhases = (
+				90027B3A1B29039600A4EF9A /* Sources */,
+				90027B3B1B29039600A4EF9A /* Frameworks */,
+				90027B3C1B29039600A4EF9A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = test_interp;
+			productName = test_interp;
+			productReference = 90027B3E1B29039600A4EF9A /* test_interp */;
+			productType = "com.apple.product-type.tool";
+		};
 		9012DCAE1A450560008B4697 /* qtree */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9012DCB21A450560008B4697 /* Build configuration list for PBXNativeTarget "qtree" */;
@@ -321,6 +430,12 @@
 					90013C731A128BBE006E83CC = {
 						CreatedOnToolsVersion = 6.1;
 					};
+					90027AFB1B158F4F00A4EF9A = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					90027B3D1B29039600A4EF9A = {
+						CreatedOnToolsVersion = 6.2;
+					};
 					9012DCAE1A450560008B4697 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -348,6 +463,8 @@
 				9012DCAE1A450560008B4697 /* qtree */,
 				902B92961A65F40000355401 /* error */,
 				90E5C4F81A688658001C02FA /* test_qtree */,
+				90027AFB1B158F4F00A4EF9A /* plot_mesh */,
+				90027B3D1B29039600A4EF9A /* test_interp */,
 			);
 		};
 /* End PBXProject section */
@@ -360,8 +477,33 @@
 				90013C871A129B3D006E83CC /* 2dmg_utils.c in Sources */,
 				90013CA01A195AC0006E83CC /* 2dmg_plot.c in Sources */,
 				90013C781A128BBE006E83CC /* 2dmg.c in Sources */,
+				90027B381B28FA8800A4EF9A /* 2dmg_geo.c in Sources */,
 				90013C841A129962006E83CC /* 2dmg_io.c in Sources */,
 				90013C9D1A12E54C006E83CC /* 2dmg_math.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		90027AF81B158F4F00A4EF9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90027B031B15909200A4EF9A /* 2dmg_math.c in Sources */,
+				90027B041B15909200A4EF9A /* 2dmg_utils.c in Sources */,
+				90027B391B28FA8800A4EF9A /* 2dmg_geo.c in Sources */,
+				90027B051B15909200A4EF9A /* 2dmg_io.c in Sources */,
+				90027AFF1B158F4F00A4EF9A /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		90027B3A1B29039600A4EF9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90027B461B29150B00A4EF9A /* 2dmg_math.c in Sources */,
+				90027B471B29150B00A4EF9A /* 2dmg_utils.c in Sources */,
+				90027B481B29150B00A4EF9A /* 2dmg_io.c in Sources */,
+				90027B4A1B29150B00A4EF9A /* 2dmg_geo.c in Sources */,
+				90027B411B29039600A4EF9A /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,7 +555,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -425,6 +567,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/usr/local/Cellar/gsl/1.16/**",
+					/usr/local/Cellar/plplot/5.10.0/include/plplot,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/usr/local/Cellar/gsl/1.16/**",
+					/usr/local/Cellar/plplot/5.10.0/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -454,13 +606,23 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/usr/local/Cellar/gsl/1.16/**",
+					/usr/local/Cellar/plplot/5.10.0/include/plplot,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/usr/local/Cellar/gsl/1.16/**",
+					/usr/local/Cellar/plplot/5.10.0/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -486,6 +648,56 @@
 				OTHER_LDFLAGS = "-lplplotd";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = /usr/local/Cellar/plplot/5.10.0/include/plplot;
+			};
+			name = Release;
+		};
+		90027B001B158F4F00A4EF9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		90027B011B158F4F00A4EF9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		90027B431B29039600A4EF9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				OTHER_CFLAGS = "-Wall";
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lplplotd",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		90027B441B29039600A4EF9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				OTHER_CFLAGS = "-Wall";
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lplplotd",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -581,6 +793,24 @@
 			buildConfigurations = (
 				90013C7C1A128BBE006E83CC /* Debug */,
 				90013C7D1A128BBE006E83CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		90027B021B158F4F00A4EF9A /* Build configuration list for PBXNativeTarget "plot_mesh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90027B001B158F4F00A4EF9A /* Debug */,
+				90027B011B158F4F00A4EF9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		90027B421B29039600A4EF9A /* Build configuration list for PBXNativeTarget "test_interp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90027B431B29039600A4EF9A /* Debug */,
+				90027B441B29039600A4EF9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
