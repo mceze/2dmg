@@ -30,6 +30,7 @@ int mg_create_geo(mg_Geometry **pGeo, int nBoundary, int nPoint,
     call(mg_alloc((void**)&Boundary, 1,sizeof(mg_Segment)));
     (*pGeo)->Boundary[i] = Boundary;
     (*pGeo)->Boundary[i]->nPoint = 0;
+    (*pGeo)->Boundary[i]->Point  = NULL;
     (*pGeo)->Boundary[i]->Coord  = NULL;
     (*pGeo)->Boundary[i]->s  = NULL;
     (*pGeo)->Boundary[i]->interp = NULL;
@@ -57,6 +58,7 @@ void mg_destroy_geo(mg_Geometry *Geo)
         gsl_interp_free(Geo->Boundary[i]->interp[d]);
         gsl_interp_accel_free(Geo->Boundary[i]->accel[d]);
       }
+      mg_free((void*)Geo->Boundary[i]->Point);
       mg_free((void*)Geo->Boundary[i]->interp);
       mg_free((void*)Geo->Boundary[i]->accel);
     }

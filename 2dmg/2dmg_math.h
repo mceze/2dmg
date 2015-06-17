@@ -10,6 +10,7 @@
 #define ___dmg___dmg_math__
 
 #include <stdio.h>
+#include "2dmg_struct.h"
 
 
 /******************************************************************/
@@ -37,5 +38,11 @@ int mg_binary_search(const int target, const int *set, int begin,
 /* function: mg_circumcircle */
 /* builds a circulcircle from 3 coordinates listed in "coord" */
 int mg_circumcircle(double coord[3][2], double center[2], double *radius);
+
+/******************************************************************/
+/* function: mg_metric_dist */
+/* computes metric distance between 2 points */
+int mg_metric_dist(mg_Metric *Metric, int order, double *coord,
+                   double *dist);
 
 #endif /* defined(___dmg___dmg_math__) */

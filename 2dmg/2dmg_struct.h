@@ -119,9 +119,9 @@ static char *mge_GeoInterpName[mge_GeoInterpLast] = {
 /* segment structure */
 typedef struct
 {
-  int nPoint;
+  int nPoint, *Point;
   double *Coord;//first x, then y, then z
-  double *s; // (0->1) parametric coordinate
+  double *s; // (0 <= s >= 1) parametric coordinate
   gsl_interp **interp;
   gsl_interp_accel **accel;
   enum mge_GeoInterp interp_type;
@@ -153,6 +153,27 @@ typedef struct
   mg_MeshComponentStack *Stack;
 }
 mg_Mesh;
+
+/******************************************************************/
+/* enumerators for metric types */
+enum mge_Metric {
+  mge_Metric_Analitic1,
+  mge_Metric_Last
+};
+static char *mge_MetricName[mge_Metric_Last] = {
+  "MetricAnalytic1"
+};
+
+/******************************************************************/
+/* mesh structure */
+typedef struct
+{
+  enum mge_Metric type;
+  mg_Mesh *BGMesh;
+  int order; //interpolation order (Lagrange basis)
+  double *M;
+}
+mg_Metric;
 
 
 #endif

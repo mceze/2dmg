@@ -8,6 +8,8 @@
 
 #include "2dmg_math.h"
 #include "2dmg_def.h"
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_interp.h>
 
 /******************************************************************/
 /* function:  mg_limited_pair */
@@ -159,3 +161,54 @@ int mg_circumcircle(double coord[3][2], double center[2], double *radius)
   
   return err_OK;
 }
+
+/******************************************************************/
+/* function: mg_metric_dist */
+/* computes metric distance between 2 points */
+int mg_metric_dist(mg_Metric *Metric, int order, double *coord,
+                   double *dist)
+{
+  gsl_integration_glfixed_table *gltable;
+  double dx = coord[1]-coord[0], dy = coord[3]-coord[2];
+  double ab[2], M[4], x, y, ds2, xgl, wgl;
+  ab[0] = dx;
+  ab[1] = dy;
+  int ip;
+  
+  if ((gltable = gsl_integration_glfixed_table_alloc(order)) == NULL)
+    return error(err_GSL_ERROR);
+  
+  switch (Metric->type) {
+    case mge_Metric_Analitic1:
+      (*dist) = 0.0;
+      for (ip = 0; ip < gltable->n; ip++) {
+        gsl_integration_glfixed_point(0.0, 1.0, ip, &xgl, &wgl, gltable);
+        x = coord[0]+xgl*dx;
+        y = coord[2]+xgl*dy;
+        M[0] = 1.0+exp(-pow((x-0.5)/(0.1), 2.0)); M[1] = 0.0;
+        M[2] = 0.0; M[3] = 1.0;
+        ds2   = ab[0]*(M[0]*ab[0]+M[1]*ab[1])+ab[1]*(M[2]*ab[0]+M[3]*ab[1]);
+        (*dist) += wgl*sqrt(ds2);
+      }
+      break;
+    default:
+      error(err_NOT_SUPPORTED);
+      break;
+  }
+  
+  gsl_integration_glfixed_table_free(gltable);
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_metric_length */
+/* computes metric length of a segment */
+int mg_metric_length(mg_Metric *Metric, mg_Segment *Segment, int order,
+                     double *length)
+{
+  
+  
+  return err_OK;
+}
+

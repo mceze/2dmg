@@ -539,6 +539,8 @@ int mg_read_geo(mg_Geometry **pGeo, char *FileName)
                   sizeof(double)));
     call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->s),
                   (*pGeo)->Boundary[nB]->nPoint,sizeof(double)));
+    call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->Point),
+                  (*pGeo)->Boundary[nB]->nPoint,sizeof(int)));
     call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->interp),(*pGeo)->Dim,
                   sizeof(gsl_interp)));
     call(mg_alloc((void**)&((*pGeo)->Boundary[nB]->accel),(*pGeo)->Dim,
@@ -546,6 +548,7 @@ int mg_read_geo(mg_Geometry **pGeo, char *FileName)
     for (i = 0; i < nP; i++) {
       fscanf(fid, "%d\n",&id);
       id--;
+      (*pGeo)->Boundary[nB]->Point[i] = id;
       for (d = 0; d < (*pGeo)->Dim; d++){
         (*pGeo)->Boundary[nB]->Coord[d*nP+i] = (*pGeo)->Coord[id*(*pGeo)->Dim+d];
       }
