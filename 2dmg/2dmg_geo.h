@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 6/10/15.
-//  Copyright (c) 2015 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #include <stdio.h>

@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 11/11/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #ifndef _dmg__dmg_def_h
@@ -49,5 +49,6 @@
 #define cycle4(a,b,c,d, t)  {t = a; a = b; b = c; c = d; d = t;}
 #define nextincycle(i,ni)  i+1-(int)(i/(ni-1))*(i+1)
 #define previncycle(i,ni)  i-1+(1-(int)((ni-1+i)/ni))*ni;
+#define metriclen(ab,M) ab[0]*(M[0]*ab[0]+M[1]*ab[1])+ab[1]*(M[1]*ab[0]+M[2]*ab[1]);
 
 #endif

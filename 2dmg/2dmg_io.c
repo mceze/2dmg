@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 11/11/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #define _GNU_SOURCE

@@ -35,6 +35,8 @@
 		90E5C4FC1A688658001C02FA /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 90E5C4FB1A688658001C02FA /* main.c */; };
 		90E5C5001A68868A001C02FA /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
 		90E5C5011A68868A001C02FA /* libqtree.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9012DCAF1A450560008B4697 /* libqtree.dylib */; };
+		90F719E51B33355300741002 /* 2dmg_metric_analytic.c in Sources */ = {isa = PBXBuildFile; fileRef = 90F719E41B33355300741002 /* 2dmg_metric_analytic.c */; };
+		90F719E61B37227300741002 /* 2dmg_metric_analytic.c in Sources */ = {isa = PBXBuildFile; fileRef = 90F719E41B33355300741002 /* 2dmg_metric_analytic.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -107,6 +109,8 @@
 		90A2CCAA1A9EE59C00BB32A7 /* plot_leanelem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leanelem.m; sourceTree = "<group>"; };
 		90E5C4F91A688658001C02FA /* test_qtree */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test_qtree; sourceTree = BUILT_PRODUCTS_DIR; };
 		90E5C4FB1A688658001C02FA /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		90F719E31B33354B00741002 /* 2dmg_metric_analytic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2dmg_metric_analytic.h; sourceTree = "<group>"; };
+		90F719E41B33355300741002 /* 2dmg_metric_analytic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2dmg_metric_analytic.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,13 +205,14 @@
 		90013C7E1A128C2C006E83CC /* include */ = {
 			isa = PBXGroup;
 			children = (
-				90013C9F1A195AC0006E83CC /* 2dmg_plot.h */,
-				90013C9C1A12E54C006E83CC /* 2dmg_math.h */,
-				90013C861A129B3D006E83CC /* 2dmg_utils.h */,
 				90013C811A129026006E83CC /* 2dmg_def.h */,
-				90013C801A128C5D006E83CC /* 2dmg_struct.h */,
-				90013C821A12961A006E83CC /* 2dmg_io.h */,
 				90027B361B28F94500A4EF9A /* 2dmg_geo.h */,
+				90013C821A12961A006E83CC /* 2dmg_io.h */,
+				90013C9C1A12E54C006E83CC /* 2dmg_math.h */,
+				90F719E31B33354B00741002 /* 2dmg_metric_analytic.h */,
+				90013C9F1A195AC0006E83CC /* 2dmg_plot.h */,
+				90013C801A128C5D006E83CC /* 2dmg_struct.h */,
+				90013C861A129B3D006E83CC /* 2dmg_utils.h */,
 			);
 			name = include;
 			sourceTree = "<group>";
@@ -215,12 +220,13 @@
 		90013C7F1A128C3B006E83CC /* src */ = {
 			isa = PBXGroup;
 			children = (
-				90013C771A128BBE006E83CC /* 2dmg.c */,
-				90013C9B1A12E54C006E83CC /* 2dmg_math.c */,
-				90013C851A129B3D006E83CC /* 2dmg_utils.c */,
-				90013C831A129962006E83CC /* 2dmg_io.c */,
-				90013C9E1A195AC0006E83CC /* 2dmg_plot.c */,
 				90027B371B28FA8800A4EF9A /* 2dmg_geo.c */,
+				90013C831A129962006E83CC /* 2dmg_io.c */,
+				90013C9B1A12E54C006E83CC /* 2dmg_math.c */,
+				90F719E41B33355300741002 /* 2dmg_metric_analytic.c */,
+				90013C9E1A195AC0006E83CC /* 2dmg_plot.c */,
+				90013C851A129B3D006E83CC /* 2dmg_utils.c */,
+				90013C771A128BBE006E83CC /* 2dmg.c */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -480,6 +486,7 @@
 				90027B381B28FA8800A4EF9A /* 2dmg_geo.c in Sources */,
 				90013C841A129962006E83CC /* 2dmg_io.c in Sources */,
 				90013C9D1A12E54C006E83CC /* 2dmg_math.c in Sources */,
+				90F719E51B33355300741002 /* 2dmg_metric_analytic.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,6 +506,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90F719E61B37227300741002 /* 2dmg_metric_analytic.c in Sources */,
 				90027B461B29150B00A4EF9A /* 2dmg_math.c in Sources */,
 				90027B471B29150B00A4EF9A /* 2dmg_utils.c in Sources */,
 				90027B481B29150B00A4EF9A /* 2dmg_io.c in Sources */,
@@ -683,6 +691,7 @@
 				OTHER_LDFLAGS = (
 					"-lgsl",
 					"-lplplotd",
+					"-lgslcblas",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -696,6 +705,7 @@
 				OTHER_LDFLAGS = (
 					"-lgsl",
 					"-lplplotd",
+					"-lgslcblas",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 11/11/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #ifndef ___dmg___dmg_utils__
@@ -128,10 +128,23 @@ void mg_check_exist(int num, int size, int *vector, int *index);
 /******************************************************************/
 /* function: mg_value_2_enum */
 /* matches a enumerator with its name */
-int
-mg_value_2_enum(const char value[], char *EName[], int ELast,
-                int *ival);
+int mg_value_2_enum(const char value[], char *EName[], int ELast,
+                    int *ival);
 
+/******************************************************************/
+/* function: mg_calc_seg_obj */
+/* calculates a segment's objective function for a given reference
+ domain mesh (t distribution)*/
+int mg_calc_seg_obj(mg_Segment *Seg, mg_Metric *Metric, double *t,
+                    int np, double *pJ, double *J_t, double *scale);
+
+/******************************************************************/
+/* function: mg_mesh_segment */
+/* meshes a segment with np following an anisotropic metrhic field
+ outputs a scale factor for metric such edge have unitary metric
+ length*/
+int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np, double *scale,
+                    double *coord);
 
 
 #endif /* defined(___dmg___dmg_utils__) */

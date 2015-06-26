@@ -3,11 +3,12 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 11/11/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #include "2dmg_math.h"
 #include "2dmg_def.h"
+#include "2dmg_metric_analytic.h"
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_interp.h>
 
@@ -163,14 +164,40 @@ int mg_circumcircle(double coord[3][2], double center[2], double *radius)
 }
 
 /******************************************************************/
+/* function: mg_get_metric */
+/* gets metric value at a (x,y) */
+int mg_get_metric(mg_Metric *Metric, double *x, double *y, int np, double *M)
+{
+  switch (Metric->type) {
+    case mge_Metric_Uniform:
+      mg_metric_uniform(x, y, np, M);
+      break;
+    case mge_Metric_Analitic1:
+      mg_metric_linx(x, y, np, M);
+      break;
+    case mge_Metric_Analitic2:
+      mg_metric_expx(x, y, np, M);
+      break;
+    case mge_Metric_Analitic3:
+      mg_metric_sqx(x, y, np, M);
+      break;
+    default:
+      error(err_NOT_SUPPORTED);
+      break;
+  }
+  return err_OK;
+}
+
+/******************************************************************/
 /* function: mg_metric_dist */
 /* computes metric distance between 2 points */
 int mg_metric_dist(mg_Metric *Metric, int order, double *coord,
                    double *dist)
 {
+  int ierr;
   gsl_integration_glfixed_table *gltable;
   double dx = coord[1]-coord[0], dy = coord[3]-coord[2];
-  double ab[2], M[4], x, y, ds2, xgl, wgl;
+  double ab[2], M[3], x, y, ds2, xgl, wgl;
   ab[0] = dx;
   ab[1] = dy;
   int ip;
@@ -178,22 +205,14 @@ int mg_metric_dist(mg_Metric *Metric, int order, double *coord,
   if ((gltable = gsl_integration_glfixed_table_alloc(order)) == NULL)
     return error(err_GSL_ERROR);
   
-  switch (Metric->type) {
-    case mge_Metric_Analitic1:
-      (*dist) = 0.0;
-      for (ip = 0; ip < gltable->n; ip++) {
-        gsl_integration_glfixed_point(0.0, 1.0, ip, &xgl, &wgl, gltable);
-        x = coord[0]+xgl*dx;
-        y = coord[2]+xgl*dy;
-        M[0] = 1.0+exp(-pow((x-0.5)/(0.1), 2.0)); M[1] = 0.0;
-        M[2] = 0.0; M[3] = 1.0;
-        ds2   = ab[0]*(M[0]*ab[0]+M[1]*ab[1])+ab[1]*(M[2]*ab[0]+M[3]*ab[1]);
-        (*dist) += wgl*sqrt(ds2);
-      }
-      break;
-    default:
-      error(err_NOT_SUPPORTED);
-      break;
+  (*dist) = 0.0;
+  for (ip = 0; ip < gltable->n; ip++) {
+    gsl_integration_glfixed_point(0.0, 1.0, ip, &xgl, &wgl, gltable);
+    x = coord[0]+xgl*dx;
+    y = coord[2]+xgl*dy;
+    call(mg_get_metric(Metric, &x, &y, 1, M));
+    ds2   = metriclen(ab,M);
+    (*dist) += wgl*sqrt(ds2);
   }
   
   gsl_integration_glfixed_table_free(gltable);
@@ -207,7 +226,41 @@ int mg_metric_dist(mg_Metric *Metric, int order, double *coord,
 int mg_metric_length(mg_Metric *Metric, mg_Segment *Segment, int order,
                      double *length)
 {
+  int ierr, iq;
+  gsl_integration_glfixed_table *gltable;
+  double tq, wq, xq, yq, dxq, dyq, Mq[3], ab[2], dl2;
   
+  (*length) = 0.0;
+  
+  //integration table
+  if ((gltable = gsl_integration_glfixed_table_alloc(order)) == NULL)
+    return error(err_GSL_ERROR);
+  for (iq = 0; iq < gltable->n; iq++) {
+    //get parametric coordinate for quadrature point
+    gsl_integration_glfixed_point(0.0, 1.0, iq, &tq, &wq, gltable);
+    //evaluate global coordinate and tangent
+    xq = gsl_interp_eval(Segment->interp[0],Segment->s,
+                         Segment->Coord+0*Segment->nPoint, tq,
+                         Segment->accel[0]);
+    dxq = gsl_interp_eval_deriv(Segment->interp[0],Segment->s,
+                                Segment->Coord+0*Segment->nPoint, tq,
+                                Segment->accel[0]);
+    yq = gsl_interp_eval(Segment->interp[1],Segment->s,
+                         Segment->Coord+1*Segment->nPoint, tq,
+                         Segment->accel[1]);
+    dyq = gsl_interp_eval_deriv(Segment->interp[1],Segment->s,
+                                Segment->Coord+1*Segment->nPoint, tq,
+                                Segment->accel[1]);
+    //matrix value at quadrature point
+    call(mg_get_metric(Metric, &xq, &yq, 1, Mq));
+    ab[0] = dxq;
+    ab[1] = dyq;
+    //dl2 = ab^T*M*ab;
+    dl2 = metriclen(ab, Mq);
+    (*length) += wq*sqrt(dl2);
+  }
+  
+  gsl_integration_glfixed_table_free(gltable);
   
   return err_OK;
 }

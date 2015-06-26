@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 1/13/15.
-//  Copyright (c) 2015 Marco Ceze. All rights reserved.
+//  
 //
 
 #include "2dmg_error.h"

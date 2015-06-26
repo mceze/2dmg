@@ -3,7 +3,7 @@
 //  test_qtree
 //
 //  Created by Marco Ceze on 1/15/15.
-//  Copyright (c) 2015 Marco Ceze. All rights reserved.
+//  
 //
 
 #include <stdio.h>

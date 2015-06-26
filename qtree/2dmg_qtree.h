@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 12/19/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  
 //
 
 #ifndef ___dmg__qtree__

@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 11/11/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #ifndef ___dmg___dmg_math__
@@ -40,9 +40,20 @@ int mg_binary_search(const int target, const int *set, int begin,
 int mg_circumcircle(double coord[3][2], double center[2], double *radius);
 
 /******************************************************************/
+/* function: mg_get_metric */
+/* gets metric value at a (x,y) */
+int mg_get_metric(mg_Metric *Metric, double *x, double *y, int np, double *M);
+
+/******************************************************************/
 /* function: mg_metric_dist */
 /* computes metric distance between 2 points */
 int mg_metric_dist(mg_Metric *Metric, int order, double *coord,
                    double *dist);
+
+/******************************************************************/
+/* function: mg_metric_length */
+/* computes metric length of a segment */
+int mg_metric_length(mg_Metric *Metric, mg_Segment *Segment, int order,
+                     double *length);
 
 #endif /* defined(___dmg___dmg_math__) */

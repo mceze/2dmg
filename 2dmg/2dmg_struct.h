@@ -3,13 +3,15 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 11/11/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #ifndef _dmg__dmg_struct_h
 #define _dmg__dmg_struct_h
 
 #include <gsl/gsl_interp.h>
+#include <gsl/gsl_multimin.h>
+#include <gsl/gsl_blas.h>
 
 /******************************************************************/
 /* List structure */
@@ -122,8 +124,15 @@ typedef struct
   int nPoint, *Point;
   double *Coord;//first x, then y, then z
   double *s; // (0 <= s >= 1) parametric coordinate
+  double Length, Lm; //physical and metric length
+  //Geometry interpolation
   gsl_interp **interp;
   gsl_interp_accel **accel;
+  //metric interpolation
+  //interpolation object for metric values (stored as SPD)
+  double *Mij;
+  gsl_interp **Mij_interp;
+  gsl_interp_accel **Mij_accel;
   enum mge_GeoInterp interp_type;
   char *Name;
 }
@@ -157,11 +166,17 @@ mg_Mesh;
 /******************************************************************/
 /* enumerators for metric types */
 enum mge_Metric {
+  mge_Metric_Uniform,
   mge_Metric_Analitic1,
+  mge_Metric_Analitic2,
+  mge_Metric_Analitic3,
   mge_Metric_Last
 };
 static char *mge_MetricName[mge_Metric_Last] = {
-  "MetricAnalytic1"
+  "MetricUniform",
+  "MetricAnalytic1",
+  "MetricAnalytic2",
+  "MetricAnalytic3"
 };
 
 /******************************************************************/
@@ -174,6 +189,18 @@ typedef struct
   double *M;
 }
 mg_Metric;
+
+/******************************************************************/
+/* structure: mg_gsl_multimin_params */
+/* parameters for optimizer*/
+typedef struct
+{
+  mg_Segment *Segment;
+  mg_Metric *Metric;
+  double *scale;
+  
+}
+mg_gsl_multimin_params;
 
 
 #endif

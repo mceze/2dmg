@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 11/11/14.
-//  Copyright (c) 2014 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #include "2dmg_def.h"
@@ -628,8 +628,7 @@ void mg_check_exist(int num, int size, int *vector, int *index)
 /******************************************************************/
 /* function: mg_value_2_enum */
 /* matches a enumerator with its name */
-int
-mg_value_2_enum(const char value[], char *EName[], int ELast,
+int mg_value_2_enum(const char value[], char *EName[], int ELast,
                 int *ival)
 {
   int k;
@@ -643,3 +642,311 @@ mg_value_2_enum(const char value[], char *EName[], int ELast,
   return err_NOT_FOUND;
 }
 
+/******************************************************************/
+/* function: mg_calc_seg_obj */
+/* calculates a segment's objective function for a given reference 
+ domain mesh (t distribution)*/
+int mg_calc_seg_obj(mg_Segment *Seg, mg_Metric *Metric, double *t,
+                    int np, double *pJ, double *J_t, double *scale)
+{
+  int ierr, k, d;
+  int const dim = Metric->BGMesh->Dim;
+  double const eps = 1.e-8;
+  double coord[2*dim], lk, lkp_pe, lkp_me, lkm_pe, lkm_me;
+  double xkp[dim], xkm[dim], xk[dim];
+  
+  if (Seg->Lm < 0.0){
+    call(mg_metric_length(Metric, Seg, np, &Seg->Lm));
+  }
+  (*scale) = Seg->Lm/np;
+  
+  //objective function
+  if (pJ != NULL){
+    (*pJ) = 0.0;
+    //loop over elements
+    for (k = 1; k < np; k++) {
+      //get global coordinates
+      for (d = 0; d < dim; d++){
+        //k-1 extremity
+        coord[2*d+0] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                       Seg->Coord+d*Seg->nPoint, t[k-1],
+                                       Seg->accel[d]);
+        //k extremity
+        coord[2*d+1] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                       Seg->Coord+d*Seg->nPoint, t[k],
+                                       Seg->accel[d]);
+      }
+      //calculate metric length of k'th edge
+      call(mg_metric_dist(Metric, 2*Metric->order, coord, &lk));
+      //add to objective function
+      (*pJ) += (lk-(*scale))*(lk-(*scale));
+    }
+  }
+  //gradient of objective function
+  if (J_t != NULL) {
+    //zero contribution from segement extremities
+    J_t[0] = J_t[np-1] = 0.0;
+    //loop over interior nodes and calculate derivatives
+    for (k = 1; k < np-1; k++) {
+      /* node arrangement: 
+         k-1   k   k+1
+          +----+----+
+            lk  lk+1
+       */
+      //"plus" pertubation
+      t[k] += eps;
+      //get global coordinates
+      for (d = 0; d < dim; d++){
+        //k-1 extremity
+        xkm[d] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                 Seg->Coord+d*Seg->nPoint, t[k-1],
+                                 Seg->accel[d]);
+        //k+1 extremity
+        xkp[d] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                 Seg->Coord+d*Seg->nPoint, t[k+1],
+                                 Seg->accel[d]);
+        //center point
+        xk[d] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                Seg->Coord+d*Seg->nPoint, t[k],
+                                Seg->accel[d]);
+      }
+      //lkp1
+      coord[0] = xk[0];
+      coord[1] = xkp[0];
+      coord[2] = xk[1];
+      coord[3] = xkp[1];
+      call(mg_metric_dist(Metric, Metric->order, coord, &lkp_pe));
+      //lkm1
+      coord[0] = xkm[0];
+      coord[1] = xk[0];
+      coord[2] = xkm[1];
+      coord[3] = xk[1];
+      call(mg_metric_dist(Metric, Metric->order, coord, &lkm_pe));
+      //"minus" pertubation
+      t[k] -= 2.0*eps;
+      //only need to update center point
+      for (d = 0; d < dim; d++){
+        //center point
+        xk[d] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                Seg->Coord+d*Seg->nPoint, t[k],
+                                Seg->accel[d]);
+      }
+      //lkp1
+      coord[0] = xk[0];
+      coord[1] = xkp[0];
+      coord[2] = xk[1];
+      coord[3] = xkp[1];
+      call(mg_metric_dist(Metric, Metric->order, coord, &lkp_me));
+      //lkm1
+      coord[0] = xkm[0];
+      coord[1] = xk[0];
+      coord[2] = xkm[1];
+      coord[3] = xk[1];
+      call(mg_metric_dist(Metric, Metric->order, coord, &lkm_me));
+      
+      //(k+1)'th edge contribution
+      J_t[k] = ((lkp_pe-(*scale))*(lkp_pe-(*scale))-
+                (lkp_me-(*scale))*(lkp_me-(*scale)))/(2.0*eps);
+      //k'th edge contribution
+      J_t[k] += ((lkm_pe-(*scale))*(lkm_pe-(*scale))-
+                 (lkm_me-(*scale))*(lkm_me-(*scale)))/(2.0*eps);
+      //revert parametric coordinate back to its original value
+      t[k] += eps;
+    }
+  }
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_seg_f */
+/* wrapper for mg_calc_seg_obj function value for use with gsl*/
+static double mg_seg_f(const gsl_vector *x, void *params)
+{
+  int ierr;
+  mg_gsl_multimin_params *Parameters = (mg_gsl_multimin_params*)params;
+  mg_Segment *Seg = Parameters->Segment;
+  mg_Metric *Metric = Parameters->Metric;
+  double *scale = Parameters->scale;
+  double J;
+  
+  ierr = error(mg_calc_seg_obj(Seg, Metric, x->data, (int)x->size,
+                               &J, NULL, scale));
+  if (ierr != err_OK) exit(ierr);
+  
+  return J;
+}
+
+/******************************************************************/
+/* function: mg_seg_df */
+/* wrapper for mg_calc_seg_obj function gradient for use with gsl*/
+static void mg_seg_df(const gsl_vector *x, void *params, gsl_vector *df)
+{
+  int ierr;
+  mg_gsl_multimin_params *Parameters = (mg_gsl_multimin_params*)params;
+  mg_Segment *Seg = Parameters->Segment;
+  mg_Metric *Metric = Parameters->Metric;
+  double *scale = Parameters->scale;
+  
+  ierr = error(mg_calc_seg_obj(Seg, Metric, x->data, (int)x->size,
+                               NULL, df->data, scale));
+  if (ierr != err_OK) exit(ierr);
+  
+}
+
+/******************************************************************/
+/* function: mg_seg_fdf */
+/* wrapper for mg_calc_seg_obj function value and gradient for 
+ use with gsl*/
+static void mg_seg_fdf(const gsl_vector *x, void *params, double *f,
+                gsl_vector *df)
+{
+  int ierr;
+  mg_gsl_multimin_params *Parameters = (mg_gsl_multimin_params*)params;
+  mg_Segment *Seg = Parameters->Segment;
+  mg_Metric *Metric = Parameters->Metric;
+  double *scale = Parameters->scale;
+  
+  ierr = error(mg_calc_seg_obj(Seg, Metric, x->data, (int)x->size,
+                               f, df->data, scale));
+  if (ierr != err_OK) exit(ierr);
+
+}
+
+/******************************************************************/
+/* function: mg_init_seg_mesh */
+static int mg_init_seg_mesh(mg_gsl_multimin_params *Params, gsl_vector *x)
+{
+  int ierr, ip, np = (int)x->size, d, it=0;
+  mg_Segment *Seg = Params->Segment;
+  mg_Metric *Metric = Params->Metric;
+  double lstar, dl, t0, coord[4], dt, ti, l;
+  double const e = 1e-6;
+  int dim = Metric->BGMesh->Dim;
+  
+  //over integrate length
+  if (Seg->Lm < 0.0){
+    call(mg_metric_length(Metric, Seg, np, &Seg->Lm));
+  }
+  lstar = Seg->Lm/np;
+  //first point
+  x->data[0] = 0.0;
+  for (ip = 1; ip < np-1; ip++) {
+    //starting reference
+    t0 = x->data[ip-1];
+    ti = t0;
+    l = 0.0;
+    while ((fabs(l-lstar) > 0.001*lstar) && it < 1000){
+      //estimate length sentitivity
+      //dt = ti+e;
+      //physical location
+      for (d = 0; d < dim; d++){
+        coord[dim*d+0] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                         Seg->Coord+d*Seg->nPoint,
+                                         ti, Seg->accel[d]);
+        coord[dim*d+1] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                         Seg->Coord+d*Seg->nPoint,
+                                         ti+e, Seg->accel[d]);
+      }
+      call(mg_metric_dist(Metric, Metric->order, coord, &dl));
+      dt = -(l-lstar)/(dl/e);
+      ti  = min(ti+dt, 1.0-e);
+      //update length
+      //physical location
+      for (d = 0; d < dim; d++){
+        coord[dim*d+0] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                         Seg->Coord+d*Seg->nPoint,
+                                         t0, Seg->accel[d]);
+        coord[dim*d+1] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                         Seg->Coord+d*Seg->nPoint,
+                                         ti, Seg->accel[d]);
+      }
+      call(mg_metric_dist(Metric, Metric->order, coord, &l));
+      it++;
+    }
+    
+    x->data[ip] = ti;
+    //printf("%1.8e\n",x->data[ip]);
+  }
+  //last point
+  x->data[np-1] = 1.0;
+  
+  return err_OK;
+}
+/******************************************************************/
+/* function: mg_mesh_segment */
+/* meshes a segment with np following an anisotropic metrhic field
+ outputs a scale factor for metric such edge have unitary metric
+ length*/
+int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np,
+                    double *scale, double *Coord)
+{
+  int ierr, ip, it, d, status;
+  int const dim = Metric->BGMesh->Dim, itmax = 100;
+  double J_t_norm, tp, J;
+  gsl_multimin_function_fdf func;
+  gsl_vector *x;
+  const gsl_multimin_fdfminimizer_type *solvertype;
+  gsl_multimin_fdfminimizer *solver;
+  mg_gsl_multimin_params params;
+  //pack pointers to parameters
+  params.Metric = Metric;
+  params.scale = scale;
+  params.Segment = Seg;
+  
+  func.n      = np;
+  func.params = (void*)&params;
+  func.f      = &mg_seg_f;
+  func.df     = &mg_seg_df;
+  func.fdf    = &mg_seg_fdf;
+  
+  x = gsl_vector_alloc(np);
+  //initial guess
+  call(mg_init_seg_mesh(&params, x));
+  
+  call(mg_calc_seg_obj(Seg, Metric, x->data, np, &J, NULL, scale));
+  
+  solvertype = gsl_multimin_fdfminimizer_vector_bfgs2;
+  solver = gsl_multimin_fdfminimizer_alloc(solvertype, np);
+  
+  gsl_multimin_fdfminimizer_set(solver, &func, x, 0.001, 1e-2);
+  it = 0;
+  do
+  {
+    it++;
+    
+    status = gsl_multimin_fdfminimizer_iterate(solver);
+    if (status)
+      break;
+    J_t_norm = gsl_blas_dnrm2(solver->gradient);
+    //printf("J_t_norm = %1.8e\n",J_t_norm);
+    status = gsl_multimin_test_gradient(solver->gradient, 1e-4);
+    if (status == GSL_SUCCESS){
+//      printf ("converged\n");
+      break;
+    }
+    
+    
+  }
+  while (status == GSL_CONTINUE && it < itmax);  
+  
+  //calculate global coordinates
+//  printf("after\np=[");
+  for (ip = 0; ip < np; ip++) {
+    tp = gsl_vector_get(solver->x, ip);
+    for (d = 0; d < dim; d++){
+      Coord[ip*dim+d] = gsl_interp_eval(Seg->interp[d], Seg->s,
+                                        Seg->Coord+d*Seg->nPoint,
+                                        tp, Seg->accel[d]);
+//      printf("%1.8e ",Coord[ip*dim+d]);
+    }
+//    printf("\n");
+  }
+//  printf("];\n");
+  
+  
+  gsl_multimin_fdfminimizer_free (solver);
+  gsl_vector_free (x);
+    
+  return err_OK;
+}

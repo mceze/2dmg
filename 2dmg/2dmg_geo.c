@@ -3,7 +3,7 @@
 //  2dmg
 //
 //  Created by Marco Ceze on 6/10/15.
-//  Copyright (c) 2015 Marco Ceze. All rights reserved.
+//  https://github.com/mceze/2dmg
 //
 
 #include "2dmg_geo.h"
@@ -35,8 +35,13 @@ int mg_create_geo(mg_Geometry **pGeo, int nBoundary, int nPoint,
     (*pGeo)->Boundary[i]->s  = NULL;
     (*pGeo)->Boundary[i]->interp = NULL;
     (*pGeo)->Boundary[i]->accel  = NULL;
+    (*pGeo)->Boundary[i]->Mij = NULL;
+    (*pGeo)->Boundary[i]->Mij_interp = NULL;
+    (*pGeo)->Boundary[i]->Mij_accel  = NULL;
     (*pGeo)->Boundary[i]->interp_type = -1;//unitialized
-    call(mg_alloc((void**)&(Boundary->Name),MAXSTRLEN,sizeof(char)));
+    call(mg_alloc((void**)&((*pGeo)->Boundary[i]->Name),MAXSTRLEN,sizeof(char)));
+    (*pGeo)->Boundary[i]->Length = -1.0;//uninitialized
+    (*pGeo)->Boundary[i]->Lm = -1.0;//uninitialized
   }
   
   return err_OK;
@@ -73,7 +78,7 @@ void mg_destroy_geo(mg_Geometry *Geo)
 /* initializes the interpolant of a mg_Segment  */
 int mg_init_segment(mg_Geometry *Geo, int iseg)
 {
-  int ierr, i;
+  int i;
   mg_Segment *Seg = Geo->Boundary[iseg];
   
   switch (Seg->interp_type) {
