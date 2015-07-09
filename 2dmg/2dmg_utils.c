@@ -699,33 +699,39 @@ int mg_write_mesh(mg_Mesh *Mesh, char *FileName)
     return error(err_READWRITE_ERROR);
   //write header
   fprintf(fid, "%% Dim nNode nFace nElem nBfg\n");
-  fprintf(fid, "%d %d %d %d %d\n", Mesh->Dim, Mesh->nNode, Mesh->nFace, Mesh->nElem, Mesh->nBfg);
+  fprintf(fid, "Info=[%d %d %d %d %d];\n", Mesh->Dim, Mesh->nNode, Mesh->nFace, Mesh->nElem, Mesh->nBfg);
   //write nodal coordinates
   fprintf(fid, "%% Node coordinates\n");
+  fprintf(fid, "Coord=[");
   for (i = 0; i < Mesh->nNode; i++) {
     for (d = 0; d < Mesh->Dim; d++)
       fprintf(fid, "%1.12e ",Mesh->Coord[i*Mesh->Dim+d]);
     fprintf(fid, "\n");
   }
+  fprintf(fid, "];\n");
   //write boundary grou information
   fprintf(fid, "%% BGroup nBface\n");
   for (i = 0; i < Mesh->nBfg; i++) {
-    fprintf(fid, "%s %d\n",Mesh->BNames[i],Mesh->nBface[i]);
+    fprintf(fid, "%% %s %d\n",Mesh->BNames[i],Mesh->nBface[i]);
   }
   //write element-to-node connectivity
   fprintf(fid, "%% Element to node connectivity\n");
+  fprintf(fid, "Elem2Node=[");
   for (i = 0; i < Mesh->nElem; i++){
     for (d = 0; d < Mesh->Elem[i].nNode; d++)
-      fprintf(fid, "%d ",Mesh->Elem[i].node[d]);
+      fprintf(fid, "%d ",Mesh->Elem[i].node[d]+1);
     fprintf(fid, "\n");
   }
+  fprintf(fid, "];\n");
   //Face connectivity
   fprintf(fid, "%% n0 n1 eL eR\n");
+  fprintf(fid, "FaceData=[");
   for (i = 0; i < Mesh->nFace; i++) {
-    fprintf(fid, "%d %d %d %d\n",Mesh->Face[i]->node[0],
-            Mesh->Face[i]->node[1],Mesh->Face[i]->elem[LEFTNEIGHINDEX],
-            Mesh->Face[i]->elem[RIGHTNEIGHINDEX]);
+    fprintf(fid, "%d %d %d %d\n",Mesh->Face[i]->node[0]+1,
+            Mesh->Face[i]->node[1]+1,Mesh->Face[i]->elem[LEFTNEIGHINDEX]+1,
+            Mesh->Face[i]->elem[RIGHTNEIGHINDEX]+1);
   }
+  fprintf(fid, "];\n");
   
   fclose(fid);
   

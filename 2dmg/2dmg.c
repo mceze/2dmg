@@ -374,11 +374,11 @@ int mg_comp_mesh_size(mg_Mesh *Mesh, mg_FrontFace *FFace, double **prho,
 /******************************************************************/
 /* function: mg_nodes_frnt_dist */
 /* selects nodes in front within a distance "rho" */
-int mg_nodes_frnt_dist(mg_Mesh *Mesh, mg_Front *Front,
-                       mg_FrontFace *SelfFace, double *rho, double c,
-                       bool IsoFlag, mg_List *NodeList)
+static int mg_nodes_frnt_dist(mg_Mesh *Mesh, mg_Front *Front,
+                              mg_FrontFace *SelfFace, double *rho, double c,
+                              bool IsoFlag, mg_List *NodeList, double Popt[2])
 {
-  int ierr, iloop, nodeID0, inode0, inode1, nodeID1, d, dim;
+  int ierr, iloop, inode1, nodeID1, d, dim;
   double distance, delta;
   mg_FrontFace *FFace;
   
@@ -388,28 +388,25 @@ int mg_nodes_frnt_dist(mg_Mesh *Mesh, mg_Front *Front,
   NodeList->Item = NULL;
   dim = Mesh->Dim;
   //loop over front and compute distances
-  for (inode0 = 0; inode0 < SelfFace->face->nNode; inode0++){
-    nodeID0 = SelfFace->face->node[inode0];
-    for (iloop = 0; iloop < Front->nloop; iloop++) {
-      if (Front->loop+iloop == NULL) continue;
-      FFace = Front->loop[iloop]->head;
-      while (FFace != Front->loop[iloop]->tail) {
-        if (FFace != SelfFace) {//skip self face
-          for (inode1 = 0; inode1 < FFace->face->nNode; inode1++) {
-            nodeID1 = FFace->face->node[inode1];
-            distance = 0.0;
-            for (d = 0; d < dim; d++) {
-              delta = Mesh->Coord[nodeID1*dim+d]-Mesh->Coord[nodeID0*dim+d];
-              distance += delta*delta;
-            }
-            //check if within distance
-            if (distance <= c*(*rho)*c*(*rho))
-              call(mg_add_2_ord_set(nodeID1, &NodeList->nItem,
-                                    &NodeList->Item, NULL, false));
+  for (iloop = 0; iloop < Front->nloop; iloop++) {
+    if (Front->loop+iloop == NULL) continue;
+    FFace = Front->loop[iloop]->head;
+    while (FFace != Front->loop[iloop]->tail) {
+      if (FFace != SelfFace) {//skip self face
+        for (inode1 = 0; inode1 < FFace->face->nNode; inode1++) {
+          nodeID1 = FFace->face->node[inode1];
+          distance = 0.0;
+          for (d = 0; d < dim; d++) {
+            delta = Mesh->Coord[nodeID1*dim+d]-Popt[d];
+            distance += delta*delta;
           }
+          //check if within distance
+          if (distance <= c*(*rho)*c*(*rho))
+            call(mg_add_2_ord_set(nodeID1, &NodeList->nItem,
+                                  &NodeList->Item, NULL, false));
         }
-        FFace = FFace->next;
       }
+      FFace = FFace->next;
     }
   }
   
@@ -433,7 +430,8 @@ int mg_build_circle_frm_face(mg_Mesh *Mesh, mg_FaceData *face,
   coord[1][1] = Mesh->Coord[face->node[1]*dim+1];
   coord[2][0] = NCoord[0];
   coord[2][1] = NCoord[1];
-  call(mg_circumcircle(coord, center, radius));
+  ierr = mg_circumcircle(coord, center, radius);
+  if (ierr != err_OK) return ierr;
   
   return err_OK;
 }
@@ -570,7 +568,8 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     //add node coordinates
     if (coord == NULL) return error(err_INPUT_ERROR);
     //new node can only come from stack or be sequentially added
-    if (!NodeIsFromStack && nodeID2 != Mesh->nNode) return error(err_INPUT_ERROR);
+    if (!NodeIsFromStack && nodeID2 != Mesh->nNode)
+      return error(err_INPUT_ERROR);
     
     Mesh->nNode++;
     if (NodeIsFromStack == false) {
@@ -702,7 +701,8 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
   Mesh->Elem[elemID0].nbor[2] = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX];
   if ((nbor = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX]) >= 0) { //not a boundary
     mg_check_exist(faceID2, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &i);
-    if (i < 0) return error(err_LOGIC_ERROR);
+    if (i < 0)
+      return error(err_LOGIC_ERROR);
     Mesh->Elem[nbor].nbor[i] = elemID0;
   }
   
@@ -1035,6 +1035,7 @@ int mg_bld_tri_frm_close_pts(mg_Mesh *Mesh, mg_Front *Front,
   //loop over nodes on left side and build the smallest (in radius) possible triangle
   if (NodesOnLeft.nItem > 0) {
     nodeID0 = NodesOnLeft.Item[0];
+    //Note that all nodes on the left are not colinear with "face" because proj > 1e-5
     call(mg_build_circle_frm_face(Mesh, face, Mesh->Coord+nodeID0*dim, center,
                                   &radius));
     for (in = 1; in < NodesOnLeft.nItem; in++) {
@@ -1126,9 +1127,11 @@ int mg_rm_broken_elems(mg_Mesh *Mesh, mg_Front *Front,
                        mg_List *CandidateNodes)
 {
   int ierr, e, elem, f, faceID, nborID, fIDX2rm[3], nf2rm, fIDX2kp[3], nf2kp;
-  int idx, t, n, nodeID, node2rm;
+  int idx, t, n, nodeID, node2rm, loopID;
   mg_FaceData *face;
   mg_FrontFace *FFace = NULL, *FFacePrev, *FFaceNext, *FFaceNew, *FFaceStale;
+  mg_FrontFace *FFL = NULL, *FFR = NULL, *FFLPrev, *FFLNext, *FFRPrev, *FFRNext;
+  mg_Loop *LLoop, *RLoop;
   
   //note: the first nElemInFront of this list are ordered
   for (e = 0; e < BrokenElems->nItem; e++) {
@@ -1195,37 +1198,103 @@ int mg_rm_broken_elems(mg_Mesh *Mesh, mg_Front *Front,
       call(mg_add_2_ord_set(nodeID, &CandidateNodes->nItem,&CandidateNodes->Item,
                             NULL, false));
     }
-    else {//2faces and one node to remove
-      //stitch front
-      faceID = Mesh->Elem[elem].face[fIDX2rm[0]];
-      call(mg_find_face_in_frt(Front, faceID, &FFace));
-      call(mg_rm_frm_ord_data_list(faceID, Front->loop[FFace->iloop]->FacesInLoop));
-      FFaceNext = FFace->next;
-      FFaceStale = FFace->prev;
-      if (FFaceStale->ID != Mesh->Elem[elem].face[fIDX2rm[1]])
-        return error(err_LOGIC_ERROR);
-      call(mg_rm_frm_ord_data_list(FFaceStale->ID,
-                                   Front->loop[FFaceStale->iloop]->FacesInLoop));
-      FFacePrev = FFaceStale->prev;
-      FFacePrev->next = FFace;
-      FFace->prev = FFacePrev;
-      mg_free_front_face(FFaceStale);
-      //substitute old front face by only face to keep
-      FFace->ID = Mesh->Elem[elem].face[fIDX2kp[0]];
-      FFace->face = Mesh->Face[FFace->ID];
-      call(mg_add_2_ord_data_list(FFace->ID, (void**)&FFace,
-                                  Front->loop[FFace->iloop]->FacesInLoop,
-                                  NULL, false));
-      //NOTE: node to remove is the one opposite to the face to keep
-      node2rm = Mesh->Elem[elem].node[fIDX2kp[0]];
-      //remove node from candidate nodes if it was a candidate
-      call(mg_rm_frm_ord_set(node2rm,&CandidateNodes->nItem,&CandidateNodes->Item, 1, &t));
-      //add nodes from face to keep to list of candidate nodes
-      faceID = Mesh->Elem[elem].face[fIDX2kp[0]];
-      for (n = 0; n < Mesh->Face[faceID]->nNode; n++) {
-        nodeID = Mesh->Face[faceID]->node[n];
-        call(mg_add_2_ord_set(nodeID, &CandidateNodes->nItem,
-                              &CandidateNodes->Item, NULL, false));
+    else {//2faces to remove
+      //Now check if we are removing a node too
+      call(mg_find_face_in_frt(Front, Mesh->Elem[elem].face[fIDX2rm[0]], &FFL));
+      call(mg_find_face_in_frt(Front, Mesh->Elem[elem].face[fIDX2rm[1]], &FFR));
+      if (FFL->iloop == FFR->iloop){
+        //we are removing a node too
+        //stitch front
+        faceID = Mesh->Elem[elem].face[fIDX2rm[0]];
+        call(mg_find_face_in_frt(Front, faceID, &FFace));
+        call(mg_rm_frm_ord_data_list(faceID, Front->loop[FFace->iloop]->FacesInLoop));
+        FFaceNext = FFace->next;
+        FFaceStale = FFace->prev;
+        if (FFaceStale->ID != Mesh->Elem[elem].face[fIDX2rm[1]])
+          return error(err_LOGIC_ERROR);
+        
+        call(mg_rm_frm_ord_data_list(FFaceStale->ID,
+                                     Front->loop[FFaceStale->iloop]->FacesInLoop));
+        FFacePrev = FFaceStale->prev;
+        FFacePrev->next = FFace;
+        FFace->prev = FFacePrev;
+        mg_free_front_face(FFaceStale);
+        //substitute old front face by only face to keep
+        FFace->ID = Mesh->Elem[elem].face[fIDX2kp[0]];
+        FFace->face = Mesh->Face[FFace->ID];
+        call(mg_add_2_ord_data_list(FFace->ID, (void**)&FFace,
+                                    Front->loop[FFace->iloop]->FacesInLoop,
+                                    NULL, false));
+        //NOTE: node to remove is the one opposite to the face to keep
+        node2rm = Mesh->Elem[elem].node[fIDX2kp[0]];
+        //remove node from candidate nodes if it was a candidate
+        call(mg_rm_frm_ord_set(node2rm,&CandidateNodes->nItem,&CandidateNodes->Item, 1, &t));
+        //add nodes from face to keep to list of candidate nodes
+        faceID = Mesh->Elem[elem].face[fIDX2kp[0]];
+        for (n = 0; n < Mesh->Face[faceID]->nNode; n++) {
+          nodeID = Mesh->Face[faceID]->node[n];
+          call(mg_add_2_ord_set(nodeID, &CandidateNodes->nItem,
+                                &CandidateNodes->Item, NULL, false));
+        }
+      }
+      else {
+        //check for orientation (FFL -> fIDX2rm[0] and FFR -> fIDX2rm[1])
+        if (fIDX2rm[0] == nextincycle(fIDX2rm[1], Mesh->Elem[elem].nNode)){
+          //change orientation to a standard position
+          FFace = FFL;
+          FFL = FFR;
+          FFR = FFace;
+        }
+        //no node to remove
+        FFLNext = FFL->next;
+        FFLPrev = FFL->prev;
+        FFRNext = FFR->next;
+        FFRPrev = FFR->prev;
+        //new front face
+        call(mg_alloc((void**)&FFaceNew, 1, sizeof(mg_FrontFace)));
+        FFaceNew->next  = FFLNext;
+        FFaceNew->prev  = FFRPrev;
+        FFaceNew->ID    = Mesh->Elem[elem].face[fIDX2kp[0]];
+        FFaceNew->face  = Mesh->Face[FFaceNew->ID];
+        FFaceNew->iloop = FFL->iloop;
+        LLoop = Front->loop[FFL->iloop];
+        call(mg_add_2_ord_data_list(FFaceNew->ID, (void**)&FFaceNew,
+                                    Front->loop[FFaceNew->iloop]->FacesInLoop,
+                                    NULL, false));
+        //stitch 2 loops
+        FFLPrev->next = FFRNext;
+        FFRNext->prev = FFLPrev;
+        FFLNext->prev = FFaceNew;
+        FFRPrev->next = FFaceNew;
+        //now remove faces from loops
+        call(mg_rm_frm_ord_data_list(FFL->ID, Front->loop[FFL->iloop]->FacesInLoop));
+        call(mg_rm_frm_ord_data_list(FFR->ID, Front->loop[FFR->iloop]->FacesInLoop));
+        mg_free_front_face(FFL);
+        mg_free_front_face(FFR);
+        //now change loop ids
+        loopID = FFLNext->iloop;
+        FFaceStale = FFRNext;
+        t = FFaceStale->iloop;
+        //temp
+        RLoop = Front->loop[t];
+        while (FFaceStale != FFaceNew) {
+          //remove from old loop
+          call(mg_rm_frm_ord_data_list(FFaceStale->ID, Front->loop[FFaceStale->iloop]->FacesInLoop));
+          //add to new loop
+          FFaceStale->iloop = loopID;
+          call(mg_add_2_ord_data_list(FFaceStale->ID, (void**)&FFaceStale,
+                                      Front->loop[FFaceStale->iloop]->FacesInLoop,
+                                      NULL, false));
+          FFaceStale = FFaceStale->next;
+        }
+        Front->loop[loopID]->head = FFaceNew;
+        Front->loop[loopID]->tail = FFRPrev;
+        if (FFaceNew->iloop != loopID)
+          return error(err_LOGIC_ERROR);
+        if (Front->loop[t]->FacesInLoop->nEntry != 0)
+          return error(err_LOGIC_ERROR);
+        Front->loop[t]->head = Front->loop[t]->tail = NULL;
+        //call(mg_free_loop(Front->loop[t]));
       }
     }
     /***************************************************************************/
@@ -1241,6 +1310,8 @@ int mg_rm_broken_elems(mg_Mesh *Mesh, mg_Front *Front,
         swap(face->node[0], face->node[1], t);
         face->normal[0] *= -1.0;
         face->normal[1] *= -1.0;
+        swap(face->elem[LEFTNEIGHINDEX], face->elem[RIGHTNEIGHINDEX], t);
+        face->elem[LEFTNEIGHINDEX] = HOLLOWNEIGHTAG;
       }//has to be either left or right
       else return error(err_LOGIC_ERROR);
       //update neighbor lists in neighbors
@@ -1275,7 +1346,8 @@ int mg_rm_broken_elems(mg_Mesh *Mesh, mg_Front *Front,
     Mesh->nElem--;
     //add node to remove (if any) to stack
     if (node2rm >= 0){
-      call(mg_add_2_ord_set(node2rm, &Mesh->Stack->Node->nItem,&Mesh->Stack->Node->Item,
+      call(mg_add_2_ord_set(node2rm, &Mesh->Stack->Node->nItem,
+                            &Mesh->Stack->Node->Item,
                             NULL, false));
       Mesh->nNode--;
     }
@@ -1410,7 +1482,7 @@ int mg_cand_nds_2_cand_fcs(mg_Mesh *Mesh, mg_Front *Front,
 int
 mg_add_new_node(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace *ActiveFace,
                 mg_List *CandidateNodes, bool isoflag, double rhomax,
-                double c, bool *success)
+                double c, double Popt[2], bool *success)
 {
   int ierr, newnodeID, d, iloop, elem, idx, oppnode, dim, nBrokenTriInFront;
   int icface, nsuccess, t, n;
@@ -1425,15 +1497,16 @@ mg_add_new_node(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace *ActiveFace,
   
   if (!isoflag) return error(err_NOT_SUPPORTED);
   
-  UpperRBound = c*rhomax;//circumradius for closest candidate node
-  LowerRBound = ActiveFace->face->area/2;//inscribed radius for edge
-  if (LowerRBound > UpperRBound) return error(err_LOGIC_ERROR);
+  //UpperRBound = c*rhomax;//circumradius for closest candidate node
+  //LowerRBound = ActiveFace->face->area/2;//inscribed radius for edge
+  //if (LowerRBound > UpperRBound) return error(err_LOGIC_ERROR);
   //new node coordinates
   dim = Mesh->Dim;
   //call(mg_alloc((void**)&newcoord, dim, sizeof(double)));
   for (d = 0; d < dim; d++)
-    newcoord[d] = ActiveFace->face->centroid[d]+(HALFSQRT3*UpperRBound+SQRT3*LowerRBound)/(2.0)*ActiveFace->face->normal[d];
-  //loop over front and check for broken triangles
+    newcoord[d] = Popt[d];
+//  ActiveFace->face->centroid[d]+(HALFSQRT3*UpperRBound+SQRT3*LowerRBound)/(2.0)*ActiveFace->face->normal[d];
+//  //loop over front and check for broken triangles
   call(mg_alloc((void**)&BrokenTri,1,sizeof(mg_List)));
   mg_init_list(&BrokenTri[0]);
   call(mg_alloc((void**)&BrokenFFace,1,sizeof(mg_List)));
@@ -1518,8 +1591,8 @@ mg_add_new_node(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace *ActiveFace,
     call(mg_neigh_srch_brkn_tri(Mesh, BrokenTri, newcoord, &newrhomax));
     if (newrhomax > rhomax) {
       //update list of close nodes
-      call(mg_nodes_frnt_dist(Mesh, Front, ActiveFace, &newrhomax,2.0,
-                              isoflag,CandidateNodes));
+      call(mg_nodes_frnt_dist(Mesh, Front, ActiveFace, &newrhomax,1.0,
+                              isoflag,CandidateNodes, Popt));
     }
     /*remove intersected triangles, update list of candidate nodes, and include
      removed mesh components in the mesh stack*/
@@ -1553,6 +1626,64 @@ mg_add_new_node(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace *ActiveFace,
   return err_OK;
 }
 
+/******************************************************************/
+/* function: mg_rho_at_x */
+/* gets sizing specification at an x location */
+static int
+mg_rho_at_x(double const x[2], double *prho)
+{
+  double rout = 2.01492338157250, r, r2;
+  
+  r = sqrt(x[0]*x[0]+x[1]*x[1]);
+  r2 = r*r;
+  //(*prho) = -0.98*cos(r)*exp(-r2/50)+rout;
+  (*prho) = rout;
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_get_mesh_size */
+/* gets sizing specification for a seedface */
+static int
+mg_get_mesh_size(mg_Mesh *Mesh, mg_FrontFace *SeedFace, double **prho,
+                            bool *isoflag, double P[2], double c[2])
+{
+  int ierr,i, k;
+  double eps = 0.01, rho, alpha, res, B[2], l;
+  mg_FaceData *face = SeedFace->face;
+  
+  call(mg_rho_at_x(face->centroid, &rho));
+  alpha = rho/2;
+  
+  for (i=0;i<2;i++){
+    c[i] = face->centroid[i]+alpha*face->normal[i];
+    P[i] = c[i]+face->normal[i];
+    B[i] = Mesh->Coord[face->node[0]*2+i];
+  }
+  call(mg_rho_at_x(face->centroid, &rho));
+  
+  l = sqrt((P[0]-B[0])*(P[0]-B[0])+(P[1]-B[1])*(P[1]-B[1]));
+  res = fabs(l-rho*SQRT3/2);
+  printf("rho: %1.2e\n",rho);
+  k = 0;
+  while (res > eps && k < 10) {
+    alpha = alpha*0.5*SQRT3*rho/l;
+    for (i=0;i<2;i++){
+      c[i] = face->centroid[i]+alpha*face->normal[i];
+      P[i] = c[i]+face->normal[i];
+    }
+    l = sqrt((P[0]-B[0])*(P[0]-B[0])+(P[1]-B[1])*(P[1]-B[1]));
+    res = fabs(l-rho*SQRT3/2);
+    k++;
+  }
+  (*isoflag) = true;
+  
+  call(mg_alloc((void**)prho, 1, sizeof(double)));
+  call(mg_rho_at_x(P, &((*prho)[0])));
+  
+  return err_OK;
+}
 
 /******************************************************************/
 /* function: mg_advance_front */
@@ -1560,22 +1691,24 @@ mg_add_new_node(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace *ActiveFace,
 int mg_advance_front(mg_Mesh *Mesh, mg_Front *Front)
 {
   int ierr;
-  double *rhomax, radius;
+  double *rhomax, radius, Popt[2], c[2];
   bool isoflag, success;
   mg_FrontFace *SeedFace;
   mg_List *CloseNodes;
   
   call(mg_find_seed_face(Front, &SeedFace));
-  call(mg_comp_mesh_size(Mesh, SeedFace, &rhomax, &isoflag));
+  //call(mg_comp_mesh_size(Mesh, SeedFace, &rhomax, &isoflag));
+  call(mg_get_mesh_size(Mesh, SeedFace, &rhomax, &isoflag,Popt, c));
   call(mg_alloc((void**)&CloseNodes, 1, sizeof(mg_List)));
-  call(mg_nodes_frnt_dist(Mesh, Front, SeedFace, rhomax, 2.0,
-                          isoflag,CloseNodes));
+  call(mg_nodes_frnt_dist(Mesh, Front, SeedFace, rhomax, 1.74,
+                          isoflag,CloseNodes, Popt));
   call(mg_bld_tri_frm_close_pts(Mesh, Front, SeedFace, rhomax, isoflag,
                                 CloseNodes, &success, &radius));
   if (!success) {
     call(mg_add_new_node(Mesh, Front, SeedFace, CloseNodes, isoflag,
-                         rhomax[0], 2.0,&success));
-    if (!success) return error(err_MESH_ERROR);
+                         rhomax[0], 1.74,Popt,&success));
+    if (!success)
+      return error(err_MESH_ERROR);
   }
   
   CloseNodes[0].nItem = 0;
@@ -1727,15 +1860,23 @@ int main(int argc, char *argv[])
   i = 0;
   while (!mg_front_empty(&Front)){
     //advance front
-    call(mg_advance_front(Mesh, &Front));
+    //if (i == 23 ) {
+      sprintf(MeshName, "mesh_at_it_%d.m",i);
+      call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
+    //}
+    ierr = error(mg_advance_front(Mesh, &Front));
+    if (ierr != err_OK){
+      call(mg_mesh_2_matlab(Mesh, &Front, "mesh_error.m"));
+      return ierr;
+    }
     //DEBUGGING
-    //call(xf_VerifyFront2D(&Front));
+    call(xf_VerifyFront2D(&Front));
     i++;
   }
   //call(mg_plot_mesh(Mesh));
   call(mg_get_input_char("OutputMesh", &OutFile));
   call(mg_write_mesh(Mesh, OutFile));
-  //call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
+  call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
   printf("Number of triangles: %d\nDone.\n",Mesh->nElem);
   
   mg_destroy_mesh(Mesh);

@@ -9,6 +9,8 @@
 #ifndef _dmg__dmg_struct_h
 #define _dmg__dmg_struct_h
 
+#include "2dmg_metric.h"
+
 /******************************************************************/
 /* List structure */
 typedef struct
@@ -85,7 +87,7 @@ mg_Loop;
 
 /******************************************************************/
 /* front structure: single structure containing possibly more than
- one loops (fronts) */
+ one loop (fronts) */
 typedef struct
 {
   int nloop;
@@ -105,6 +107,7 @@ typedef struct
   mg_FaceData **Face;//storing only pointers to mg_FaceData structures
   mg_List *Node2Elem, *Node2Face;
   mg_MeshComponentStack *Stack;
+  mg_MetricField *Metric;
 }
 mg_Mesh;
 

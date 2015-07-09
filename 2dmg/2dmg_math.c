@@ -141,7 +141,8 @@ int mg_circumcircle(double coord[3][2], double center[2], double *radius)
   //check if nodes are colinear
   det = A[0]*B[1]+B[0]*C[1]+A[1]*C[0];
   det-= (C[0]*B[1]+A[1]*B[0]+A[0]*C[1]);
-  if (fabs(det) < MEPS) return error(err_INPUT_ERROR);
+  if (fabs(det) < MEPS)
+    return error(err_SINGULAR);
   
   A2[0] = A[0]*A[0];
   A2[1] = A[1]*A[1];

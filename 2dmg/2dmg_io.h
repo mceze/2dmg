@@ -33,7 +33,12 @@ int mg_parse_input_line(char line[], char **pkey,
 int mg_read_input_file(char const ParamFile[]);
 
 /******************************************************************/
-/* function:  mg_read_input_file */
+/* function:  mg_get_input_char */
 int mg_get_input_char(char const ParamName[], char **pvalue);
+
+/******************************************************************/
+/* function:  mg_get_input_enum */
+int mg_get_input_enum(char const ParamName[], char *enumnames[],
+                      int nenum, int *pval);
 
 #endif

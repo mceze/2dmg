@@ -68,6 +68,7 @@
 		90A2CCA81A9EE59C00BB32A7 /* plot_leanface.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leanface.m; sourceTree = "<group>"; };
 		90A2CCA91A9EE59C00BB32A7 /* plot_leannode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leannode.m; sourceTree = "<group>"; };
 		90A2CCAA1A9EE59C00BB32A7 /* plot_leanelem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = plot_leanelem.m; sourceTree = "<group>"; };
+		90A2CCAC1AA3AAFD00BB32A7 /* 2dmg_metric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2dmg_metric.h; sourceTree = "<group>"; };
 		90E5C4F91A688658001C02FA /* test_qtree */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test_qtree; sourceTree = BUILT_PRODUCTS_DIR; };
 		90E5C4FB1A688658001C02FA /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +151,7 @@
 				90013C811A129026006E83CC /* 2dmg_def.h */,
 				90013C801A128C5D006E83CC /* 2dmg_struct.h */,
 				90013C821A12961A006E83CC /* 2dmg_io.h */,
+				90A2CCAC1AA3AAFD00BB32A7 /* 2dmg_metric.h */,
 			);
 			name = include;
 			sourceTree = "<group>";

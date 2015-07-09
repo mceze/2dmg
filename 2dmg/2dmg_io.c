@@ -236,7 +236,7 @@ int mg_read_input_file(char const ParamFile[])
 }
 
 /******************************************************************/
-/* function:  mg_read_input_file */
+/* function:  mg_get_input_char */
 int mg_get_input_char(char const ParamName[], char **pvalue)
 {
   ENTRY *e, target;
@@ -251,3 +251,27 @@ int mg_get_input_char(char const ParamName[], char **pvalue)
   return err_OK;
 }
 
+/******************************************************************/
+/* function:  mg_get_input_enum */
+int mg_get_input_enum(char const ParamName[], char *enumnames[],
+                      int nenum, int *pval)
+{
+  int i;
+  ENTRY *e, target;
+  char *charvalue;
+  
+  target.key = malloc(MAXSTRLEN*sizeof(char));
+  sprintf(target.key, "%s",ParamName);
+  if ((e = hsearch(target, FIND)) == NULL)
+    return error(err_HSEARCH_ERROR);
+  charvalue = (char*)e->data;
+  
+  for (i = 0; i < nenum; i++) {
+    if (strcmp(ParamName, enumnames[i]) == 0){
+      (*pval) = i;
+      return err_OK;
+    }
+  }
+  
+  return err_NOT_FOUND;
+}
