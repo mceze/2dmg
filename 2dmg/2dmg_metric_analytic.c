@@ -36,7 +36,7 @@ void mg_metric_expx(double *x, double *y, int np, double *M)
   for (ip = 0; ip < np; ip++) {
     xp = x[ip];
     yp = y[ip];
-    M[ip*4+0] = 1.0+1000.0*exp(-pow((xp-0.5)/(0.05), 2.0));
+    M[ip*4+0] = 1.0+1000.0*exp(-pow((xp-0.5)/(0.01), 2.0));
     M[ip*4+1] = 0.0;
     M[ip*4+2] = 1.0;
   }

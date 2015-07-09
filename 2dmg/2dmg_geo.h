@@ -33,4 +33,11 @@ void mg_destroy_geo(mg_Geometry *Geo);
 /* initializes the interpolant of a mg_Segment  */
 int mg_init_segment(mg_Geometry *Geo, int iseg);
 
+/******************************************************************/
+/* function:  mg_create_bmesh_from_geo */
+/* initializes the interpolant of a mg_Segment  */
+int mg_create_bmesh_from_geo(mg_Geometry *Geo, mg_Metric *Metric,
+                             int *nNodeInSeg, mg_Mesh *Mesh,
+                             mg_Front *Front);
+
 #endif

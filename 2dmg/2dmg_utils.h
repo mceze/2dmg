@@ -11,6 +11,7 @@
 
 #include "2dmg_def.h"
 #include "2dmg_struct.h"
+#include "2dmg_metric_struct.h"
 
 /******************************************************************/
 /* function:  mg_alloc*/
@@ -144,7 +145,11 @@ int mg_calc_seg_obj(mg_Segment *Seg, mg_Metric *Metric, double *t,
  outputs a scale factor for metric such edge have unitary metric
  length*/
 int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np, double *scale,
-                    double *coord);
+                    double **t);
 
+/******************************************************************/
+/* function: mg_free_linked_list */
+/* frees a linked list composed of mg_Item*/
+void mg_free_linked_list(struct mg_Item *Item);
 
 #endif /* defined(___dmg___dmg_utils__) */

@@ -11,6 +11,7 @@
 #include "2dmg_struct.h"
 #include "2dmg_utils.h"
 #include "2dmg_math.h"
+#include "2dmg_geo.h"
 #include "2dmg_plot.h"
 
 /******************************************************************/
@@ -570,7 +571,8 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
     //add node coordinates
     if (coord == NULL) return error(err_INPUT_ERROR);
     //new node can only come from stack or be sequentially added
-    if (!NodeIsFromStack && nodeID2 != Mesh->nNode) return error(err_INPUT_ERROR);
+    if (!NodeIsFromStack && nodeID2 != Mesh->nNode)
+      return error(err_INPUT_ERROR);
     
     Mesh->nNode++;
     if (NodeIsFromStack == false) {
@@ -702,7 +704,8 @@ int mg_tri_frm_face_node(mg_Mesh *Mesh, mg_FrontFace *FFace, int nodeID2,
   Mesh->Elem[elemID0].nbor[2] = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX];
   if ((nbor = Mesh->Face[faceID2]->elem[RIGHTNEIGHINDEX]) >= 0) { //not a boundary
     mg_check_exist(faceID2, Mesh->Elem[nbor].nNode, Mesh->Elem[nbor].face, &i);
-    if (i < 0) return error(err_LOGIC_ERROR);
+    if (i < 0)
+      return error(err_LOGIC_ERROR);
     Mesh->Elem[nbor].nbor[i] = elemID0;
   }
   
@@ -1684,6 +1687,7 @@ int main(int argc, char *argv[])
   char MeshName[MAXSTRLEN];
   mg_Mesh *Mesh;
   mg_Front Front;
+  mg_Geometry *Geo;
   
   /* Check number of arguments */
   if( argc != 2 ){
@@ -1701,20 +1705,40 @@ int main(int argc, char *argv[])
   call(mg_read_input_file(ParFile));
   
   
-  //Read boundary discretization
+  //Read boundary discretization or geometry file
   call(mg_get_input_char("BoundaryMesh", &InFile));
   len = (int)strlen(InFile);
-  if (len < 5) {
-    printf("Invalid BoundaryMesh filename");
-    return err_INPUT_ERROR;
+  if (strcmp(InFile, "None") != 0) {
+    if (len < 5) {
+      printf("Invalid BoundaryMesh filename");
+      return err_INPUT_ERROR;
+    }
+    pext = InFile+len-5;
+    if (strncmp(pext,".bgri",5) == 0) {
+      call(mg_create_mesh(&Mesh));
+      call(mg_read_bgri_file(InFile, Mesh));
+    }
+    else
+      return error(err_NOT_SUPPORTED);
   }
-  pext = InFile+len-5;
-  if (strncmp(pext,".bgri",5) == 0) {
+  else {//read geometry file
+    call(mg_get_input_char("GeometryFile", &InFile));
+    call(mg_read_geo(&Geo, InFile));
+    //mesh boundary and create initial front
+    mg_Metric *Metric;
+    int nNodeInSeg[5]={10,12,9,7,55};
+    Metric = malloc(sizeof(mg_Metric));
+    Metric->type = mge_Metric_Uniform;
+    Metric->order = 8;
+    //  Metric.type = mge_Metric_Uniform;
+    //  Metric.order = 1;
+    call(mg_create_mesh(&Metric->BGMesh));
+    Metric->BGMesh->Dim = 2;
     call(mg_create_mesh(&Mesh));
-    call(mg_read_bgri_file(InFile, Mesh));
+    call(mg_create_bmesh_from_geo(Geo, Metric, nNodeInSeg, Mesh, &Front));
+    mg_destroy_mesh(Metric->BGMesh);
+    mg_free((void*)Metric);
   }
-  else
-    return error(err_NOT_SUPPORTED);
   
   //fill in face information
   call(mg_calc_face_info(Mesh));
@@ -1723,10 +1747,18 @@ int main(int argc, char *argv[])
   //call(mg_prealloc_msh_comp(Mesh, 3, 15, 20));
   //create front
   call(mg_create_front(Mesh, &Front));
+  call(mg_mesh_2_matlab(Mesh, &Front, "mesh_initial.m"));
   i = 0;
   while (!mg_front_empty(&Front)){
+    printf("it = %d nElem = %d\n",i,Mesh->nElem);
+//    sprintf(MeshName, "mesh_at_%d.m",i);
+//    call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
     //advance front
-    call(mg_advance_front(Mesh, &Front));
+    ierr=error(mg_advance_front(Mesh, &Front));
+    if (ierr != err_OK) {
+      call(mg_mesh_2_matlab(Mesh, &Front,"mesh_error.m"));
+      exit(0);
+    }
     //DEBUGGING
     //call(xf_VerifyFront2D(&Front));
     i++;

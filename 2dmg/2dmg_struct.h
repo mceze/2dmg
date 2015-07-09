@@ -149,6 +149,13 @@ typedef struct
 mg_Geometry;
 
 /******************************************************************/
+/* list structure */
+struct mg_Item {
+  int Id;
+  struct mg_Item *next;
+};
+
+/******************************************************************/
 /* mesh structure */
 typedef struct
 {
@@ -160,47 +167,9 @@ typedef struct
   mg_FaceData **Face;//storing only pointers to mg_FaceData structures
   mg_List *Node2Elem, *Node2Face;
   mg_MeshComponentStack *Stack;
-}
-mg_Mesh;
-
-/******************************************************************/
-/* enumerators for metric types */
-enum mge_Metric {
-  mge_Metric_Uniform,
-  mge_Metric_Analitic1,
-  mge_Metric_Analitic2,
-  mge_Metric_Analitic3,
-  mge_Metric_Last
-};
-static char *mge_MetricName[mge_Metric_Last] = {
-  "MetricUniform",
-  "MetricAnalytic1",
-  "MetricAnalytic2",
-  "MetricAnalytic3"
-};
-
-/******************************************************************/
-/* mesh structure */
-typedef struct
-{
-  enum mge_Metric type;
-  mg_Mesh *BGMesh;
-  int order; //interpolation order (Lagrange basis)
-  double *M;
-}
-mg_Metric;
-
-/******************************************************************/
-/* structure: mg_gsl_multimin_params */
-/* parameters for optimizer*/
-typedef struct
-{
-  mg_Segment *Segment;
-  mg_Metric *Metric;
-  double *scale;
   
 }
-mg_gsl_multimin_params;
+mg_Mesh;
 
 
 #endif

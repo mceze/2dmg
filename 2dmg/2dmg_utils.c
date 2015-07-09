@@ -9,6 +9,7 @@
 #include "2dmg_def.h"
 #include "2dmg_utils.h"
 #include "2dmg_struct.h"
+#include "2dmg_metric_struct.h"
 #include "2dmg_math.h"
 
 /******************************************************************/
@@ -131,6 +132,7 @@ int mg_create_mesh(mg_Mesh **pMesh)
   (*pMesh)->nFace  = 0;
   (*pMesh)->nNode  = 0;
   (*pMesh)->BNames = NULL;
+  (*pMesh)->nBface = NULL;
   (*pMesh)->Elem = NULL;
   (*pMesh)->Face = NULL;
   (*pMesh)->Node2Elem = NULL;
@@ -876,13 +878,13 @@ static int mg_init_seg_mesh(mg_gsl_multimin_params *Params, gsl_vector *x)
 /******************************************************************/
 /* function: mg_mesh_segment */
 /* meshes a segment with np following an anisotropic metrhic field
- outputs a scale factor for metric such edge have unitary metric
- length*/
+ outputs a scale factor for metric such that each edge have unitary 
+ metric length*/
 int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np,
-                    double *scale, double *Coord)
+                    double *scale, double **t)
 {
   int ierr, ip, it, d, status;
-  int const dim = Metric->BGMesh->Dim, itmax = 100;
+  int const dim = Metric->BGMesh->Dim, itmax = 1;
   double J_t_norm, tp, J;
   gsl_multimin_function_fdf func;
   gsl_vector *x;
@@ -930,23 +932,28 @@ int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np,
   }
   while (status == GSL_CONTINUE && it < itmax);  
   
-  //calculate global coordinates
-//  printf("after\np=[");
-  for (ip = 0; ip < np; ip++) {
-    tp = gsl_vector_get(solver->x, ip);
-    for (d = 0; d < dim; d++){
-      Coord[ip*dim+d] = gsl_interp_eval(Seg->interp[d], Seg->s,
-                                        Seg->Coord+d*Seg->nPoint,
-                                        tp, Seg->accel[d]);
-//      printf("%1.8e ",Coord[ip*dim+d]);
-    }
-//    printf("\n");
-  }
-//  printf("];\n");
-  
+  //store parametric mesh
+  call(mg_alloc((void**)&t[0], np, sizeof(double)));
+  memcpy(t[0]+0, solver->x->data, np*sizeof(double));
+
+  solver->x->data = NULL;
   
   gsl_multimin_fdfminimizer_free (solver);
   gsl_vector_free (x);
     
   return err_OK;
 }
+
+/******************************************************************/
+/* function: mg_free_linked_list */
+/* frees a linked list composed of mg_Item*/
+void mg_free_linked_list(struct mg_Item *Item)
+{
+  if (Item != NULL)
+    mg_free_linked_list(Item->next);
+  free(Item);
+  Item = NULL;
+}
+
+
+

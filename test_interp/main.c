@@ -17,12 +17,12 @@
 int main(int argc, const char * argv[]) {
   int ierr, d,b, i, np = 101;
   double xi,yi,dxi,dyi,t=.25, coord[]={0.0,1.0,0.0,1.0}, dist;
-  double *Coord, scale;
+  double *tref, scale;
   mg_Geometry *Geo;
   mg_Metric *Metric;
   
-  call(mg_read_geo(&Geo, "box.geo"));
-  b=2;
+  call(mg_read_geo(&Geo, "box_hole.geo"));
+  b=4;
   d=0;
   xi = gsl_interp_eval(Geo->Boundary[b]->interp[d],
                        Geo->Boundary[b]->s,
@@ -72,10 +72,23 @@ int main(int argc, const char * argv[]) {
 //  printf("dist: %1.12e\n",dist);
   call(mg_metric_length(Metric, Geo->Boundary[b], 64, &dist));
   
-  call(mg_alloc((void**)&Coord, 2*np, sizeof(double)));
-  call(mg_mesh_segment(Geo->Boundary[b], Metric, np, &scale, Coord));
-  
-  mg_free((void*)Coord);
+  call(mg_mesh_segment(Geo->Boundary[b], Metric, np, &scale, &tref));
+  for (i = 0; i < np; i++) {
+    t=tref[i];
+    d=0;
+    xi = gsl_interp_eval(Geo->Boundary[b]->interp[d],
+                         Geo->Boundary[b]->s,
+                         Geo->Boundary[b]->Coord+d*Geo->Boundary[b]->nPoint, t,
+                         Geo->Boundary[b]->accel[d]);
+    d=1;
+    yi = gsl_interp_eval(Geo->Boundary[b]->interp[d],
+                         Geo->Boundary[b]->s,
+                         Geo->Boundary[b]->Coord+d*Geo->Boundary[b]->nPoint, t,
+                         Geo->Boundary[b]->accel[d]);
+    printf("%1.8e %1.8e %1.8e\n",tref[i],xi,yi);
+  }
+
+  mg_free((void*)tref);
   mg_destroy_mesh(Metric->BGMesh);
   mg_free((void*)Metric);
   mg_destroy_geo(Geo);

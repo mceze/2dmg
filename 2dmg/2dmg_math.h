@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "2dmg_struct.h"
+#include "2dmg_metric_struct.h"
 
 
 /******************************************************************/
