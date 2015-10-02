@@ -26,6 +26,7 @@
 #define err_MESH_ERROR      -10
 #define err_HSEARCH_ERROR   -11
 #define err_GSL_ERROR       -12
+#define err_SINGULAR        -13
 
 /******************************************************************/
 /* Error Macro: used to report error occurrences */

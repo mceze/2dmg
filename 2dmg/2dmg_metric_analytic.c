@@ -19,9 +19,9 @@ void mg_metric_uniform(double *x, double *y, int np, double *M)
   for (ip = 0; ip < np; ip++) {
     xp = x[ip];
     yp = y[ip];
-    M[ip*4+0] = 1.0;
-    M[ip*4+1] = 0.0;
-    M[ip*4+2] = 1.0;
+    M[ip*3+0] = (16.0/0.39774)*1.0;
+    M[ip*3+1] = 0.0;
+    M[ip*3+2] = (16.0/0.39774)*1.0;
   }
 }
 
@@ -36,9 +36,14 @@ void mg_metric_expx(double *x, double *y, int np, double *M)
   for (ip = 0; ip < np; ip++) {
     xp = x[ip];
     yp = y[ip];
-    M[ip*4+0] = 1.0+1000.0*exp(-pow((xp-0.5)/(0.01), 2.0));
-    M[ip*4+1] = 0.0;
-    M[ip*4+2] = 1.0;
+    M[ip*3+0] = (16.0/0.39774)*(1.0+200.0*exp(-pow((xp-0.5)/(0.1), 2.0)));
+    M[ip*3+1] = 0.0;
+    M[ip*3+2] = (16.0/0.39774)*1.0;
+//    xp = x[ip]-0.5;
+//    yp = y[ip]-0.5;
+//    M[ip*3+0] = (16.0/0.39774)*(1.0+10.0*exp(-pow((sqrt(xp*xp+yp*yp))/(0.1), 2.0)));
+//    M[ip*3+1] = 0.0;
+//    M[ip*3+2] = (16.0/0.39774)*(1.0+10.0*exp(-pow((sqrt(xp*xp+yp*yp))/(0.1), 2.0)));
   }
 }
 
@@ -53,9 +58,9 @@ void mg_metric_sqx(double *x, double *y, int np, double *M)
   for (ip = 0; ip < np; ip++) {
     xp = x[ip];
     yp = y[ip];
-    M[ip*4+0] = 1.0+(xp-0.5)*(xp-0.5);
-    M[ip*4+1] = 0.0;
-    M[ip*4+2] = 1.0;
+    M[ip*3+0] = 1.0+(xp-0.5)*(xp-0.5);
+    M[ip*3+1] = 0.0;
+    M[ip*3+2] = 1.0;
   }
 }
 
@@ -70,8 +75,8 @@ void mg_metric_linx(double *x, double *y, int np, double *M)
   for (ip = 0; ip < np; ip++) {
     xp = x[ip];
     yp = y[ip];
-    M[ip*4+0] = 1.0+1000.*xp;
-    M[ip*4+1] = 0.0;
-    M[ip*4+2] = 1.0;
+    M[ip*3+0] = 1.0+1000.*xp;
+    M[ip*3+1] = 0.0;
+    M[ip*3+2] = 1.0+1000.*yp;
   }
 }

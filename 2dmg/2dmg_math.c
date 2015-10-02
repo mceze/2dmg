@@ -9,6 +9,7 @@
 #include "2dmg_math.h"
 #include "2dmg_def.h"
 #include "2dmg_metric_analytic.h"
+#include "2dmg_struct.h"
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_interp.h>
 
@@ -261,6 +262,212 @@ int mg_metric_length(mg_Metric *Metric, mg_Segment *Segment, int order,
   }
   
   gsl_integration_glfixed_table_free(gltable);
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_lu */
+/* decomposes full matrix as A = L*U*/
+static int
+mg_lu(int n, double *a, double *l, double *u)
+{
+  
+  int i, j, m;
+  
+  for(i = 0; i < n; i++) for(j = 0; j < n; j++) l[i*n+j] = u[i*n+j] = 0.0;
+  
+  for(i = 0; i < n; i++) l[i*n+i] = 1.0;
+  
+  for(m = 0; m < n; m++){
+    for(i = m; i < n; i++){
+      u[m*n+i] = a[m*n+i];
+      for(j = 0; j < m; j++){
+        u[m*n+i] -= l[m*n+j]*u[j*n+i];
+      }
+    }
+    for(i = m+1; i < n; i++){
+      l[i*n+m] = a[i*n+m];
+      for (j = 0; j < m; j++){
+        l[i*n+m] -= l[i*n+j]*u[j*n+m];
+      }
+      if (fabs(u[m*n+m]) < MEPS)
+        return error(err_SINGULAR);
+      l[i*n+m] = l[i*n+m]/u[m*n+m];
+    }
+  }
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_luinv */
+/* inverts L and U factors*/
+static void
+mg_luinv(int n, double *l, double *u, double *linv, double *uinv)
+{
+  int i, j, k;
+  double sum;
+  //Computing inverse of U
+  for(j = n-1; j >= 0; j--){
+    for(i = n-1; i >= 0; i--){
+      if(i == j) uinv[i*n+j] = 1.0/u[i*n+j];
+      else {
+        sum = 0.0;
+        for(k = n-1; k > i; k--) sum += u[i*n+k]*uinv[k*n+j];
+        uinv[i*n+j] = -sum/u[i*n+i];
+      }
+    }
+  }
+  
+  //Computing inverse of L
+  for(j = 0; j < n; j++){
+    for(i = 0; i < n; i++){
+      if(i == j) linv[i*n+j] = 1.0/l[i*n+j];
+      else {
+        sum = 0.0;
+        for(k = 0; k < i; k++) sum += l[i*n+k]*linv[k*n+j];
+        linv[i*n+j] = -sum/l[i*n+i];
+      }
+    }
+  }
+}
+/******************************************************************/
+/* function: mg_mxm */
+/* product of 2 full matrices*/
+void
+mg_mxm(int m, int n, int l, double *a, double *b, double *c)
+{
+  int i, j, k;
+  
+  for (i = 0; i < m; i++) {
+    for (k = 0; k < l; k++) {
+      c[i*l+k] = 0.0;
+      for (j = 0; j < n; j++) {
+        c[i*l+k] += a[i*n+j]*b[j*l+k];
+      }
+    }
+  }
+}
+
+/******************************************************************/
+/* function: mg_circumellipse */
+int
+mg_circumellipse(double *coord, mg_Ellipse *Ellipse)
+{
+  //builds Steiner circumellipse
+  double x[3], y[3], M[4], L[4], U[4], Linv[4], Uinv[4];
+  int i;
+  double T, D, L1, L2, t, V1norm, V2norm;
+  double Cp[4], Mt[4];
+  double sxx, sxy, syy, t1, t2, Kt[4];
+  
+  for (i = 0; i < 3; i++) {
+    x[i] = coord[i*2];
+    y[i] = coord[i*2+1];
+  }
+  //centroid
+  Ellipse->Ot[0] = (x[0]+x[1]+x[2])/3.0;
+  Ellipse->Ot[1] = (y[0]+y[1]+y[2])/3.0;
+  
+  //transformation matrix
+  M[0] = x[1]-x[0];
+  M[1] = x[2]-x[0];
+  M[2] = y[1]-y[0];
+  M[3] = y[2]-y[0];
+  
+  //inertia coeeficients
+  sxy = (x[1]-x[0])*(y[1]-y[0]) + (x[2]-x[0])*(y[2]-y[0]) + (x[2]-x[1])*(y[2]-y[1]);
+  sxx = (x[1]-x[0])*(x[1]-x[0]) + (x[2]-x[0])*(x[2]-x[0]) + (x[2]-x[1])*(x[2]-x[1]);
+  syy = (y[1]-y[0])*(y[1]-y[0]) + (y[2]-y[0])*(y[2]-y[0]) + (y[2]-y[1])*(y[2]-y[1]);
+  
+  //principal directions
+  T = sxx+syy;
+  D = sxx*syy-sxy*sxy;
+  //eigenvalues
+  t = sqrt(0.25*T*T-D);
+  L1 = 0.5*T + t;
+  L2 = 0.5*T - t;
+  
+  if (fabs(sxy) < MEPS){
+    Ellipse->V[0] = 1.0;
+    Ellipse->V[1] = 0.0;
+    Ellipse->V[2] = 0.0;
+    Ellipse->V[3] = 1.0;
+  }
+  else {
+    V1norm = sqrt((L1-syy)*(L1-syy)+sxy*sxy);
+    V2norm = sqrt((L2-syy)*(L2-syy)+sxy*sxy);
+    Ellipse->V[0] = (L1-syy)/V1norm;
+    Ellipse->V[1] = (L2-syy)/V2norm;
+    Ellipse->V[2] = sxy/V1norm;
+    Ellipse->V[3] = sxy/V2norm;
+  }
+  //inverse rotation matrix
+  mg_lu(2, Ellipse->V, L, U);
+  mg_luinv(2, L, U, Linv, Uinv);
+  mg_mxm(2, 2, 2, Uinv, Linv, Ellipse->Vinv);
+  //get semi-axis lengths
+  mg_mxm(2, 2, 2, Ellipse->Vinv, M, Mt);
+  for (i = 0; i < 4; i++) Mt[i] /= SQRT3;
+  t1 = atan(-Mt[0]*SQRT3/(2.0*Mt[1]-Mt[0]));
+  t2 = atan(-Mt[2]*SQRT3/(2.0*Mt[3]-Mt[2]));
+  Kt[0] = cos(t1)-sin(t1)/SQRT3;
+  Kt[1] = cos(t2)-sin(t2)/SQRT3;
+  Kt[2] = 2.0*sin(t1)/SQRT3;
+  Kt[3] = 2.0*sin(t2)/SQRT3;
+  mg_mxm(2, 2, 2, M, Kt, Cp);
+  for (i = 0; i < 4; i++) Cp[i] /= SQRT3;
+  mg_mxm(2, 2, 2, Ellipse->Vinv, Cp, Kt);
+  Ellipse->rho[0] = max(fabs(Kt[1]), fabs(Kt[3]));
+  Ellipse->rho[1] = max(fabs(Kt[0]), fabs(Kt[2]));
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function: mg_inside_ellipse */
+bool
+mg_inside_ellipse(double *coord, mg_Ellipse *Ellipse)
+{
+  bool inside;
+  double coord_p[2], ct[2], r;
+  
+  //shift coordinates by ellipse's center
+  coord_p[0] = coord[0]-Ellipse->Ot[0];
+  coord_p[1] = coord[1]-Ellipse->Ot[1];
+  
+  //rotate reference
+  mg_mxm(2, 2, 1, Ellipse->Vinv, coord_p, ct);
+  
+  //scale directions
+  ct[0] /= Ellipse->rho[0];
+  ct[1] /= Ellipse->rho[1];
+  
+  r = sqrt(ct[0]*ct[0]+ct[1]*ct[1]);
+  
+  inside = (r <= 1.0);
+  
+  return inside;
+}
+
+/******************************************************************/
+/* function: mg_ellipse_frm_face_p */
+/* creates a steiner ellipse using a front face and a point */
+int mg_ellipse_frm_face_p(mg_Mesh *Mesh, mg_FaceData *face,
+                           double *Popt, mg_Ellipse *Ellipse)
+{
+  int ierr, dim = Mesh->Dim, i, d;
+  double coord[6];
+  int *node = face->node;
+  
+  for (i = 0; i < 2; i++)
+    for (d = 0; d < dim; d++)
+      coord[i*dim+d] = Mesh->Coord[node[i]*dim+d];
+  coord[4] = Popt[0];
+  coord[5] = Popt[1];
+  
+  call(mg_circumellipse(coord, Ellipse));
   
   return err_OK;
 }

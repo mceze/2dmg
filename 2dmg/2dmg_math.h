@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "2dmg_struct.h"
+#include "2dmg_def.h"
 #include "2dmg_metric_struct.h"
 
 
@@ -56,5 +57,27 @@ int mg_metric_dist(mg_Metric *Metric, int order, double *coord,
 /* computes metric length of a segment */
 int mg_metric_length(mg_Metric *Metric, mg_Segment *Segment, int order,
                      double *length);
+
+/******************************************************************/
+/* function: mg_mxm */
+/* product of 2 full matrices*/
+void
+mg_mxm(int m, int n, int l, double *a, double *b, double *c);
+
+/******************************************************************/
+/* function: mg_circumellipse */
+int
+mg_circumellipse(double *coord, mg_Ellipse *Ellipse);
+
+/******************************************************************/
+/* function: mg_inside_ellipse */
+bool
+mg_inside_ellipse(double *coord, mg_Ellipse *Ellipse);
+
+/******************************************************************/
+/* function: mg_ellipse_frm_face_p */
+/* creates a steiner ellipse using a front face and a point */
+int mg_ellipse_frm_face_p(mg_Mesh *Mesh, mg_FaceData *face,
+                           double *Popt, mg_Ellipse *Ellipse);
 
 #endif /* defined(___dmg___dmg_math__) */

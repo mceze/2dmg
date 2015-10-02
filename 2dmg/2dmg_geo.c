@@ -263,12 +263,15 @@ int mg_create_bmesh_from_geo(mg_Geometry *Geo, mg_Metric *Metric,
         nose_node = Mesh->nNode;//next node to be created
         //get global coordinates and create faces.
         //discard last node as it is the last node of previous segment
+//        printf("%s:\n",Seg->Name);
         for (in = 0; in < nNodeInSeg[iseg]; in++) {
           for (d = 0; d < Mesh->Dim; d++) {
             Mesh->Coord[(inode+in)*Mesh->Dim+d] = gsl_interp_eval(Seg->interp[d],Seg->s,
                                                                   Seg->Coord+d*Seg->nPoint,t[in],
                                                                   Seg->accel[d]);
+//            printf("%1.8f ",Mesh->Coord[(inode+in)*Mesh->Dim+d]);
           }
+//          printf("\n");
           call(mg_alloc((void**)&Face, 1, sizeof(mg_FaceData)));
           mg_init_face(Face);
           Face->nNode = 2;

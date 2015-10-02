@@ -868,7 +868,7 @@ static int mg_init_seg_mesh(mg_gsl_multimin_params *Params, gsl_vector *x)
     }
     
     x->data[ip] = ti;
-    //printf("%1.8e\n",x->data[ip]);
+//    printf("t[%d] = %1.8e\n",ip,x->data[ip]);
   }
   //last point
   x->data[np-1] = 1.0;
@@ -884,7 +884,7 @@ int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np,
                     double *scale, double **t)
 {
   int ierr, ip, it, d, status;
-  int const dim = Metric->BGMesh->Dim, itmax = 1;
+  int const dim = Metric->BGMesh->Dim, itmax = 15;
   double J_t_norm, tp, J;
   gsl_multimin_function_fdf func;
   gsl_vector *x;
@@ -940,7 +940,8 @@ int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np,
   
   gsl_multimin_fdfminimizer_free (solver);
   gsl_vector_free (x);
-    
+  
+  printf("Segment %s scale: %1.3e\n",Seg->Name,(*scale));
   return err_OK;
 }
 

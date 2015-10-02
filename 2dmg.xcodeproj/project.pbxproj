@@ -25,6 +25,12 @@
 		90027B471B29150B00A4EF9A /* 2dmg_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C851A129B3D006E83CC /* 2dmg_utils.c */; };
 		90027B481B29150B00A4EF9A /* 2dmg_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C831A129962006E83CC /* 2dmg_io.c */; };
 		90027B4A1B29150B00A4EF9A /* 2dmg_geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 90027B371B28FA8800A4EF9A /* 2dmg_geo.c */; };
+		90105CD01B62EFBB009B8949 /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
+		90105CD11B62EFBB009B8949 /* libqtree.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9012DCAF1A450560008B4697 /* libqtree.dylib */; };
+		90105CD91B62EFDC009B8949 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 90105CD81B62EFDC009B8949 /* main.c */; };
+		90105CE31B62EFEE009B8949 /* lib2dmg_lib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F79D291B62EF6700CE5A6A /* lib2dmg_lib.a */; };
+		90105CE41B62EFEE009B8949 /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
+		90105CE51B62EFEE009B8949 /* libqtree.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9012DCAF1A450560008B4697 /* libqtree.dylib */; };
 		9012DCB81A4506AA008B4697 /* 2dmg_qtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 9012DCB61A4506AA008B4697 /* 2dmg_qtree.c */; };
 		9012DCB91A4506AA008B4697 /* 2dmg_qtree.h in Headers */ = {isa = PBXBuildFile; fileRef = 9012DCB71A4506AA008B4697 /* 2dmg_qtree.h */; };
 		902B929E1A65F46000355401 /* 2dmg_error.c in Sources */ = {isa = PBXBuildFile; fileRef = 902B929C1A65F46000355401 /* 2dmg_error.c */; };
@@ -37,7 +43,51 @@
 		90E5C5011A68868A001C02FA /* libqtree.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9012DCAF1A450560008B4697 /* libqtree.dylib */; };
 		90F719E51B33355300741002 /* 2dmg_metric_analytic.c in Sources */ = {isa = PBXBuildFile; fileRef = 90F719E41B33355300741002 /* 2dmg_metric_analytic.c */; };
 		90F719E61B37227300741002 /* 2dmg_metric_analytic.c in Sources */ = {isa = PBXBuildFile; fileRef = 90F719E41B33355300741002 /* 2dmg_metric_analytic.c */; };
+		90F79D2D1B62EF7400CE5A6A /* 2dmg_geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 90027B371B28FA8800A4EF9A /* 2dmg_geo.c */; };
+		90F79D2E1B62EF7400CE5A6A /* 2dmg_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C831A129962006E83CC /* 2dmg_io.c */; };
+		90F79D2F1B62EF7400CE5A6A /* 2dmg_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C9B1A12E54C006E83CC /* 2dmg_math.c */; };
+		90F79D301B62EF7400CE5A6A /* 2dmg_metric_analytic.c in Sources */ = {isa = PBXBuildFile; fileRef = 90F719E41B33355300741002 /* 2dmg_metric_analytic.c */; };
+		90F79D311B62EF7400CE5A6A /* 2dmg_plot.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C9E1A195AC0006E83CC /* 2dmg_plot.c */; };
+		90F79D321B62EF7400CE5A6A /* 2dmg_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 90013C851A129B3D006E83CC /* 2dmg_utils.c */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		90105CCC1B62EFB2009B8949 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90013C6C1A128BBE006E83CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9012DCAE1A450560008B4697;
+			remoteInfo = qtree;
+		};
+		90105CCE1B62EFB2009B8949 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90013C6C1A128BBE006E83CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 902B92961A65F40000355401;
+			remoteInfo = error;
+		};
+		90105CDD1B62EFE6009B8949 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90013C6C1A128BBE006E83CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9012DCAE1A450560008B4697;
+			remoteInfo = qtree;
+		};
+		90105CDF1B62EFE6009B8949 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90013C6C1A128BBE006E83CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 902B92961A65F40000355401;
+			remoteInfo = error;
+		};
+		90105CE11B62EFE6009B8949 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90013C6C1A128BBE006E83CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 90F79D281B62EF6700CE5A6A;
+			remoteInfo = 2dmg_lib;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		90013C721A128BBE006E83CC /* CopyFiles */ = {
@@ -59,6 +109,15 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		90027B3C1B29039600A4EF9A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		90105CD41B62EFDC009B8949 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -97,6 +156,8 @@
 		90027B371B28FA8800A4EF9A /* 2dmg_geo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2dmg_geo.c; sourceTree = "<group>"; };
 		90027B3E1B29039600A4EF9A /* test_interp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test_interp; sourceTree = BUILT_PRODUCTS_DIR; };
 		90027B401B29039600A4EF9A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		90105CD61B62EFDC009B8949 /* testing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = testing; sourceTree = BUILT_PRODUCTS_DIR; };
+		90105CD81B62EFDC009B8949 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		9012DCAF1A450560008B4697 /* libqtree.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libqtree.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		9012DCB61A4506AA008B4697 /* 2dmg_qtree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = 2dmg_qtree.c; path = qtree/2dmg_qtree.c; sourceTree = "<group>"; };
 		9012DCB71A4506AA008B4697 /* 2dmg_qtree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 2dmg_qtree.h; path = qtree/2dmg_qtree.h; sourceTree = "<group>"; };
@@ -112,6 +173,7 @@
 		90F719E31B33354B00741002 /* 2dmg_metric_analytic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2dmg_metric_analytic.h; sourceTree = "<group>"; };
 		90F719E41B33355300741002 /* 2dmg_metric_analytic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2dmg_metric_analytic.c; sourceTree = "<group>"; };
 		90F719E71B3E162500741002 /* 2dmg_metric_struct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 2dmg_metric_struct.h; sourceTree = "<group>"; };
+		90F79D291B62EF6700CE5A6A /* lib2dmg_lib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = lib2dmg_lib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +202,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		90105CD31B62EFDC009B8949 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90105CE31B62EFEE009B8949 /* lib2dmg_lib.a in Frameworks */,
+				90105CE41B62EFEE009B8949 /* liberror.dylib in Frameworks */,
+				90105CE51B62EFEE009B8949 /* libqtree.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9012DCAC1A450560008B4697 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -164,6 +236,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		90F79D261B62EF6700CE5A6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90105CD01B62EFBB009B8949 /* liberror.dylib in Frameworks */,
+				90105CD11B62EFBB009B8949 /* libqtree.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -176,6 +257,7 @@
 				90E5C4FA1A688658001C02FA /* test_qtree */,
 				90027AFD1B158F4F00A4EF9A /* plot_mesh */,
 				90027B3F1B29039600A4EF9A /* test_interp */,
+				90105CD71B62EFDC009B8949 /* testing */,
 				90013C751A128BBE006E83CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -189,6 +271,8 @@
 				90E5C4F91A688658001C02FA /* test_qtree */,
 				90027AFC1B158F4F00A4EF9A /* plot_mesh */,
 				90027B3E1B29039600A4EF9A /* test_interp */,
+				90F79D291B62EF6700CE5A6A /* lib2dmg_lib.a */,
+				90105CD61B62EFDC009B8949 /* testing */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -247,6 +331,14 @@
 				90027B401B29039600A4EF9A /* main.c */,
 			);
 			path = test_interp;
+			sourceTree = "<group>";
+		};
+		90105CD71B62EFDC009B8949 /* testing */ = {
+			isa = PBXGroup;
+			children = (
+				90105CD81B62EFDC009B8949 /* main.c */,
+			);
+			path = testing;
 			sourceTree = "<group>";
 		};
 		9012DCB31A45056C008B4697 /* libqtree */ = {
@@ -321,6 +413,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		90F79D271B62EF6700CE5A6A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -375,6 +474,26 @@
 			productReference = 90027B3E1B29039600A4EF9A /* test_interp */;
 			productType = "com.apple.product-type.tool";
 		};
+		90105CD51B62EFDC009B8949 /* testing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 90105CDA1B62EFDC009B8949 /* Build configuration list for PBXNativeTarget "testing" */;
+			buildPhases = (
+				90105CD21B62EFDC009B8949 /* Sources */,
+				90105CD31B62EFDC009B8949 /* Frameworks */,
+				90105CD41B62EFDC009B8949 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				90105CDE1B62EFE6009B8949 /* PBXTargetDependency */,
+				90105CE01B62EFE6009B8949 /* PBXTargetDependency */,
+				90105CE21B62EFE6009B8949 /* PBXTargetDependency */,
+			);
+			name = testing;
+			productName = testing;
+			productReference = 90105CD61B62EFDC009B8949 /* testing */;
+			productType = "com.apple.product-type.tool";
+		};
 		9012DCAE1A450560008B4697 /* qtree */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9012DCB21A450560008B4697 /* Build configuration list for PBXNativeTarget "qtree" */;
@@ -426,6 +545,25 @@
 			productReference = 90E5C4F91A688658001C02FA /* test_qtree */;
 			productType = "com.apple.product-type.tool";
 		};
+		90F79D281B62EF6700CE5A6A /* 2dmg_lib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 90F79D2C1B62EF6700CE5A6A /* Build configuration list for PBXNativeTarget "2dmg_lib" */;
+			buildPhases = (
+				90F79D251B62EF6700CE5A6A /* Sources */,
+				90F79D261B62EF6700CE5A6A /* Frameworks */,
+				90F79D271B62EF6700CE5A6A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				90105CCD1B62EFB2009B8949 /* PBXTargetDependency */,
+				90105CCF1B62EFB2009B8949 /* PBXTargetDependency */,
+			);
+			name = 2dmg_lib;
+			productName = 2dmg_lib;
+			productReference = 90F79D291B62EF6700CE5A6A /* lib2dmg_lib.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -444,6 +582,9 @@
 					90027B3D1B29039600A4EF9A = {
 						CreatedOnToolsVersion = 6.2;
 					};
+					90105CD51B62EFDC009B8949 = {
+						CreatedOnToolsVersion = 6.4;
+					};
 					9012DCAE1A450560008B4697 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -452,6 +593,9 @@
 					};
 					90E5C4F81A688658001C02FA = {
 						CreatedOnToolsVersion = 6.1.1;
+					};
+					90F79D281B62EF6700CE5A6A = {
+						CreatedOnToolsVersion = 6.4;
 					};
 				};
 			};
@@ -473,6 +617,8 @@
 				90E5C4F81A688658001C02FA /* test_qtree */,
 				90027AFB1B158F4F00A4EF9A /* plot_mesh */,
 				90027B3D1B29039600A4EF9A /* test_interp */,
+				90F79D281B62EF6700CE5A6A /* 2dmg_lib */,
+				90105CD51B62EFDC009B8949 /* testing */,
 			);
 		};
 /* End PBXProject section */
@@ -517,6 +663,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		90105CD21B62EFDC009B8949 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90105CD91B62EFDC009B8949 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9012DCAB1A450560008B4697 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -541,7 +695,48 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		90F79D251B62EF6700CE5A6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90F79D2D1B62EF7400CE5A6A /* 2dmg_geo.c in Sources */,
+				90F79D2E1B62EF7400CE5A6A /* 2dmg_io.c in Sources */,
+				90F79D2F1B62EF7400CE5A6A /* 2dmg_math.c in Sources */,
+				90F79D301B62EF7400CE5A6A /* 2dmg_metric_analytic.c in Sources */,
+				90F79D311B62EF7400CE5A6A /* 2dmg_plot.c in Sources */,
+				90F79D321B62EF7400CE5A6A /* 2dmg_utils.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		90105CCD1B62EFB2009B8949 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9012DCAE1A450560008B4697 /* qtree */;
+			targetProxy = 90105CCC1B62EFB2009B8949 /* PBXContainerItemProxy */;
+		};
+		90105CCF1B62EFB2009B8949 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 902B92961A65F40000355401 /* error */;
+			targetProxy = 90105CCE1B62EFB2009B8949 /* PBXContainerItemProxy */;
+		};
+		90105CDE1B62EFE6009B8949 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9012DCAE1A450560008B4697 /* qtree */;
+			targetProxy = 90105CDD1B62EFE6009B8949 /* PBXContainerItemProxy */;
+		};
+		90105CE01B62EFE6009B8949 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 902B92961A65F40000355401 /* error */;
+			targetProxy = 90105CDF1B62EFE6009B8949 /* PBXContainerItemProxy */;
+		};
+		90105CE21B62EFE6009B8949 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 90F79D281B62EF6700CE5A6A /* 2dmg_lib */;
+			targetProxy = 90105CE11B62EFE6009B8949 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		90013C791A128BBE006E83CC /* Debug */ = {
@@ -590,6 +785,11 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lplplotd",
+					"-lgslcblas",
+				);
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -635,6 +835,11 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lplplotd",
+					"-lgslcblas",
+				);
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -727,6 +932,28 @@
 			};
 			name = Release;
 		};
+		90105CDB1B62EFDC009B8949 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		90105CDC1B62EFDC009B8949 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		9012DCB01A450560008B4697 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -802,6 +1029,30 @@
 			};
 			name = Release;
 		};
+		90F79D2A1B62EF6700CE5A6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		90F79D2B1B62EF6700CE5A6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -841,6 +1092,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		90105CDA1B62EFDC009B8949 /* Build configuration list for PBXNativeTarget "testing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90105CDB1B62EFDC009B8949 /* Debug */,
+				90105CDC1B62EFDC009B8949 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		9012DCB21A450560008B4697 /* Build configuration list for PBXNativeTarget "qtree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -864,6 +1123,15 @@
 			buildConfigurations = (
 				90E5C4FD1A688658001C02FA /* Debug */,
 				90E5C4FE1A688658001C02FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		90F79D2C1B62EF6700CE5A6A /* Build configuration list for PBXNativeTarget "2dmg_lib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90F79D2A1B62EF6700CE5A6A /* Debug */,
+				90F79D2B1B62EF6700CE5A6A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,24 +1,30 @@
-function plot_leanmesh( leanmesh_matlab, pltfront_orient, plt_circumcircle,fignum)
+function plot_leanmesh( leanmesh_matlab, pltfront_orient, plt_circumcircle,fignum,plt_elemnum)
 % plots a matlab output of a xf_LeanMesh
 
 run(leanmesh_matlab)
 
 h=figure(fignum)
-close(h)
+hold off
 figure(fignum)
 for i=1:size(face,1)
     xplt=[coord(face(i,1),1);coord(face(i,2),1)];
     yplt=[coord(face(i,1),2);coord(face(i,2),2)];
+    xc(i) = mean([coord(face(i,1),1);coord(face(i,2),1)]);
+    yc(i) = mean([coord(face(i,1),2);coord(face(i,2),2)]);
+    facenum(i,:)=cellstr(num2str(i-1)); 
     plot(xplt,yplt,'k-')
     hold on
 end
-
-%for i=1:size(elem,1)
-%    xplt=[coord(elem(i,1),1);coord(elem(i,2),1);coord(elem(i,3),1);coord(elem(i,1),1)];
-%    yplt=[coord(elem(i,1),2);coord(elem(i,2),2);coord(elem(i,3),2);coord(elem(i,1),2)];
-%    plot(xplt,yplt,'b-')
-%    hold on    
-%end
+if (plt_elemnum == 1)
+    for i=1:size(elem,1)
+        xplt(i)=mean([coord(elem(i,1),1);coord(elem(i,2),1);coord(elem(i,3),1)]);
+        yplt(i)=mean([coord(elem(i,1),2);coord(elem(i,2),2);coord(elem(i,3),2)]);
+        elemnum(i,:)=cellstr(num2str(i-1)); 
+    end
+    text(xplt',yplt',elemnum(:,1),'color','b')
+    text(xc',yc',facenum(:,1),'color','k')
+    hold on 
+end
 
 if (plt_circumcircle == 1)
     for i=1:size(elem,1)

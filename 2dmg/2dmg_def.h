@@ -37,6 +37,8 @@
 #define RIGHTNEIGHINDEX   1 //right tag
 #define HALFSQRT3         0.866025403784439
 #define SQRT3             1.73205080756888
+#define SQRT2             1.41421356237310
+#define HALFSQRT2         0.707106781186548
 #define NPARAMLIST        100 //hash table size
 
 /******************************************************************/

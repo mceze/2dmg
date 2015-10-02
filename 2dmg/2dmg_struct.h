@@ -121,6 +121,14 @@ static char *mge_GeoInterpName[mge_GeoInterpLast] = {
 /* segment structure */
 typedef struct
 {
+  double V[4], Vinv[4], Ot[2], rho[2];
+}
+mg_Ellipse;
+
+/******************************************************************/
+/* segment structure */
+typedef struct
+{
   int nPoint, *Point;
   double *Coord;//first x, then y, then z
   double *s; // (0 <= s >= 1) parametric coordinate
@@ -167,7 +175,6 @@ typedef struct
   mg_FaceData **Face;//storing only pointers to mg_FaceData structures
   mg_List *Node2Elem, *Node2Face;
   mg_MeshComponentStack *Stack;
-  
 }
 mg_Mesh;
 

@@ -15,14 +15,14 @@
 #include "2dmg_io.h"
 
 int main(int argc, const char * argv[]) {
-  int ierr, d,b, i, np = 101;
+  int ierr, d,b, i, np = 15;
   double xi,yi,dxi,dyi,t=.25, coord[]={0.0,1.0,0.0,1.0}, dist;
   double *tref, scale;
   mg_Geometry *Geo;
   mg_Metric *Metric;
   
-  call(mg_read_geo(&Geo, "box_hole.geo"));
-  b=4;
+  call(mg_read_geo(&Geo, "box.geo"));
+  b=0;
   d=0;
   xi = gsl_interp_eval(Geo->Boundary[b]->interp[d],
                        Geo->Boundary[b]->s,
