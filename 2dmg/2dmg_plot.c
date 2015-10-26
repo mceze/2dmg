@@ -7,14 +7,17 @@
 //
 
 #include "2dmg_plot.h"
+#include "2dmg_utils.h"
+#include "2dmg_math.h"
 #include "2dmg_def.h"
 
+
 /******************************************************************/
-/* function:  mg_plot_mesh */
-int mg_plot_mesh(mg_Mesh *Mesh)
+/* function:  mg_init_plot_mesh */
+void mg_init_plot_mesh(mg_Mesh *Mesh)
 {
-  int f, node0, node1, n, dim = Mesh->Dim;
-  double x[3], y[3], xlim[2], ylim[2];
+  int n, dim = Mesh->Dim;
+  double xlim[2], ylim[2];
   
   plsdev("xwin");
   // Initialize plplot
@@ -36,11 +39,114 @@ int mg_plot_mesh(mg_Mesh *Mesh)
     if (Mesh->Coord[n*dim+1] > ylim[1])
       ylim[1] = Mesh->Coord[n*dim+1];
   }
-//  xlim[0] = -0.1; xlim[1] = 1.1;
-//  ylim[0] = -0.55; ylim[1] = 0.55;
+  
   //set plot limits
   plwind(xlim[0], xlim[1], ylim[0], ylim[1] );
+  
+}
+
+/******************************************************************/
+/* function:  mg_plot_ellipse */
+int mg_plot_ellipse(mg_Ellipse *ellipse)
+{
+  int ierr, i;
+  int n = 50;
+  double xplt[50], yplt[50];
+  double cosval[50] = {1.0000000000e+00, 9.9179001382e-01,\
+    9.6729486304e-01, 9.2691675735e-01, 8.7131870412e-01, \
+    8.0141362187e-01, 7.1834935010e-01, 6.2348980186e-01, \
+    5.1839256831e-01, 4.0478334312e-01, 2.8452758663e-01, \
+    1.5959989503e-01, 3.2051577572e-02, -9.6023025908e-02,\
+    -2.2252093396e-01, -3.4536505442e-01, -4.6253829024e-01,\
+    -5.7211666012e-01, -6.7230089026e-01, -7.6144595837e-01,\
+    -8.3808810489e-01, -9.0096886790e-01, -9.4905574701e-01,\
+    -9.8155915699e-01, -9.9794539275e-01, -9.9794539275e-01,\
+    -9.8155915699e-01, -9.4905574701e-01, -9.0096886790e-01,\
+    -8.3808810489e-01, -7.6144595837e-01, -6.7230089026e-01,\
+    -5.7211666012e-01, -4.6253829024e-01, -3.4536505442e-01,\
+    -2.2252093396e-01, -9.6023025908e-02, 3.2051577572e-02, \
+    1.5959989503e-01, 2.8452758663e-01, 4.0478334312e-01,\
+    5.1839256831e-01, 6.2348980186e-01, 7.1834935010e-01,\
+    8.0141362187e-01, 8.7131870412e-01, 9.2691675735e-01,\
+    9.6729486304e-01, 9.9179001382e-01, 1.0000000000e+00};
+  double sinval[50] = {0.0000000000e+00, 1.2787716168e-01,\
+    2.5365458391e-01, 3.7526700488e-01, 4.9071755200e-01,\
+    5.9811053049e-01, 6.9568255060e-01, 7.8183148247e-01,\
+    8.5514276301e-01, 9.1441262302e-01, 9.5866785304e-01,\
+    9.8718178341e-01, 9.9948621620e-01, 9.9537911295e-01,\
+    9.7492791218e-01, 9.3846842205e-01, 8.8659930637e-01,\
+    8.2017225460e-01, 7.4027799708e-01, 6.4822839531e-01,\
+    5.4553490121e-01, 4.3388373912e-01, 3.1510821802e-01,\
+    1.9115862870e-01, 6.4070219981e-02, -6.4070219981e-02,\
+    -1.9115862870e-01, -3.1510821802e-01, -4.3388373912e-01,\
+    -5.4553490121e-01, -6.4822839531e-01, -7.4027799708e-01,\
+    -8.2017225460e-01, -8.8659930637e-01, -9.3846842205e-01,\
+    -9.7492791218e-01, -9.9537911295e-01, -9.9948621620e-01,\
+    -9.8718178341e-01, -9.5866785304e-01, -9.1441262302e-01,\
+    -8.5514276301e-01, -7.8183148247e-01, -6.9568255060e-01,\
+    -5.9811053049e-01, -4.9071755200e-01, -3.7526700488e-01,\
+    -2.5365458391e-01, -1.2787716168e-01, -2.4492935983e-16};
+  
+  double R[4], S[4], T[4], x[2], xp[2];
+  //rotation
+  R[0] = ellipse->V[0];
+  R[1] = -ellipse->V[2];
+  R[2] = ellipse->V[2];
+  R[3] = ellipse->V[0];
+  //scaling
+  S[0] = 1.0/ellipse->rho[0];
+  S[1] = S[2] = 0.0;
+  S[3] = 1.0/ellipse->rho[1];
+  mg_mxm(2, 2, 2, R, S, T);
+  
+  for (i = 0; i < n; i++) {
+    x[0] = cosval[i];
+    x[1] = sinval[i];
+    mg_mxm(2, 2, 1, T, x, xp);
+    xplt[i] = xp[0]+ellipse->Ot[0];
+    yplt[i] = xp[1]+ellipse->Ot[1];
+  }
+  plcol0( 3 );
+  plline( n, xplt, yplt );
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function:  mg_plot_mesh */
+int mg_plot_mesh(mg_Mesh *Mesh, double *limits, bool plot_tree)
+{
+  int ierr, f, node0, node1, dim = Mesh->Dim, n;
+  double x[3], y[3], xlim[2],ylim[2];
+  
+  plflush();
+  plclear();
   plcol0( 1 );
+  
+  if (limits == NULL){
+    //get xmin, xmax, ymin, ymax
+    xlim[0] = xlim[1] = Mesh->Coord[0];
+    ylim[0] = ylim[1] = Mesh->Coord[1];
+    for (n = 1; n < Mesh->nNode; n++){
+      if (Mesh->Coord[n*dim+0] < xlim[0])
+        xlim[0] = Mesh->Coord[n*dim+0];
+      if (Mesh->Coord[n*dim+0] > xlim[1])
+        xlim[1] = Mesh->Coord[n*dim+0];
+      if (Mesh->Coord[n*dim+1] < ylim[0])
+        ylim[0] = Mesh->Coord[n*dim+1];
+      if (Mesh->Coord[n*dim+1] > ylim[1])
+        ylim[1] = Mesh->Coord[n*dim+1];
+    }
+  }
+  else {
+    xlim[0] = limits[0];
+    xlim[1] = limits[1];
+    ylim[0] = limits[2];
+    ylim[1] = limits[3];
+  }
+  
+  //set plot limits
+  plwind(xlim[0], xlim[1], ylim[0], ylim[1] );
   //plot faces
   for (f = 0; f < Mesh->nFace; f++) {
     node0 = Mesh->Face[f]->node[0];
@@ -52,7 +158,119 @@ int mg_plot_mesh(mg_Mesh *Mesh)
     plline( 2, x, y );
   }
   
-  plend();
+  if (plot_tree){
+    if (Mesh->QuadTree != NULL)
+      call(mg_plot_branch(Mesh->QuadTree));
+  }
+  
   
   return err_OK;
 }
+
+/******************************************************************/
+/* function:  mg_close_plot_mesh */
+void mg_close_plot_mesh(void)
+{
+    plend();
+}
+
+/******************************************************************/
+/* function:  mg_show_mesh */
+int mg_show_mesh(mg_Mesh *Mesh)
+{
+  int ierr, in;
+  bool open = true, tree_on = false, reset_range = true;
+  double range[4], M[3], Mg[4];
+  int cursorval;
+  mg_Metric *Metric;
+  mg_Ellipse *ellipse;
+  
+  static PLGraphicsIn gin;
+  
+  Metric = malloc(sizeof(mg_Metric));
+  //    Metric->type = mge_Metric_Uniform;
+  Metric->type = mge_Metric_Analitic2;
+  Metric->order = 10;
+  //      Metric->type = mge_Metric_Uniform;
+  //  Metric.order = 1;
+  call(mg_create_mesh(&Metric->BGMesh));
+  Metric->BGMesh->Dim = 2;
+  
+  ellipse = malloc(Mesh->nNode*sizeof(mg_Ellipse));
+  for (in = 0; in < Mesh->nNode; in++){
+    call(mg_get_metric(Metric, Mesh->Coord+in*Mesh->Dim,
+                       Mesh->Coord+in*Mesh->Dim+1, 1, M));
+    Mg[0] = M[0];
+    Mg[1] = M[1];
+    Mg[2] = M[1];
+    Mg[3] = M[2];
+    call(mg_eig2(Mg, ellipse[in].V, ellipse[in].rho));
+    ellipse[in].Ot[0] = Mesh->Coord[in*Mesh->Dim];
+    ellipse[in].Ot[1] = Mesh->Coord[in*Mesh->Dim+1];
+  }
+  mg_init_plot_mesh(Mesh);
+  
+  //plot mesh
+  call(mg_plot_mesh(Mesh, NULL, tree_on));
+  
+  while (open) {
+    cursorval = plGetCursor( &gin );
+    printf("cursorval = %d wx: %1.2e wy: %1.2e dx: %1.2e dy: %1.2e key: %s button: %d\n",
+           cursorval,gin.wX,gin.wY,gin.dX,gin.dY,gin.string, gin.button);
+    //zoom
+    if (strcmp(gin.string,"z")==0){
+      while (1) {
+        printf("Left click top left corner of zoom window\n");
+        cursorval = plGetCursor( &gin );
+        if (gin.button == 1){
+          range[0] = gin.wX;
+          range[3] = gin.wY;
+          while (1) {
+            printf("Left click bottom right corner of zoom window\n");
+            cursorval = plGetCursor( &gin );
+            if (gin.button == 1){
+              range[1] = gin.wX;
+              range[2] = gin.wY;
+              break;
+            }
+          }
+          break;
+        }
+      }
+      reset_range = false;
+      call(mg_plot_mesh(Mesh, range, tree_on));
+    }
+    //plot qtree
+    if (strcmp(gin.string,"t")==0){
+      tree_on = !tree_on;
+      if (tree_on)
+        call(mg_plot_branch(Mesh->QuadTree));
+      if (reset_range)
+        call(mg_plot_mesh(Mesh, NULL, tree_on));
+      else
+        call(mg_plot_mesh(Mesh, range, tree_on));
+    }
+    
+    //plot qtree
+    if (strcmp(gin.string,"e")==0){
+      for (in = 0; in < Mesh->nNode; in++){
+        call(mg_plot_ellipse(ellipse+in));
+      }
+    }
+    
+    //reset
+    if (strcmp(gin.string,"r")==0){
+      call(mg_plot_mesh(Mesh, NULL, tree_on));
+      reset_range = true;
+    }
+    //quit
+    if (strcmp(gin.string,"q")==0){
+      break;
+    }
+  }
+  
+  mg_close_plot_mesh();
+  
+  return err_OK;
+}
+

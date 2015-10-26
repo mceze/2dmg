@@ -65,6 +65,12 @@ void
 mg_mxm(int m, int n, int l, double *a, double *b, double *c);
 
 /******************************************************************/
+/* function: mg_eig2 */
+/* eigenvectors and eigenvalues for 2by2 matrices*/
+int
+mg_eig2(const double M[4], double V[4], double lambda[2]);
+
+/******************************************************************/
 /* function: mg_circumellipse */
 int
 mg_circumellipse(double *coord, mg_Ellipse *Ellipse);

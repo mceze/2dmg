@@ -215,6 +215,7 @@ int mg_plot_branch(mg_qtree *branch)
   y[3] = branch->c[1]+branch->ds[1];
   y[4] = branch->c[1]-branch->ds[1];
   
+  plflush();
   plcol0( 2 );
   plline( 5, x, y );
   
@@ -263,10 +264,10 @@ int mg_plot_qtree(mg_qtree *qtree, int strm)
   
   call(mg_plot_branch(qtree));
   
-  plend();
+  //plend();
   //pleop (	);
   //plspause( 1 );
-
+  
   return err_OK;
 }
 

@@ -12,7 +12,7 @@ for i=1:size(face,1)
     xc(i) = mean([coord(face(i,1),1);coord(face(i,2),1)]);
     yc(i) = mean([coord(face(i,1),2);coord(face(i,2),2)]);
     facenum(i,:)=cellstr(num2str(i-1)); 
-    plot(xplt,yplt,'k-')
+    plot(xplt,yplt,'b-')
     hold on
 end
 if (plt_elemnum == 1)
@@ -21,7 +21,7 @@ if (plt_elemnum == 1)
         yplt(i)=mean([coord(elem(i,1),2);coord(elem(i,2),2);coord(elem(i,3),2)]);
         elemnum(i,:)=cellstr(num2str(i-1)); 
     end
-    text(xplt',yplt',elemnum(:,1),'color','b')
+    text(xplt',yplt',elemnum(:,1),'color','r')
     text(xc',yc',facenum(:,1),'color','k')
     hold on 
 end

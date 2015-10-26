@@ -38,6 +38,8 @@
 		902B92A01A65F75100355401 /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
 		902B92A11A65F76500355401 /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
 		9030DBD51A5F733600FFC754 /* libqtree.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9012DCAF1A450560008B4697 /* libqtree.dylib */; };
+		903C8AEF1BCCCB8B00D88CDF /* lib2dmg_lib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F79D291B62EF6700CE5A6A /* lib2dmg_lib.a */; };
+		903C8AF01BD460F700D88CDF /* libqtree.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9012DCAF1A450560008B4697 /* libqtree.dylib */; };
 		90E5C4FC1A688658001C02FA /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 90E5C4FB1A688658001C02FA /* main.c */; };
 		90E5C5001A68868A001C02FA /* liberror.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B92971A65F40000355401 /* liberror.dylib */; };
 		90E5C5011A68868A001C02FA /* libqtree.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9012DCAF1A450560008B4697 /* libqtree.dylib */; };
@@ -81,6 +83,13 @@
 			remoteInfo = error;
 		};
 		90105CE11B62EFE6009B8949 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90013C6C1A128BBE006E83CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 90F79D281B62EF6700CE5A6A;
+			remoteInfo = 2dmg_lib;
+		};
+		903C8AED1BCCCB8100D88CDF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 90013C6C1A128BBE006E83CC /* Project object */;
 			proxyType = 1;
@@ -190,6 +199,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				903C8AF01BD460F700D88CDF /* libqtree.dylib in Frameworks */,
+				903C8AEF1BCCCB8B00D88CDF /* lib2dmg_lib.a in Frameworks */,
 				90027B071B15909A00A4EF9A /* liberror.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,6 +462,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				903C8AEE1BCCCB8100D88CDF /* PBXTargetDependency */,
 			);
 			name = plot_mesh;
 			productName = plot_mesh;
@@ -735,6 +747,11 @@
 			isa = PBXTargetDependency;
 			target = 90F79D281B62EF6700CE5A6A /* 2dmg_lib */;
 			targetProxy = 90105CE11B62EFE6009B8949 /* PBXContainerItemProxy */;
+		};
+		903C8AEE1BCCCB8100D88CDF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 90F79D281B62EF6700CE5A6A /* 2dmg_lib */;
+			targetProxy = 903C8AED1BCCCB8100D88CDF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1099,6 +1116,7 @@
 				90105CDC1B62EFDC009B8949 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9012DCB21A450560008B4697 /* Build configuration list for PBXNativeTarget "qtree" */ = {
 			isa = XCConfigurationList;

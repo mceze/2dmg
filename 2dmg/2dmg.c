@@ -1118,29 +1118,39 @@ int mg_bld_tri_frm_close_pts_ellipse(mg_Mesh *Mesh, mg_Front *Front,
     nodeID0 = NodesOnLeft.Item[0];
     //build ellipse with nodeID0
     call(mg_ellipse_frm_face_p(Mesh, SelfFace->face, Mesh->Coord+nodeID0*dim, &Ellipse));
+    proj = Ellipse.V[0]*Ellipse_opt->V[0]+Ellipse.V[2]*Ellipse_opt->V[2];
+    proj = sqrt(fabs(proj));
+    //compare sizes
+    size_ratio = (min(Ellipse_opt->rho[0], Ellipse_opt->rho[1])/
+                  max(Ellipse_opt->rho[0], Ellipse_opt->rho[1]));
+    size_ratio/= (min(Ellipse.rho[0], Ellipse.rho[1])/
+                  max(Ellipse.rho[0], Ellipse.rho[1]));
+    J = sqrt((proj-1.0)*(proj-1.0)+(size_ratio-1.0)*(size_ratio-1.0));
+    Jmax = J;
+    
     for (in = 1; in < NodesOnLeft.nItem; in++) {
       nodeID1 = NodesOnLeft.Item[in];
       //check if nodeID1 is inside Ellipse
-      inside = mg_inside_ellipse(Mesh->Coord+nodeID1*dim, &Ellipse);
-      if (inside) {
-        //compare ellipses:
-        //projection of first principal directions
-        //measures the alignment between the ellipses
-        proj = Ellipse.V[0]*Ellipse_opt->V[0]+Ellipse.V[2]*Ellipse_opt->V[2];
-//        if (proj < 0)//this should be positive because node is on left of face
-//          return error(err_LOGIC_ERROR);
-        proj = sqrt(fabs(proj));
-        //compare sizes
-        size_ratio = (min(Ellipse_opt->rho[0], Ellipse_opt->rho[1])/
-                      max(Ellipse_opt->rho[0], Ellipse_opt->rho[1]));
-        size_ratio/= (min(Ellipse.rho[0], Ellipse.rho[1])/
-                      max(Ellipse.rho[0], Ellipse.rho[1]));
-        J = sqrt((proj-1.0)*(proj-1.0)+(size_ratio-1.0)*(size_ratio-1.0));
-        if (J < Jmax){
-          Jmax = J;
-          nodeID0 = nodeID1;
-        }
+      //inside = mg_inside_ellipse(Mesh->Coord+nodeID1*dim, &Ellipse);
+     // if (inside) {
+      //compare ellipses:
+      //projection of first principal directions
+      //measures the alignment between the ellipses
+      call(mg_ellipse_frm_face_p(Mesh, SelfFace->face,
+                                 Mesh->Coord+nodeID1*dim, &Ellipse));
+      proj = Ellipse.V[0]*Ellipse_opt->V[0]+Ellipse.V[2]*Ellipse_opt->V[2];
+      proj = sqrt(fabs(proj));
+      //compare sizes
+      size_ratio = (min(Ellipse_opt->rho[0], Ellipse_opt->rho[1])/
+                    max(Ellipse_opt->rho[0], Ellipse_opt->rho[1]));
+      size_ratio/= (min(Ellipse.rho[0], Ellipse.rho[1])/
+                    max(Ellipse.rho[0], Ellipse.rho[1]));
+      J = sqrt((proj-1.0)*(proj-1.0)+(size_ratio-1.0)*(size_ratio-1.0));
+      if (J < Jmax){
+        Jmax = J;
+        nodeID0 = nodeID1;
       }
+      //}
     }
     //by now, nodeID0 is ideal
     //build triangle and update front
@@ -2093,7 +2103,7 @@ int mg_advance_front(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front)
     
     //build list of nodes within ellipse
     call(mg_nodes_frnt_dist_ellipse(Mesh, Front, SeedFace, &Ellipse,
-                                    SQRT2, CloseNodes));
+                                    SQRT3, CloseNodes));
     //check if point intersects front
     iloop = SeedFace->iloop;
     FFace = Front->loop[iloop]->head;
@@ -2297,11 +2307,11 @@ int main(int argc, char *argv[])
     call(mg_get_input_char("GeometryFile", &InFile));
     call(mg_read_geo(&Geo, InFile));
     //mesh boundary and create initial front
-    int nNodeInSeg[5]={28,7,28,7,25};
+    int nNodeInSeg[5]={20,8,20,8,25};
     Metric = malloc(sizeof(mg_Metric));
 //    Metric->type = mge_Metric_Uniform;
     Metric->type = mge_Metric_Analitic2;
-    Metric->order = 10;
+    Metric->order = 1;
 //      Metric->type = mge_Metric_Uniform;
     //  Metric.order = 1;
     call(mg_create_mesh(&Metric->BGMesh));
@@ -2322,14 +2332,16 @@ int main(int argc, char *argv[])
   call(mg_mesh_2_matlab(Mesh, &Front, "mesh_initial.m"));
   i = 0;
   while (!mg_front_empty(&Front)){
-//    if (i >= 436){
+    //if (i >= 200){
       printf("it = %d nElem = %d\n",i,Mesh->nElem);
+//      call(mg_show_mesh(Mesh));
 //      sprintf(MeshName, "mesh_at_%d.m",i);
 //      call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
-//    }
+   // }
     //advance front
     ierr=error(mg_advance_front(Mesh, Metric, &Front));
     if (ierr != err_OK) {
+      call(mg_show_mesh(Mesh));
 //      call(mg_mesh_2_matlab(Mesh, &Front,"mesh_error.m"));
       exit(0);
     }
@@ -2342,6 +2354,8 @@ int main(int argc, char *argv[])
   call(mg_write_mesh(Mesh, OutFile));
   call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
   printf("Number of triangles: %d\nDone.\n",Mesh->nElem);
+  
+  call(mg_show_mesh(Mesh));
   
   mg_destroy_mesh(Mesh);
   //destroy hash table

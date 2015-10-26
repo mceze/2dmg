@@ -349,6 +349,43 @@ mg_mxm(int m, int n, int l, double *a, double *b, double *c)
     }
   }
 }
+/******************************************************************/
+/* function: mg_eig2 */
+/* eigenvectors and eigenvalues for 2by2 matrices*/
+int
+mg_eig2(const double M[4], double V[4], double lambda[2])
+{
+  double a, b, c, d, v, norm;
+  
+  a = 1.0;
+  b = -(M[0]+M[3]);
+  c = M[0]*M[3] - M[1]*M[2];
+  
+  d = b*b - 4.0*a*c;
+  
+  if (fabs(d)> 1e-8)
+    if (d < 0.0) return err_NON_REAL;
+
+  d = fabs(d);
+  
+  //eigenvalues
+  lambda[0] = (-b+sqrt(d))/(2.0*a);
+  lambda[1] = (-b-sqrt(d))/(2.0*a);
+  
+  //first eigenvector
+  v    = -(M[0]-lambda[0])/(M[1]+1e-8);
+  norm = sqrt(1.0+v*v);
+  V[0] = 1.0/norm;
+  V[2] = v/norm;
+  
+  //second eigenvector
+  v    = -M[1]/(M[0]-lambda[1]+1e-8);
+  norm = sqrt(1.0+v*v);
+  V[1] = v/norm;
+  V[3] = 1.0/norm;
+  
+  return err_OK;
+}
 
 /******************************************************************/
 /* function: mg_circumellipse */

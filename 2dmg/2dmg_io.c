@@ -371,6 +371,7 @@ int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
 {
   int ierr, n, vi[5], i, j, elemL, elemR;
   char line[MAXLINELEN];
+  double range[6];
   mg_Mesh *Mesh;
   mg_FaceData *Face;
   FILE *fid = fopen(FileName, "r");
@@ -397,16 +398,51 @@ int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
   call(mg_alloc((void **)&Mesh->nBface, Mesh->nBfg,
                 sizeof(int)));
   
+  //allocate node lists
+  call(mg_alloc((void**)&Mesh->Node2Elem, Mesh->nNode, sizeof(mg_List)));
+  call(mg_alloc((void**)&Mesh->Node2Face, Mesh->nNode, sizeof(mg_List)));
+  
   //get coordinates
   fgets(line, MAXLINELEN, fid);
   while (line[0] == '%') {//skip comments
     fgets(line, MAXLINELEN, fid);
   }
+  //init range
+  for (n = 0; n < Mesh->Dim; n++) {
+    range[n*Mesh->Dim+0] = INFINITY;
+    range[n*Mesh->Dim+1] = -INFINITY;
+  }
   for (i = 0 ; i < Mesh->nNode; i++) {
+    //init node lists
+    mg_init_list(Mesh->Node2Elem+i);
+    mg_init_list(Mesh->Node2Face+i);
+    
     call(mg_scan_n_num(line, &n, NULL, Mesh->Coord+i*Mesh->Dim));
     fgets(line, MAXLINELEN, fid);
     if (n != Mesh->Dim) return error(err_READWRITE_ERROR);
+    //keep track of range
+    for (j = 0; j < Mesh->Dim; j++){
+      //get minimum of coordinade "j"
+      if (Mesh->Coord[i*Mesh->Dim+j] < range[j*Mesh->Dim+0])
+        range[j*Mesh->Dim+0] = Mesh->Coord[i*Mesh->Dim+j];
+      //get maximum of coordinade "j"
+      if (Mesh->Coord[i*Mesh->Dim+j] > range[j*Mesh->Dim+1])
+        range[j*Mesh->Dim+1] = Mesh->Coord[i*Mesh->Dim+j];
+    }
   }
+  //setup quadtree
+  for (j = 0; j < Mesh->Dim; j++){
+    Mesh->QuadTree->c[j] = 0.5*(range[j*Mesh->Dim+0]+
+                                range[j*Mesh->Dim+1]);
+    Mesh->QuadTree->ds[j] = range[j*Mesh->Dim+1]-Mesh->QuadTree->c[j];
+  }
+  for (i = 0 ; i < Mesh->nNode; i++) {
+    call(mg_add_qtree_entry(Mesh->Coord+i*Mesh->Dim,
+                            (void**)&(Mesh->Node2Face[i]),
+                            Mesh->QuadTree));
+  }
+  
+  
   //get boundary groups
   while (line[0] == '%') {//skip comments
     fgets(line, MAXLINELEN, fid);
@@ -430,8 +466,11 @@ int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
                   sizeof(int)));
     call(mg_alloc((void**)&(Mesh->Elem[i].node), Mesh->Elem[i].nNode,
                   sizeof(int)));
-    for (j = 0; j < Mesh->Elem[i].nNode; j++)
+    for (j = 0; j < Mesh->Elem[i].nNode; j++){
       Mesh->Elem[i].node[j] = vi[j];
+      call(mg_add_2_ord_set(i, &Mesh->Node2Elem[vi[j]].nItem,
+                            &Mesh->Node2Elem[vi[j]].Item, NULL, false));
+    }
     fgets(line, MAXLINELEN, fid);
   }
   //face information
@@ -448,8 +487,11 @@ int mg_read_mesh(mg_Mesh **pMesh, char *FileName)
     Mesh->Face[i] = Face;
     Face->nNode = n-2;//number of entries read minus element numbers
     call(mg_alloc((void**)&Face->node, Face->nNode, sizeof(int)));
-    for (j = 0; j < Face->nNode; j++)
+    for (j = 0; j < Face->nNode; j++){
       Face->node[j] = vi[j];
+      call(mg_add_2_ord_set(i, &Mesh->Node2Face[vi[j]].nItem,
+                            &Mesh->Node2Face[vi[j]].Item, NULL, false));
+    }
     elemL = vi[n-2];
     elemR = vi[n-1];
     Face->elem[LEFTNEIGHINDEX] = elemL;

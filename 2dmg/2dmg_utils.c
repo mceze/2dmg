@@ -146,6 +146,9 @@ int mg_create_mesh(mg_Mesh **pMesh)
   call(mg_alloc((void**)&(*pMesh)->Stack->Node, 1, sizeof(mg_List)));
   mg_init_list(&(*pMesh)->Stack->Node[0]);
   
+  call(mg_alloc((void**)&(*pMesh)->QuadTree, 1, sizeof(mg_qtree)));
+  call(mg_init_branch((*pMesh)->QuadTree));
+  
   return err_OK;
 }
 
@@ -196,6 +199,8 @@ void mg_destroy_mesh(mg_Mesh *Mesh)
   mg_free((void*)Mesh->Stack->Node->Item);
   mg_free((void*)Mesh->Stack->Node);
   mg_free((void*)Mesh->Stack);
+  //destroy quadtree
+  mg_destroy_branch(Mesh->QuadTree);
   
   
   mg_free((void*)Mesh);

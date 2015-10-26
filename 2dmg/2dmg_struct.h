@@ -12,6 +12,7 @@
 #include <gsl/gsl_interp.h>
 #include <gsl/gsl_multimin.h>
 #include <gsl/gsl_blas.h>
+#include "2dmg_qtree.h"
 
 /******************************************************************/
 /* List structure */
@@ -118,7 +119,7 @@ static char *mge_GeoInterpName[mge_GeoInterpLast] = {
 };
 
 /******************************************************************/
-/* segment structure */
+/* ellipse structure */
 typedef struct
 {
   double V[4], Vinv[4], Ot[2], rho[2];
@@ -175,6 +176,7 @@ typedef struct
   mg_FaceData **Face;//storing only pointers to mg_FaceData structures
   mg_List *Node2Elem, *Node2Face;
   mg_MeshComponentStack *Stack;
+  mg_qtree *QuadTree;
 }
 mg_Mesh;
 

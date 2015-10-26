@@ -11,15 +11,16 @@
 #include "2dmg_def.h"
 #include "2dmg_utils.h"
 #include "2dmg_io.h"
+#include "2dmg_plot.h"
 
 int main(int argc, const char * argv[])
 {
   int ierr;
   mg_Mesh *Mesh;
   
-  call(mg_read_mesh(&Mesh, "box_5x5.gri"));
+  call(mg_read_mesh(&Mesh, "rae2822.gri"));
   
-  call(mg_write_mesh(Mesh, "test.gri"));
+  call(mg_show_mesh(Mesh));
   
   mg_destroy_mesh(Mesh);
   

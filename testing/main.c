@@ -15,8 +15,15 @@
 int main(int argc, const char * argv[]) {
   int ierr;
   bool inside;
-  double coord[6], rho[2], V[4], Vinv[4], C[2], p[2];
+  double coord[6], rho[2], V[4], Vinv[4], C[2], p[2], M[4];
   mg_Ellipse Ellipse;
+  
+  M[0]=2.50000000e+01;
+  M[1]=0.0;
+  M[2]=0.0;
+  M[3]=2.50000000e+01;
+  
+  call(mg_eig2(M, V, rho));
   
   
   coord[0] = -4.6;
