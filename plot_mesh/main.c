@@ -18,7 +18,7 @@ int main(int argc, const char * argv[])
   int ierr;
   mg_Mesh *Mesh;
   
-  call(mg_read_mesh(&Mesh, "rae2822.gri"));
+  call(mg_read_mesh(&Mesh, "box_5x5.gri"));
   
   call(mg_show_mesh(Mesh));
   
