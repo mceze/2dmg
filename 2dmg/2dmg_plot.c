@@ -94,9 +94,9 @@ int mg_plot_ellipse(mg_Ellipse *ellipse)
   R[2] = ellipse->V[2];
   R[3] = ellipse->V[0];
   //scaling
-  S[0] = 1.0/ellipse->rho[0];
+  S[0] = ellipse->rho[0];
   S[1] = S[2] = 0.0;
-  S[3] = 1.0/ellipse->rho[1];
+  S[3] = ellipse->rho[1];
   mg_mxm(2, 2, 2, R, S, T);
   
   for (i = 0; i < n; i++) {
@@ -178,36 +178,15 @@ void mg_close_plot_mesh(void)
 /* function:  mg_show_mesh */
 int mg_show_mesh(mg_Mesh *Mesh)
 {
-  int ierr, in;
+  int ierr, in, e, node;
   bool open = true, tree_on = false, reset_range = true;
-  double range[4], M[3], Mg[4];
+  double range[4], coord[6];
   int cursorval;
   mg_Metric *Metric;
-  mg_Ellipse *ellipse;
+  mg_Ellipse Ellipse;
   
   static PLGraphicsIn gin;
   
-  Metric = malloc(sizeof(mg_Metric));
-  //    Metric->type = mge_Metric_Uniform;
-  Metric->type = mge_Metric_Analitic2;
-  Metric->order = 10;
-  //      Metric->type = mge_Metric_Uniform;
-  //  Metric.order = 1;
-  call(mg_create_mesh(&Metric->BGMesh));
-  Metric->BGMesh->Dim = 2;
-  
-  ellipse = malloc(Mesh->nNode*sizeof(mg_Ellipse));
-  for (in = 0; in < Mesh->nNode; in++){
-    call(mg_get_metric(Metric, Mesh->Coord+in*Mesh->Dim,
-                       Mesh->Coord+in*Mesh->Dim+1, 1, M));
-    Mg[0] = M[0];
-    Mg[1] = M[1];
-    Mg[2] = M[1];
-    Mg[3] = M[2];
-    call(mg_eig2(Mg, ellipse[in].V, ellipse[in].rho));
-    ellipse[in].Ot[0] = Mesh->Coord[in*Mesh->Dim];
-    ellipse[in].Ot[1] = Mesh->Coord[in*Mesh->Dim+1];
-  }
   mg_init_plot_mesh(Mesh);
   
   //plot mesh
@@ -251,10 +230,16 @@ int mg_show_mesh(mg_Mesh *Mesh)
         call(mg_plot_mesh(Mesh, range, tree_on));
     }
     
-    //plot qtree
+    //plot ellipses
     if (strcmp(gin.string,"e")==0){
-      for (in = 0; in < Mesh->nNode; in++){
-        call(mg_plot_ellipse(ellipse+in));
+      for (e = 0; e < Mesh->nElem; e++){
+        for (in = 0; in < Mesh->Elem[e].nNode; in++) {
+          node = Mesh->Elem[e].node[in];
+          coord[in*Mesh->Dim] = Mesh->Coord[node*Mesh->Dim];
+          coord[in*Mesh->Dim+1] = Mesh->Coord[node*Mesh->Dim+1];
+        }
+        call(mg_circumellipse(coord, &Ellipse));
+        call(mg_plot_ellipse(&Ellipse));
       }
     }
     
