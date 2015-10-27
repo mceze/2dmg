@@ -14,7 +14,7 @@
 
 /******************************************************************/
 /* function:  mg_init_plot_mesh */
-void mg_init_plot_mesh(mg_Mesh *Mesh)
+void mg_init_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
 {
   int n, dim = Mesh->Dim;
   double xlim[2], ylim[2];
@@ -24,8 +24,10 @@ void mg_init_plot_mesh(mg_Mesh *Mesh)
   plinit();
   plfont( 2 );
   pladv( 0 );
+  plvsta();
   //set viewport as full window -10%
   plvpor( 0.05, 0.95, 0.05, 0.95 );
+  plvasp(1.0);
   //get xmin, xmax, ymin, ymax
   xlim[0] = xlim[1] = Mesh->Coord[0];
   ylim[0] = ylim[1] = Mesh->Coord[1];
@@ -39,10 +41,19 @@ void mg_init_plot_mesh(mg_Mesh *Mesh)
     if (Mesh->Coord[n*dim+1] > ylim[1])
       ylim[1] = Mesh->Coord[n*dim+1];
   }
+  plscolbg(110,110,110);
+  
+  PlotInfo->range[0] = xlim[0];
+  PlotInfo->range[1] = xlim[1];
+  PlotInfo->range[2] = ylim[0];
+  PlotInfo->range[3] = ylim[1];
+  PlotInfo->tree_on    = false;
+  PlotInfo->ellipse_on = false;
+  PlotInfo->elem_on    = false;
   
   //set plot limits
   plwind(xlim[0], xlim[1], ylim[0], ylim[1] );
-  
+  plschr(0.0,0.4);
 }
 
 /******************************************************************/
@@ -114,36 +125,21 @@ int mg_plot_ellipse(mg_Ellipse *ellipse)
 
 /******************************************************************/
 /* function:  mg_plot_mesh */
-int mg_plot_mesh(mg_Mesh *Mesh, double *limits, bool plot_tree)
+int mg_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
 {
-  int ierr, f, node0, node1, dim = Mesh->Dim, n;
-  double x[3], y[3], xlim[2],ylim[2];
+  int ierr, f, node0, node1, dim = Mesh->Dim, n, e, in, node;
+  double x[3], y[3], xlim[2],ylim[2], coord[6];
+  char text[10];
+  mg_Ellipse Ellipse;
   
   plflush();
   plclear();
   plcol0( 1 );
   
-  if (limits == NULL){
-    //get xmin, xmax, ymin, ymax
-    xlim[0] = xlim[1] = Mesh->Coord[0];
-    ylim[0] = ylim[1] = Mesh->Coord[1];
-    for (n = 1; n < Mesh->nNode; n++){
-      if (Mesh->Coord[n*dim+0] < xlim[0])
-        xlim[0] = Mesh->Coord[n*dim+0];
-      if (Mesh->Coord[n*dim+0] > xlim[1])
-        xlim[1] = Mesh->Coord[n*dim+0];
-      if (Mesh->Coord[n*dim+1] < ylim[0])
-        ylim[0] = Mesh->Coord[n*dim+1];
-      if (Mesh->Coord[n*dim+1] > ylim[1])
-        ylim[1] = Mesh->Coord[n*dim+1];
-    }
-  }
-  else {
-    xlim[0] = limits[0];
-    xlim[1] = limits[1];
-    ylim[0] = limits[2];
-    ylim[1] = limits[3];
-  }
+  xlim[0] = PlotInfo->range[0];
+  xlim[1] = PlotInfo->range[1];
+  ylim[0] = PlotInfo->range[2];
+  ylim[1] = PlotInfo->range[3];
   
   //set plot limits
   plwind(xlim[0], xlim[1], ylim[0], ylim[1] );
@@ -158,11 +154,37 @@ int mg_plot_mesh(mg_Mesh *Mesh, double *limits, bool plot_tree)
     plline( 2, x, y );
   }
   
-  if (plot_tree){
+  if (PlotInfo->tree_on){
     if (Mesh->QuadTree != NULL)
       call(mg_plot_branch(Mesh->QuadTree));
   }
   
+  if (PlotInfo->ellipse_on) {
+    for (e = 0; e < Mesh->nElem; e++){
+      for (in = 0; in < Mesh->Elem[e].nNode; in++) {
+        node = Mesh->Elem[e].node[in];
+        coord[in*Mesh->Dim] = Mesh->Coord[node*Mesh->Dim];
+        coord[in*Mesh->Dim+1] = Mesh->Coord[node*Mesh->Dim+1];
+      }
+      call(mg_circumellipse(coord, &Ellipse));
+      call(mg_plot_ellipse(&Ellipse));
+    }
+  }
+  
+  if (PlotInfo->elem_on) {
+    plcol0( 4 );
+    for (e = 0; e < Mesh->nElem; e++){
+      coord[0] = 0.0;
+      coord[1] = 0.0;
+      for (in = 0; in < Mesh->Elem[e].nNode; in++) {
+        node = Mesh->Elem[e].node[in];
+        coord[0] += Mesh->Coord[node*Mesh->Dim]/Mesh->Elem[e].nNode;
+        coord[1] += Mesh->Coord[node*Mesh->Dim+1]/Mesh->Elem[e].nNode;
+      }
+      sprintf(text, "%d",e);
+      plptex(coord[0],coord[1],0.0,0.0,0.5,text);
+    }
+  }
   
   return err_OK;
 }
@@ -178,19 +200,18 @@ void mg_close_plot_mesh(void)
 /* function:  mg_show_mesh */
 int mg_show_mesh(mg_Mesh *Mesh)
 {
-  int ierr, in, e, node;
-  bool open = true, tree_on = false, reset_range = true;
-  double range[4], coord[6];
+  int ierr, n;
+  bool open = true, refresh = false;
+  double range[4];
   int cursorval;
-  mg_Metric *Metric;
-  mg_Ellipse Ellipse;
+  mg_MeshPlot PlotInfo;
   
   static PLGraphicsIn gin;
   
-  mg_init_plot_mesh(Mesh);
+  mg_init_plot_mesh(Mesh, &PlotInfo);
   
   //plot mesh
-  call(mg_plot_mesh(Mesh, NULL, tree_on));
+  call(mg_plot_mesh(Mesh, &PlotInfo));
   
   while (open) {
     cursorval = plGetCursor( &gin );
@@ -202,55 +223,62 @@ int mg_show_mesh(mg_Mesh *Mesh)
         printf("Left click top left corner of zoom window\n");
         cursorval = plGetCursor( &gin );
         if (gin.button == 1){
-          range[0] = gin.wX;
-          range[3] = gin.wY;
+          PlotInfo.range[0] = gin.wX;
+          PlotInfo.range[3] = gin.wY;
           while (1) {
             printf("Left click bottom right corner of zoom window\n");
             cursorval = plGetCursor( &gin );
             if (gin.button == 1){
-              range[1] = gin.wX;
-              range[2] = gin.wY;
+              PlotInfo.range[1] = gin.wX;
+              PlotInfo.range[2] = gin.wY;
               break;
             }
           }
           break;
         }
       }
-      reset_range = false;
-      call(mg_plot_mesh(Mesh, range, tree_on));
+      refresh = true;
     }
     //plot qtree
     if (strcmp(gin.string,"t")==0){
-      tree_on = !tree_on;
-      if (tree_on)
-        call(mg_plot_branch(Mesh->QuadTree));
-      if (reset_range)
-        call(mg_plot_mesh(Mesh, NULL, tree_on));
-      else
-        call(mg_plot_mesh(Mesh, range, tree_on));
+      PlotInfo.tree_on = !PlotInfo.tree_on;
+      refresh = true;
     }
     
     //plot ellipses
     if (strcmp(gin.string,"e")==0){
-      for (e = 0; e < Mesh->nElem; e++){
-        for (in = 0; in < Mesh->Elem[e].nNode; in++) {
-          node = Mesh->Elem[e].node[in];
-          coord[in*Mesh->Dim] = Mesh->Coord[node*Mesh->Dim];
-          coord[in*Mesh->Dim+1] = Mesh->Coord[node*Mesh->Dim+1];
-        }
-        call(mg_circumellipse(coord, &Ellipse));
-        call(mg_plot_ellipse(&Ellipse));
-      }
+      PlotInfo.ellipse_on = !PlotInfo.ellipse_on;
+      refresh = true;
     }
     
-    //reset
+    //show elem numbers
+    if (strcmp(gin.string,"s")==0){
+      PlotInfo.elem_on = !PlotInfo.elem_on;
+      refresh = true;
+    }
+    
+    //reset range
     if (strcmp(gin.string,"r")==0){
-      call(mg_plot_mesh(Mesh, NULL, tree_on));
-      reset_range = true;
+      for (n = 1; n < Mesh->nNode; n++){
+        if (Mesh->Coord[n*Mesh->Dim+0] < PlotInfo.range[0])
+          PlotInfo.range[0] = Mesh->Coord[n*Mesh->Dim+0];
+        if (Mesh->Coord[n*Mesh->Dim+0] > PlotInfo.range[1])
+          PlotInfo.range[1] = Mesh->Coord[n*Mesh->Dim+0];
+        if (Mesh->Coord[n*Mesh->Dim+1] < PlotInfo.range[2])
+          PlotInfo.range[2] = Mesh->Coord[n*Mesh->Dim+1];
+        if (Mesh->Coord[n*Mesh->Dim+1] > PlotInfo.range[3])
+          PlotInfo.range[3] = Mesh->Coord[n*Mesh->Dim+1];
+      }
+      refresh = true;
     }
     //quit
     if (strcmp(gin.string,"q")==0){
       break;
+    }
+    
+    if (refresh){
+      call(mg_plot_mesh(Mesh, &PlotInfo));
+      refresh = false;
     }
   }
   

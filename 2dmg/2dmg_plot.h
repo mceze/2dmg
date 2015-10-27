@@ -15,8 +15,19 @@
 #include "plevent.h"
 
 /******************************************************************/
+/* mesh plot structure */
+typedef struct
+{
+  double range[4]; //viewport range
+  bool tree_on;
+  bool ellipse_on;
+  bool elem_on;
+}
+mg_MeshPlot;
+
+/******************************************************************/
 /* function:  mg_init_plot_mesh */
-void mg_init_plot_mesh(mg_Mesh *Mesh);
+void mg_init_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo);
 
 /******************************************************************/
 /* function:  mg_plot_ellipse */
@@ -24,7 +35,7 @@ int mg_plot_ellipse(mg_Ellipse *ellipse);
 
 /******************************************************************/
 /* function:  mg_plot_mesh */
-int mg_plot_mesh(mg_Mesh *Mesh, double *limits, bool plot_tree);
+int mg_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo);
 
 /******************************************************************/
 /* function:  mg_close_plot_mesh */
