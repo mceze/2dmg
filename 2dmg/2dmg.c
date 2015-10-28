@@ -281,8 +281,8 @@ int xf_VerifyFront2D(mg_Front *Front)
 /******************************************************************/
 /* function: mg_find_seed_face */
 /* selects a face to advance from front */
-int mg_find_seed_face(mg_Mesh *Mesh, mg_Metric *Metric,
-                      mg_Front *Front, mg_FrontFace **pSeedFace)
+int mg_find_seed_face(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front,
+                      mg_List *VisitedFaces, mg_FrontFace **pSeedFace)
 {
   int ierr, iloop;
   double x[4], proj, *na, *nb;
@@ -298,15 +298,24 @@ int mg_find_seed_face(mg_Mesh *Mesh, mg_Metric *Metric,
     
     while (FFace != Front->loop[iloop]->head || first) {
       first = false;
-      //check for convexity
-      na = FFace->prev->face->normal;
-      nb = FFace->face->normal;
-      proj = na[1]*nb[0]-nb[1]*na[0];
-      if (proj > 0.0){//making a "right" turn
-        (*pSeedFace) = FFace;
-        FoundSeed = true;
-        break;
+      
+      ierr = mg_binary_search(FFace->ID, VisitedFaces->Item, 0,
+                              VisitedFaces->nItem-1, NULL);
+      if (VisitedFaces->nItem == 0 || ierr == err_NOT_FOUND){
+        //check for convexity
+        na = FFace->prev->face->normal;
+        nb = FFace->face->normal;
+        proj = na[1]*nb[0]-nb[1]*na[0];
+        if (proj > 0.0){//making a "right" turn
+          (*pSeedFace) = FFace;
+          FoundSeed = true;
+          call(mg_add_2_ord_set((*pSeedFace)->ID, &VisitedFaces->nItem,
+                                &VisitedFaces->Item, NULL, false));
+          break;
+        }
       }
+      else if (ierr != err_OK)
+        return error(ierr);
       FFace = FFace->next;
     }
 
@@ -317,15 +326,25 @@ int mg_find_seed_face(mg_Mesh *Mesh, mg_Metric *Metric,
       first = true;
       while (FFace != Front->loop[iloop]->head || first) {
         first = false;
-        if (FFace->face->area < (*pSeedFace)->face->area){
-          (*pSeedFace) = FFace;
-          FoundSeed = true;
+        ierr = mg_binary_search(FFace->ID, VisitedFaces->Item, 0,
+                                VisitedFaces->nItem-1, NULL);
+        if (VisitedFaces->nItem == 0 || ierr == err_NOT_FOUND){
+          if (FFace->face->area < (*pSeedFace)->face->area){
+            (*pSeedFace) = FFace;
+            call(mg_add_2_ord_set((*pSeedFace)->ID, &VisitedFaces->nItem,
+                                  &VisitedFaces->Item, NULL, false));
+            FoundSeed = true;
+          }
         }
+        else if (ierr != err_OK)
+          return error(ierr);
         FFace = FFace->next;
       }
       
     }
   }
+  
+  if (!FoundSeed) return error(err_MESH_ERROR);
   
   return err_OK;
 }
@@ -404,7 +423,7 @@ static int mg_nodes_frnt_dist_ellipse(mg_Mesh *Mesh, mg_Front *Front,
 {
   int ierr, dim, iloop, inode1, nodeID1;
   mg_FrontFace *FFace;
-  bool inside;
+  bool inside, first = true;
   
   //scale ellipse
   Ellipse->rho[0] *= c;
@@ -413,12 +432,11 @@ static int mg_nodes_frnt_dist_ellipse(mg_Mesh *Mesh, mg_Front *Front,
   NodeList->nItem = 0;
   NodeList->Item = NULL;
   dim = Mesh->Dim;
-  //loop over front and compute distances
-//  for (iloop = 0; iloop < Front->nloop; iloop++) {
-//    if (Front->loop+iloop == NULL) continue;
+
   iloop = SelfFace->iloop;
   FFace = Front->loop[iloop]->head;
-  while (FFace != Front->loop[iloop]->tail) {
+  while (first || FFace != Front->loop[iloop]->head) {
+    first = false;
     if (FFace != SelfFace) {//skip self face
       for (inode1 = 0; inode1 < FFace->face->nNode; inode1++) {
         nodeID1 = FFace->face->node[inode1];
@@ -431,7 +449,6 @@ static int mg_nodes_frnt_dist_ellipse(mg_Mesh *Mesh, mg_Front *Front,
     }
     FFace = FFace->next;
   }
-  //  }
   
   //scale back ellipse
   Ellipse->rho[0] /= c;
@@ -1088,13 +1105,11 @@ int mg_bld_tri_frm_close_pts_ellipse(mg_Mesh *Mesh, mg_Front *Front,
                                      mg_Ellipse *Ellipse_opt,
                                      mg_List *CloseNodes, bool *success)
 {
-  int ierr, in, nodeID0, d, dim, nodeID1, iloop;
-  double proj, size_ratio, radius, J, Jmax=INFINITY, X0[4], X1[4], xint[2];
-  bool inside, first = true, intersect = false;
+  int ierr, in, nodeID0, d, dim, nodeID1;
+  double proj, size_ratio, J, Jmin=INFINITY;
   mg_FaceData *face = SelfFace->face;
   mg_List NodesOnLeft;
   mg_Ellipse Ellipse;
-  mg_FrontFace *FFace;
   
   dim = Mesh->Dim;
   NodesOnLeft.nItem = 0;
@@ -1126,13 +1141,10 @@ int mg_bld_tri_frm_close_pts_ellipse(mg_Mesh *Mesh, mg_Front *Front,
     size_ratio/= (min(Ellipse.rho[0], Ellipse.rho[1])/
                   max(Ellipse.rho[0], Ellipse.rho[1]));
     J = sqrt((proj-1.0)*(proj-1.0)+(size_ratio-1.0)*(size_ratio-1.0));
-    Jmax = J;
+    Jmin = J;
     
     for (in = 1; in < NodesOnLeft.nItem; in++) {
       nodeID1 = NodesOnLeft.Item[in];
-      //check if nodeID1 is inside Ellipse
-      //inside = mg_inside_ellipse(Mesh->Coord+nodeID1*dim, &Ellipse);
-     // if (inside) {
       //compare ellipses:
       //projection of first principal directions
       //measures the alignment between the ellipses
@@ -1146,17 +1158,19 @@ int mg_bld_tri_frm_close_pts_ellipse(mg_Mesh *Mesh, mg_Front *Front,
       size_ratio/= (min(Ellipse.rho[0], Ellipse.rho[1])/
                     max(Ellipse.rho[0], Ellipse.rho[1]));
       J = sqrt((proj-1.0)*(proj-1.0)+(size_ratio-1.0)*(size_ratio-1.0));
-      if (J < Jmax){
-        Jmax = J;
+      if (J < Jmin){
+        Jmin = J;
         nodeID0 = nodeID1;
       }
-      //}
     }
     //by now, nodeID0 is ideal
     //build triangle and update front
-    call(mg_tri_frm_face_node(Mesh, SelfFace, nodeID0, NULL));
-    call(mg_update_front(Mesh, Front, SelfFace));
-    (*success) = true;
+    //printf("Jmin: %1.3e\n",Jmin);
+    if (Jmin <= 2.0){
+      call(mg_tri_frm_face_node(Mesh, SelfFace, nodeID0, NULL));
+      call(mg_update_front(Mesh, Front, SelfFace));
+      (*success) = true;
+    }
   }
 
   //substitute CloseNodes by nodes on the left (not the best way to do this)
@@ -2093,9 +2107,8 @@ int mg_advance_front(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front)
   mg_init_list(CloseNodes);
        
   
-  call(mg_find_seed_face(Mesh, Metric, Front, &SeedFace));
-  call(mg_add_2_ord_set(SeedFace->ID, &VisitedSeedFaces->nItem,
-                        &VisitedSeedFaces->Item, NULL, false));
+  call(mg_find_seed_face(Mesh, Metric, Front, VisitedSeedFaces, &SeedFace));
+  
   while (!success) {
     //compute optimal point location
     call(mg_find_p_opt(Mesh, Metric, SeedFace, Popt));
@@ -2126,6 +2139,9 @@ int mg_advance_front(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front)
         X1[3] = Popt[1];
         intersect = mg_edges_intersect(X0,X1, xint);
         if (intersect) {
+          //if it is a boundary, add point to list otherwise break loop
+          if (FFace->face->elem[RIGHTNEIGHINDEX] >= 0)
+            continue;
           //add nodes to list
           call(mg_add_2_ord_set(FFace->face->node[0], &CloseNodes->nItem,
                                 &CloseNodes->Item, NULL, false));
@@ -2140,26 +2156,20 @@ int mg_advance_front(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front)
       call(mg_bld_tri_frm_close_pts_ellipse(Mesh, Front, SeedFace, &Ellipse,
                                             CloseNodes, &success));
     }
+    CloseNodes[0].nItem = 0;
+    mg_free((void*)CloseNodes[0].Item);
+    
     //if no node is acceptable
     if (!success) {
       //add node and check if new node is inside any of
       //the other triangles ellipses
       call(mg_add_new_node_ellipse(Mesh, Front, &SeedFace, CloseNodes, Popt,
                                    &success));
-      //if mg_add_new_node_ellipse returns "success == false", SeedFace
-      //points to new face
-      if (!success){
-        //mg_add_new_node_ellipse at this point will change the seedface
-        //if seedface has been visited, we have an error
-        ierr = mg_binary_search(SeedFace->ID, VisitedSeedFaces->Item, 0,
-                                VisitedSeedFaces->nItem-1, NULL);
-        if (ierr != err_NOT_FOUND) {
-          return error(err_MESH_ERROR);
-        }
+      
+      if (!success){//find another seedface
+        call(mg_find_seed_face(Mesh, Metric, Front, VisitedSeedFaces, &SeedFace));
       }
     }
-    CloseNodes[0].nItem = 0;
-    mg_free((void*)CloseNodes[0].Item);
   }
   VisitedSeedFaces->nItem = 0;
   mg_free((void*)VisitedSeedFaces[0].Item);
@@ -2307,11 +2317,11 @@ int main(int argc, char *argv[])
     call(mg_get_input_char("GeometryFile", &InFile));
     call(mg_read_geo(&Geo, InFile));
     //mesh boundary and create initial front
-    int nNodeInSeg[5]={20,8,20,8,25};
+    int nNodeInSeg[5]={19,8,19,8,25};
     Metric = malloc(sizeof(mg_Metric));
 //    Metric->type = mge_Metric_Uniform;
     Metric->type = mge_Metric_Analitic2;
-    Metric->order = 1;
+    Metric->order = 8;
 //      Metric->type = mge_Metric_Uniform;
     //  Metric.order = 1;
     call(mg_create_mesh(&Metric->BGMesh));
@@ -2332,12 +2342,12 @@ int main(int argc, char *argv[])
   call(mg_mesh_2_matlab(Mesh, &Front, "mesh_initial.m"));
   i = 0;
   while (!mg_front_empty(&Front)){
-    //if (i >= 200){
+   if (Mesh->nElem >= 336){
       printf("it = %d nElem = %d\n",i,Mesh->nElem);
 //      call(mg_show_mesh(Mesh));
 //      sprintf(MeshName, "mesh_at_%d.m",i);
 //      call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
-   // }
+    }
     //advance front
     ierr=error(mg_advance_front(Mesh, Metric, &Front));
     if (ierr != err_OK) {

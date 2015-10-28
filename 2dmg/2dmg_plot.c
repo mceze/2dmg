@@ -19,10 +19,11 @@ void mg_init_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
   int n, dim = Mesh->Dim;
   double xlim[2], ylim[2];
   
+  plsetopt("geometry","800x800");
   plsdev("xwin");
   // Initialize plplot
   plinit();
-  plfont( 2 );
+  plfont( 1 );
   pladv( 0 );
   plvsta();
   //set viewport as full window -10%
@@ -53,7 +54,7 @@ void mg_init_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
   
   //set plot limits
   plwind(xlim[0], xlim[1], ylim[0], ylim[1] );
-  plschr(0.0,0.4);
+  plschr(0.0,0.5);
 }
 
 /******************************************************************/
@@ -214,9 +215,9 @@ int mg_show_mesh(mg_Mesh *Mesh)
   call(mg_plot_mesh(Mesh, &PlotInfo));
   
   while (open) {
-    cursorval = plGetCursor( &gin );
-    printf("cursorval = %d wx: %1.2e wy: %1.2e dx: %1.2e dy: %1.2e key: %s button: %d\n",
-           cursorval,gin.wX,gin.wY,gin.dX,gin.dY,gin.string, gin.button);
+//    cursorval = plGetCursor( &gin );
+//    printf("cursorval = %d type: %d wx: %1.2e wy: %1.2e dx: %1.2e dy: %1.2e key: %s button: %d\n",
+//           cursorval, gin.type,gin.wX,gin.wY,gin.dX,gin.dY,gin.string, gin.button);
     //zoom
     if (strcmp(gin.string,"z")==0){
       while (1) {
