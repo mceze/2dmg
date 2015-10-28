@@ -277,10 +277,11 @@ int mg_show_mesh(mg_Mesh *Mesh)
       break;
     }
     
-    if (refresh){
+//    if (refresh){
       call(mg_plot_mesh(Mesh, &PlotInfo));
-      refresh = false;
-    }
+//      trefresh = false;
+//    }
+    
   }
   
   mg_close_plot_mesh();

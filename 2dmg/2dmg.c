@@ -13,6 +13,7 @@
 #include "2dmg_math.h"
 #include "2dmg_geo.h"
 #include "2dmg_plot.h"
+#include <omp.h>
 
 /******************************************************************/
 /* function: mg_calc_face_info */
@@ -318,7 +319,7 @@ int mg_find_seed_face(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front,
         return error(ierr);
       FFace = FFace->next;
     }
-
+    
     if (FoundSeed)
       break;
     else {
@@ -415,7 +416,7 @@ int mg_comp_mesh_size(mg_Mesh *Mesh, mg_FrontFace *FFace, double **prho,
 
 /******************************************************************/
 /* function: mg_nodes_frnt_dist_ellipse */
-/* pick nodes in the front that are within an Ellipse 
+/* pick nodes in the front that are within an Ellipse
  scaled by "c" */
 static int mg_nodes_frnt_dist_ellipse(mg_Mesh *Mesh, mg_Front *Front,
                                       mg_FrontFace *SelfFace, mg_Ellipse *Ellipse,
@@ -432,7 +433,7 @@ static int mg_nodes_frnt_dist_ellipse(mg_Mesh *Mesh, mg_Front *Front,
   NodeList->nItem = 0;
   NodeList->Item = NULL;
   dim = Mesh->Dim;
-
+  
   iloop = SelfFace->iloop;
   FFace = Front->loop[iloop]->head;
   while (first || FFace != Front->loop[iloop]->head) {
@@ -1172,7 +1173,7 @@ int mg_bld_tri_frm_close_pts_ellipse(mg_Mesh *Mesh, mg_Front *Front,
       (*success) = true;
     }
   }
-
+  
   //substitute CloseNodes by nodes on the left (not the best way to do this)
   CloseNodes->nItem = NodesOnLeft.nItem;
   mg_free((void*)CloseNodes->Item);
@@ -1840,13 +1841,13 @@ mg_add_new_node_ellipse(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace **pActiveFa
             //form triangle
             call(mg_tri_frm_face_node(Mesh, FFace, newnodeID, (nsuccess == 0)?
                                       newcoord:NULL));
-//            if (nsuccess == 0 && NodeFromStack == true){
-//              //first success, it means newnode is not new anymore
-//              call(mg_rm_frm_ord_set(newnodeID, &Mesh->Stack->Node->nItem,
-//                                     &Mesh->Stack->Node->Item, 1, &t));
-//              if (t != 1)
-//                return error(err_MESH_ERROR);
-//            }
+            //            if (nsuccess == 0 && NodeFromStack == true){
+            //              //first success, it means newnode is not new anymore
+            //              call(mg_rm_frm_ord_set(newnodeID, &Mesh->Stack->Node->nItem,
+            //                                     &Mesh->Stack->Node->Item, 1, &t));
+            //              if (t != 1)
+            //                return error(err_MESH_ERROR);
+            //            }
             nsuccess++;
             call(mg_update_front(Mesh, Front, FFace));
           }
@@ -2009,7 +2010,7 @@ mg_add_new_node(mg_Mesh *Mesh, mg_Front *Front, mg_FrontFace *ActiveFace,
 
 /******************************************************************/
 /* function: mg_find_p_opt */
-/* determines the optimal point coordinates given a front face 
+/* determines the optimal point coordinates given a front face
  and a metric field */
 static int mg_find_p_opt(mg_Mesh *Mesh, mg_Metric *Metric,
                          mg_FrontFace *FFace, double *Popt)
@@ -2105,7 +2106,7 @@ int mg_advance_front(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front)
   //allocate list for nodes that arecandidates for connection
   call(mg_alloc((void**)&CloseNodes, 1, sizeof(mg_List)));
   mg_init_list(CloseNodes);
-       
+  
   
   call(mg_find_seed_face(Mesh, Metric, Front, VisitedSeedFaces, &SeedFace));
   
@@ -2269,17 +2270,26 @@ int mg_prealloc_msh_comp(mg_Mesh *Mesh, int nElem, int nFace, int nNode)
   return err_OK;
 }
 
+void *test_plot_mesh_pthread(void *pMesh)
+{
+  int ierr;
+  mg_Mesh *Mesh = (mg_Mesh*)pMesh;
+  ierr = mg_show_mesh(Mesh);
+  return pMesh;
+}
+
 /******************************************************************/
 /* Main program */
 int main(int argc, char *argv[])
 {
-  int ierr, len, i;
+  int ierr, len, i, tid;
   char ParFile[MAXSTRLEN], *InFile, *OutFile,*pext;
-  char MeshName[MAXSTRLEN];
+  char cmd[5];
   mg_Mesh *Mesh;
   mg_Front Front;
   mg_Geometry *Geo;
   mg_Metric *Metric;
+  
   
   /* Check number of arguments */
   if( argc != 2 ){
@@ -2319,17 +2329,17 @@ int main(int argc, char *argv[])
     //mesh boundary and create initial front
     int nNodeInSeg[5]={19,8,19,8,25};
     Metric = malloc(sizeof(mg_Metric));
-//    Metric->type = mge_Metric_Uniform;
+    //    Metric->type = mge_Metric_Uniform;
     Metric->type = mge_Metric_Analitic2;
     Metric->order = 8;
-//      Metric->type = mge_Metric_Uniform;
+    //      Metric->type = mge_Metric_Uniform;
     //  Metric.order = 1;
     call(mg_create_mesh(&Metric->BGMesh));
     Metric->BGMesh->Dim = 2;
     call(mg_create_mesh(&Mesh));
     call(mg_create_bmesh_from_geo(Geo, Metric, nNodeInSeg, Mesh, &Front));
-//    mg_destroy_mesh(Metric->BGMesh);
-//    mg_free((void*)Metric);
+    //    mg_destroy_mesh(Metric->BGMesh);
+    //    mg_free((void*)Metric);
   }
   
   //fill in face information
@@ -2341,23 +2351,38 @@ int main(int argc, char *argv[])
   call(mg_create_front(Mesh, &Front));
   call(mg_mesh_2_matlab(Mesh, &Front, "mesh_initial.m"));
   i = 0;
-  while (!mg_front_empty(&Front)){
-   if (Mesh->nElem >= 5){
-      printf("it = %d nElem = %d\n",i,Mesh->nElem);
-      call(mg_show_mesh(Mesh));
-//      sprintf(MeshName, "mesh_at_%d.m",i);
-//      call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
+  //fork two threads: 1 for plotting and 1 for generating the mesh
+#pragma omp parallel num_threads(2) shared(i,Mesh) private(tid)
+  {
+    tid = omp_get_thread_num();
+    printf("tid: %d\n",tid);
+    if (tid == 0){
+      while (!mg_front_empty(&Front)){
+        printf("it = %d nElem = %d\n",i,Mesh->nElem);
+        //advance front
+        ierr=error(mg_advance_front(Mesh, Metric, &Front));
+        printf("hit a key to continue\n");
+        scanf("%c\n",cmd);
+        if (ierr != err_OK) {
+          //      call(mg_show_mesh(Mesh));
+          //      call(mg_mesh_2_matlab(Mesh, &Front,"mesh_error.m"));
+          //exit(0);
+          break;
+        }
+        //DEBUGGING
+        //call(xf_VerifyFront2D(&Front));
+        i++;
+      }
     }
-    //advance front
-    ierr=error(mg_advance_front(Mesh, Metric, &Front));
-    if (ierr != err_OK) {
-      call(mg_show_mesh(Mesh));
-//      call(mg_mesh_2_matlab(Mesh, &Front,"mesh_error.m"));
-      exit(0);
+    else{
+      printf("tid: %d\n",tid);
+      // if (Mesh->nElem >= 5){
+      ierr = error(mg_show_mesh(Mesh));
+      //      sprintf(MeshName, "mesh_at_%d.m",i);
+      //      call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
+      //}
+      //exit(0);
     }
-    //DEBUGGING
-    //call(xf_VerifyFront2D(&Front));
-    i++;
   }
   //call(mg_plot_mesh(Mesh));
   call(mg_get_input_char("OutputMesh", &OutFile));
@@ -2370,6 +2395,5 @@ int main(int argc, char *argv[])
   mg_destroy_mesh(Mesh);
   //destroy hash table
   hdestroy();
-  
   return err_OK;
 }
