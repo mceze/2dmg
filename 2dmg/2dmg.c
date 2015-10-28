@@ -2342,9 +2342,9 @@ int main(int argc, char *argv[])
   call(mg_mesh_2_matlab(Mesh, &Front, "mesh_initial.m"));
   i = 0;
   while (!mg_front_empty(&Front)){
-   if (Mesh->nElem >= 336){
+   if (Mesh->nElem >= 5){
       printf("it = %d nElem = %d\n",i,Mesh->nElem);
-//      call(mg_show_mesh(Mesh));
+      call(mg_show_mesh(Mesh));
 //      sprintf(MeshName, "mesh_at_%d.m",i);
 //      call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
     }

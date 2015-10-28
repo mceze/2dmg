@@ -215,7 +215,7 @@ int mg_show_mesh(mg_Mesh *Mesh)
   call(mg_plot_mesh(Mesh, &PlotInfo));
   
   while (open) {
-//    cursorval = plGetCursor( &gin );
+    cursorval = plGetCursor( &gin );
 //    printf("cursorval = %d type: %d wx: %1.2e wy: %1.2e dx: %1.2e dy: %1.2e key: %s button: %d\n",
 //           cursorval, gin.type,gin.wX,gin.wY,gin.dX,gin.dY,gin.string, gin.button);
     //zoom
