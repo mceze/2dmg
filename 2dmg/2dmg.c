@@ -2358,11 +2358,12 @@ int main(int argc, char *argv[])
     printf("tid: %d\n",tid);
     if (tid == 0){
       while (!mg_front_empty(&Front)){
-        printf("it = %d nElem = %d\n",i,Mesh->nElem);
+        if (i == 306)
+          printf("it = %d nElem = %d\n",i,Mesh->nElem);
         //advance front
         ierr=error(mg_advance_front(Mesh, Metric, &Front));
-        printf("hit a key to continue\n");
-        scanf("%c\n",cmd);
+//        printf("hit a key to continue\n");
+//        scanf("%c\n",cmd);
         if (ierr != err_OK) {
           //      call(mg_show_mesh(Mesh));
           //      call(mg_mesh_2_matlab(Mesh, &Front,"mesh_error.m"));

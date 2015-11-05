@@ -5,6 +5,8 @@ For anisotropic metric, the Delaunay criterion is modified to the elements' Stei
 Plotting:
 The PLPlot library is used for plotting: http://plplot.sourceforge.net
 
+![alt text](https://github.com/mceze/2dmg/blob/master/plotter7.png "Example of anisotropic mesh with element id and Steiner ellipses")
+
 ![alt text](https://github.com/mceze/2dmg/blob/master/plotter5.png "Example of anisotropic mesh")
 
 ![alt text](https://github.com/mceze/2dmg/blob/master/plotter6.png "Steiner ellipses")

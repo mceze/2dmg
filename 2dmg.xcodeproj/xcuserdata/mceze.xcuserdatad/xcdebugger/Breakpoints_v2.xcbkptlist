@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467711784.319261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2297"
-            endingLineNumber = "2297"
+            startingLineNumber = "2316"
+            endingLineNumber = "2316"
             landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467711784.319261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2310"
-            endingLineNumber = "2310"
+            startingLineNumber = "2351"
+            endingLineNumber = "2351"
             landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,39 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2332"
-            endingLineNumber = "2332"
-            landmarkName = "main()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2319"
-            endingLineNumber = "2319"
-            landmarkName = "main()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "457338039.490214"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
@@ -106,7 +74,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "457338039.490214"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "185"
@@ -122,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "457338039.490214"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
@@ -138,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "457338039.490214"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "156"
@@ -154,7 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "457338039.490214"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "181"
@@ -170,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "457338039.490214"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "176"
@@ -186,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "457338039.490214"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "205"
@@ -202,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1202"
-            endingLineNumber = "1202"
+            startingLineNumber = "1216"
+            endingLineNumber = "1216"
             landmarkName = "mg_bld_tri_frm_close_pts()"
             landmarkType = "7">
          </BreakpointContent>
@@ -938,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467711784.319261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2275"
-            endingLineNumber = "2275"
+            startingLineNumber = "2294"
+            endingLineNumber = "2294"
             landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>
@@ -954,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2254"
-            endingLineNumber = "2254"
+            startingLineNumber = "2264"
+            endingLineNumber = "2264"
             landmarkName = "mg_prealloc_msh_comp()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1050,11 +1018,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467711784.319261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2313"
-            endingLineNumber = "2313"
+            startingLineNumber = "2332"
+            endingLineNumber = "2332"
             landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1082,11 +1050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467711784.319261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2306"
-            endingLineNumber = "2306"
+            startingLineNumber = "2325"
+            endingLineNumber = "2325"
             landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1226,11 +1194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2038"
-            endingLineNumber = "2038"
+            startingLineNumber = "2052"
+            endingLineNumber = "2052"
             landmarkName = "mg_find_p_opt()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1242,11 +1210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1141"
-            endingLineNumber = "1141"
+            startingLineNumber = "1153"
+            endingLineNumber = "1153"
             landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1258,11 +1226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2146"
-            endingLineNumber = "2146"
+            startingLineNumber = "2165"
+            endingLineNumber = "2165"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1274,11 +1242,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2107"
-            endingLineNumber = "2107"
+            startingLineNumber = "2120"
+            endingLineNumber = "2120"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1290,11 +1258,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1765"
-            endingLineNumber = "1765"
+            startingLineNumber = "1779"
+            endingLineNumber = "1779"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1306,11 +1274,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1756"
-            endingLineNumber = "1756"
+            startingLineNumber = "1770"
+            endingLineNumber = "1770"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1322,11 +1290,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1767"
-            endingLineNumber = "1767"
+            startingLineNumber = "1781"
+            endingLineNumber = "1781"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1354,11 +1322,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2100"
-            endingLineNumber = "2100"
+            startingLineNumber = "2113"
+            endingLineNumber = "2113"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1370,11 +1338,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2061"
-            endingLineNumber = "2061"
+            startingLineNumber = "2075"
+            endingLineNumber = "2075"
             landmarkName = "mg_find_p_opt()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1386,11 +1354,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2096"
-            endingLineNumber = "2096"
+            startingLineNumber = "2110"
+            endingLineNumber = "2110"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1402,11 +1370,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "777"
-            endingLineNumber = "777"
+            startingLineNumber = "794"
+            endingLineNumber = "794"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1418,11 +1386,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2104"
-            endingLineNumber = "2104"
+            startingLineNumber = "2117"
+            endingLineNumber = "2117"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1434,11 +1402,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1751"
-            endingLineNumber = "1751"
+            startingLineNumber = "1765"
+            endingLineNumber = "1765"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1450,11 +1418,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1788"
-            endingLineNumber = "1788"
+            startingLineNumber = "1802"
+            endingLineNumber = "1802"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1466,11 +1434,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1815"
-            endingLineNumber = "1815"
+            startingLineNumber = "1829"
+            endingLineNumber = "1829"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1482,11 +1450,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2160"
-            endingLineNumber = "2160"
+            startingLineNumber = "2172"
+            endingLineNumber = "2172"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1498,11 +1466,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2097"
-            endingLineNumber = "2097"
+            startingLineNumber = "2114"
+            endingLineNumber = "2114"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1514,27 +1482,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2101"
-            endingLineNumber = "2101"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1843"
-            endingLineNumber = "1843"
+            startingLineNumber = "1857"
+            endingLineNumber = "1857"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1546,11 +1498,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1791"
-            endingLineNumber = "1791"
+            startingLineNumber = "1805"
+            endingLineNumber = "1805"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1562,11 +1514,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2147"
-            endingLineNumber = "2147"
+            startingLineNumber = "2166"
+            endingLineNumber = "2166"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1578,11 +1530,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
+            startingLineNumber = "600"
+            endingLineNumber = "600"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1594,11 +1546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "660"
-            endingLineNumber = "660"
+            startingLineNumber = "677"
+            endingLineNumber = "677"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1610,11 +1562,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "685"
-            endingLineNumber = "685"
+            startingLineNumber = "702"
+            endingLineNumber = "702"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1626,11 +1578,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "830"
-            endingLineNumber = "830"
+            startingLineNumber = "847"
+            endingLineNumber = "847"
             landmarkName = "mg_update_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1642,11 +1594,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "866"
-            endingLineNumber = "866"
+            startingLineNumber = "883"
+            endingLineNumber = "883"
             landmarkName = "mg_update_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1658,11 +1610,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "884"
-            endingLineNumber = "884"
+            startingLineNumber = "901"
+            endingLineNumber = "901"
             landmarkName = "mg_update_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1674,27 +1626,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2157"
-            endingLineNumber = "2157"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1304"
-            endingLineNumber = "1304"
+            startingLineNumber = "1318"
+            endingLineNumber = "1318"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1706,11 +1642,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1322"
-            endingLineNumber = "1322"
+            startingLineNumber = "1336"
+            endingLineNumber = "1336"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1722,11 +1658,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1364"
-            endingLineNumber = "1364"
+            startingLineNumber = "1378"
+            endingLineNumber = "1378"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1738,11 +1674,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2137"
-            endingLineNumber = "2137"
+            startingLineNumber = "2153"
+            endingLineNumber = "2153"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1754,43 +1690,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467711784.319261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2130"
-            endingLineNumber = "2130"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1117"
-            endingLineNumber = "1117"
-            landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2320"
-            endingLineNumber = "2320"
+            startingLineNumber = "2339"
+            endingLineNumber = "2339"
             landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1818,11 +1722,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "767"
-            endingLineNumber = "767"
+            startingLineNumber = "784"
+            endingLineNumber = "784"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1834,11 +1738,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2138"
-            endingLineNumber = "2138"
+            startingLineNumber = "2118"
+            endingLineNumber = "2118"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1850,11 +1754,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2151"
-            endingLineNumber = "2151"
+            startingLineNumber = "2156"
+            endingLineNumber = "2156"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1866,91 +1770,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2326"
-            endingLineNumber = "2326"
-            landmarkName = "main()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2105"
-            endingLineNumber = "2105"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "467155204.964114"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2342"
-            endingLineNumber = "2342"
-            landmarkName = "main()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2140"
-            endingLineNumber = "2140"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2099"
-            endingLineNumber = "2099"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1118"
-            endingLineNumber = "1118"
+            startingLineNumber = "1133"
+            endingLineNumber = "1133"
             landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1962,11 +1786,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2102"
-            endingLineNumber = "2102"
+            startingLineNumber = "2115"
+            endingLineNumber = "2115"
             landmarkName = "mg_advance_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1978,11 +1802,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1748"
-            endingLineNumber = "1748"
+            startingLineNumber = "1762"
+            endingLineNumber = "1762"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1994,11 +1818,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1749"
-            endingLineNumber = "1749"
+            startingLineNumber = "1763"
+            endingLineNumber = "1763"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2010,11 +1834,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1497"
-            endingLineNumber = "1497"
+            startingLineNumber = "1511"
+            endingLineNumber = "1511"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2026,11 +1850,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1512"
-            endingLineNumber = "1512"
+            startingLineNumber = "1526"
+            endingLineNumber = "1526"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2042,11 +1866,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1677"
-            endingLineNumber = "1677"
+            startingLineNumber = "1691"
+            endingLineNumber = "1691"
             landmarkName = "mg_cand_nds_2_cand_fcs()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2058,11 +1882,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1686"
-            endingLineNumber = "1686"
+            startingLineNumber = "1700"
+            endingLineNumber = "1700"
             landmarkName = "mg_cand_nds_2_cand_fcs()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2074,11 +1898,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1687"
-            endingLineNumber = "1687"
+            startingLineNumber = "1701"
+            endingLineNumber = "1701"
             landmarkName = "mg_cand_nds_2_cand_fcs()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2090,11 +1914,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1692"
-            endingLineNumber = "1692"
+            startingLineNumber = "1706"
+            endingLineNumber = "1706"
             landmarkName = "mg_cand_nds_2_cand_fcs()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2106,11 +1930,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1696"
-            endingLineNumber = "1696"
+            startingLineNumber = "1710"
+            endingLineNumber = "1710"
             landmarkName = "mg_cand_nds_2_cand_fcs()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2122,11 +1946,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
             landmarkName = "mg_find_seed_face()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2138,11 +1962,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "306"
-            endingLineNumber = "306"
+            startingLineNumber = "310"
+            endingLineNumber = "310"
             landmarkName = "mg_find_seed_face()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2154,39 +1978,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2028"
-            endingLineNumber = "2028"
-            landmarkName = "mg_find_p_opt()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2025"
-            endingLineNumber = "2025"
-            landmarkName = "mg_find_p_opt()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2042"
@@ -2202,11 +1994,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2062"
-            endingLineNumber = "2062"
+            startingLineNumber = "2039"
+            endingLineNumber = "2039"
             landmarkName = "mg_find_p_opt()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2218,11 +2010,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "428"
-            endingLineNumber = "428"
+            startingLineNumber = "2056"
+            endingLineNumber = "2056"
+            landmarkName = "mg_find_p_opt()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2076"
+            endingLineNumber = "2076"
+            landmarkName = "mg_find_p_opt()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
             landmarkName = "mg_nodes_frnt_dist_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2234,11 +2058,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "440"
-            endingLineNumber = "440"
+            startingLineNumber = "457"
+            endingLineNumber = "457"
             landmarkName = "mg_nodes_frnt_dist_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2250,11 +2074,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1157"
-            endingLineNumber = "1157"
+            startingLineNumber = "1121"
+            endingLineNumber = "1121"
             landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2266,59 +2090,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2113"
-            endingLineNumber = "2113"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2132"
-            endingLineNumber = "2132"
-            landmarkName = "mg_advance_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1106"
-            endingLineNumber = "1106"
-            landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "833"
-            endingLineNumber = "833"
+            startingLineNumber = "850"
+            endingLineNumber = "850"
             landmarkName = "mg_update_front()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2330,11 +2106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1104"
-            endingLineNumber = "1104"
+            startingLineNumber = "1119"
+            endingLineNumber = "1119"
             landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2346,11 +2122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429691.926987"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "602"
-            endingLineNumber = "602"
+            startingLineNumber = "619"
+            endingLineNumber = "619"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2362,11 +2138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1131"
-            endingLineNumber = "1131"
+            startingLineNumber = "1146"
+            endingLineNumber = "1146"
             landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2374,15 +2150,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465429911.313022"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "640"
-            endingLineNumber = "640"
+            startingLineNumber = "657"
+            endingLineNumber = "657"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2394,11 +2170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1781"
-            endingLineNumber = "1781"
+            startingLineNumber = "1795"
+            endingLineNumber = "1795"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2410,71 +2186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1785"
-            endingLineNumber = "1785"
-            landmarkName = "mg_add_new_node_ellipse()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1444"
-            endingLineNumber = "1444"
-            landmarkName = "mg_rm_broken_elems()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1447"
-            endingLineNumber = "1447"
-            landmarkName = "mg_rm_broken_elems()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1803"
-            endingLineNumber = "1803"
-            landmarkName = "mg_add_new_node_ellipse()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1799"
@@ -2490,11 +2202,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1805"
-            endingLineNumber = "1805"
+            startingLineNumber = "1458"
+            endingLineNumber = "1458"
+            landmarkName = "mg_rm_broken_elems()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1461"
+            endingLineNumber = "1461"
+            landmarkName = "mg_rm_broken_elems()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1817"
+            endingLineNumber = "1817"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2506,11 +2250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1827"
-            endingLineNumber = "1827"
+            startingLineNumber = "1813"
+            endingLineNumber = "1813"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2522,11 +2266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1822"
-            endingLineNumber = "1822"
+            startingLineNumber = "1819"
+            endingLineNumber = "1819"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2538,11 +2282,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465431758.186057"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "580"
-            endingLineNumber = "580"
+            startingLineNumber = "1841"
+            endingLineNumber = "1841"
+            landmarkName = "mg_add_new_node_ellipse()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1836"
+            endingLineNumber = "1836"
+            landmarkName = "mg_add_new_node_ellipse()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "597"
+            endingLineNumber = "597"
             landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2554,11 +2330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1800"
-            endingLineNumber = "1800"
+            startingLineNumber = "1814"
+            endingLineNumber = "1814"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2570,11 +2346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1326"
-            endingLineNumber = "1326"
+            startingLineNumber = "1340"
+            endingLineNumber = "1340"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2586,11 +2362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1307"
-            endingLineNumber = "1307"
+            startingLineNumber = "1321"
+            endingLineNumber = "1321"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2602,11 +2378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1382"
-            endingLineNumber = "1382"
+            startingLineNumber = "1396"
+            endingLineNumber = "1396"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2618,11 +2394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1426"
-            endingLineNumber = "1426"
+            startingLineNumber = "1440"
+            endingLineNumber = "1440"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2634,11 +2410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1400"
-            endingLineNumber = "1400"
+            startingLineNumber = "1414"
+            endingLineNumber = "1414"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2650,11 +2426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1404"
-            endingLineNumber = "1404"
+            startingLineNumber = "1418"
+            endingLineNumber = "1418"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2666,11 +2442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1398"
-            endingLineNumber = "1398"
+            startingLineNumber = "1412"
+            endingLineNumber = "1412"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2682,11 +2458,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1422"
-            endingLineNumber = "1422"
+            startingLineNumber = "1436"
+            endingLineNumber = "1436"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2698,11 +2474,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1410"
-            endingLineNumber = "1410"
+            startingLineNumber = "1424"
+            endingLineNumber = "1424"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2714,11 +2490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1330"
-            endingLineNumber = "1330"
+            startingLineNumber = "1344"
+            endingLineNumber = "1344"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2730,11 +2506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1331"
-            endingLineNumber = "1331"
+            startingLineNumber = "1345"
+            endingLineNumber = "1345"
             landmarkName = "mg_rm_broken_elems()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2746,11 +2522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1802"
-            endingLineNumber = "1802"
+            startingLineNumber = "1816"
+            endingLineNumber = "1816"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2762,11 +2538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1804"
-            endingLineNumber = "1804"
+            startingLineNumber = "1818"
+            endingLineNumber = "1818"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2778,11 +2554,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1820"
-            endingLineNumber = "1820"
+            startingLineNumber = "1834"
+            endingLineNumber = "1834"
             landmarkName = "mg_add_new_node_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2874,28 +2650,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg.c"
-            timestampString = "465513766.563559"
+            timestampString = "467699531.130593"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "909"
-            endingLineNumber = "909"
+            startingLineNumber = "926"
+            endingLineNumber = "926"
             landmarkName = "mg_update_front()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg.c"
-            timestampString = "465516165.30948"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1134"
-            endingLineNumber = "1134"
-            landmarkName = "mg_bld_tri_frm_close_pts_ellipse()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3018,11 +2778,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg_plot.c"
-            timestampString = "467589824.211443"
+            timestampString = "467697455.40721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "mg_plot_ellipse()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg_plot.c"
+            timestampString = "467697455.40721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "mg_plot_ellipse()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg_plot.c"
+            timestampString = "467697455.40721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "mg_show_mesh()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3034,44 +2826,252 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "2dmg/2dmg_plot.c"
-            timestampString = "467176389.944416"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "mg_plot_ellipse()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg_plot.c"
-            timestampString = "467176475.568332"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "mg_plot_ellipse()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "2dmg/2dmg_plot.c"
-            timestampString = "467589834.859309"
+            timestampString = "467697455.40721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "241"
             endingLineNumber = "241"
             landmarkName = "mg_show_mesh()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2121"
+            endingLineNumber = "2121"
+            landmarkName = "mg_advance_front()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2144"
+            endingLineNumber = "2144"
+            landmarkName = "mg_advance_front()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "mg_find_seed_face()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1793"
+            endingLineNumber = "1793"
+            landmarkName = "mg_add_new_node_ellipse()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "mg_find_seed_face()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
+            landmarkName = "mg_find_seed_face()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467699531.130593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
+            landmarkName = "mg_find_seed_face()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "468054065.437138"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2360"
+            endingLineNumber = "2360"
+            landmarkName = "main()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "467712653.577678"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2359"
+            endingLineNumber = "2359"
+            landmarkName = "main()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "468054065.437138"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2389"
+            endingLineNumber = "2389"
+            landmarkName = "main()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "3"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "468054065.437138"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2366"
+            endingLineNumber = "2366"
+            landmarkName = "main()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "468054062.261709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2362"
+            endingLineNumber = "2362"
+            landmarkName = "main()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "468054179.716609"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2157"
+            endingLineNumber = "2157"
+            landmarkName = "mg_advance_front()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "468054202.107171"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2155"
+            endingLineNumber = "2155"
+            landmarkName = "mg_advance_front()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "2dmg/2dmg.c"
+            timestampString = "468055319.208866"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "712"
+            endingLineNumber = "712"
+            landmarkName = "mg_tri_frm_face_node()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
