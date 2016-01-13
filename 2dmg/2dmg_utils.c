@@ -961,5 +961,54 @@ void mg_free_linked_list(struct mg_Item *Item)
   Item = NULL;
 }
 
+/******************************************************************/
+/* function: mg_calc_face_info */
+/* calculates face properties */
+int mg_calc_face_info(mg_Mesh *Mesh)
+{
+  int ierr, f, i, *node, in, istack;
+  double delta[3];
+  mg_FaceData *face;
+  
+  istack = 0;
+  for (f = 0; f < Mesh->nFace+Mesh->Stack->Face->nItem; f++) {
+    face = Mesh->Face[f];
+    //if face normal is null, assume all face data is stale or uninitialized
+    //do not calculate if on stack
+    if (Mesh->Stack->Face->nItem >0)
+      if (f == Mesh->Stack->Face->Item[istack]){
+        istack++;
+        continue;
+      }
+    if (face->normal == NULL) {
+      node = face->node;
+      call(mg_alloc((void**)&face->normal, Mesh->Dim, sizeof(double)));
+      call(mg_alloc((void**)&face->centroid, Mesh->Dim, sizeof(double)));
+      switch (Mesh->Dim) {
+        case 2:
+          face->area = 0.0;
+          for (i=0;i<Mesh->Dim;i++){
+            delta[i] = Mesh->Coord[node[1]*Mesh->Dim+i]-Mesh->Coord[node[0]*Mesh->Dim+i];
+            face->area += delta[i]*delta[i];
+            face->centroid[i] = 0.0;
+            for (in = 0; in < face->nNode; in++)
+              face->centroid[i] += Mesh->Coord[node[in]*Mesh->Dim+i]/face->nNode;
+          }
+          face->area = sqrt(face->area);
+          face->normal[0] = -delta[1]/face->area;
+          face->normal[1] = delta[0]/face->area;
+          break;
+        case 3:
+          return error(err_NOT_SUPPORTED);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  
+  return err_OK;
+}
+
 
 

@@ -16,55 +16,6 @@
 #include <omp.h>
 
 /******************************************************************/
-/* function: mg_calc_face_info */
-/* calculates face properties */
-int mg_calc_face_info(mg_Mesh *Mesh)
-{
-  int ierr, f, i, *node, in, istack;
-  double delta[3];
-  mg_FaceData *face;
-  
-  istack = 0;
-  for (f = 0; f < Mesh->nFace+Mesh->Stack->Face->nItem; f++) {
-    face = Mesh->Face[f];
-    //if face normal is null, assume all face data is stale or uninitialized
-    //do not calculate if on stack
-    if (Mesh->Stack->Face->nItem >0)
-      if (f == Mesh->Stack->Face->Item[istack]){
-        istack++;
-        continue;
-      }
-    if (face->normal == NULL) {
-      node = face->node;
-      call(mg_alloc((void**)&face->normal, Mesh->Dim, sizeof(double)));
-      call(mg_alloc((void**)&face->centroid, Mesh->Dim, sizeof(double)));
-      switch (Mesh->Dim) {
-        case 2:
-          face->area = 0.0;
-          for (i=0;i<Mesh->Dim;i++){
-            delta[i] = Mesh->Coord[node[1]*Mesh->Dim+i]-Mesh->Coord[node[0]*Mesh->Dim+i];
-            face->area += delta[i]*delta[i];
-            face->centroid[i] = 0.0;
-            for (in = 0; in < face->nNode; in++)
-              face->centroid[i] += Mesh->Coord[node[in]*Mesh->Dim+i]/face->nNode;
-          }
-          face->area = sqrt(face->area);
-          face->normal[0] = -delta[1]/face->area;
-          face->normal[1] = delta[0]/face->area;
-          break;
-        case 3:
-          return error(err_NOT_SUPPORTED);
-          break;
-        default:
-          break;
-      }
-    }
-  }
-  
-  return err_OK;
-}
-
-/******************************************************************/
 /* function: mg_free_loop */
 /* frees the memory stored in loop */
 int mg_free_loop(mg_Loop *Loop)
@@ -2117,7 +2068,7 @@ int mg_advance_front(mg_Mesh *Mesh, mg_Metric *Metric, mg_Front *Front)
     
     //build list of nodes within ellipse
     call(mg_nodes_frnt_dist_ellipse(Mesh, Front, SeedFace, &Ellipse,
-                                    SQRT3, CloseNodes));
+                                    SQRT2, CloseNodes));
     //check if point intersects front
     iloop = SeedFace->iloop;
     FFace = Front->loop[iloop]->head;
@@ -2270,14 +2221,6 @@ int mg_prealloc_msh_comp(mg_Mesh *Mesh, int nElem, int nFace, int nNode)
   return err_OK;
 }
 
-void *test_plot_mesh_pthread(void *pMesh)
-{
-  int ierr;
-  mg_Mesh *Mesh = (mg_Mesh*)pMesh;
-  ierr = mg_show_mesh(Mesh);
-  return pMesh;
-}
-
 /******************************************************************/
 /* Main program */
 int main(int argc, char *argv[])
@@ -2327,7 +2270,7 @@ int main(int argc, char *argv[])
     call(mg_get_input_char("GeometryFile", &InFile));
     call(mg_read_geo(&Geo, InFile));
     //mesh boundary and create initial front
-    int nNodeInSeg[5]={19,8,19,8,25};
+    int nNodeInSeg[5]={19,19,19,19,25};
     Metric = malloc(sizeof(mg_Metric));
     //    Metric->type = mge_Metric_Uniform;
     Metric->type = mge_Metric_Analitic2;
@@ -2349,21 +2292,22 @@ int main(int argc, char *argv[])
   //call(mg_prealloc_msh_comp(Mesh, 3, 15, 20));
   //create front
   call(mg_create_front(Mesh, &Front));
+
   call(mg_mesh_2_matlab(Mesh, &Front, "mesh_initial.m"));
   i = 0;
   //fork two threads: 1 for plotting and 1 for generating the mesh
-#pragma omp parallel num_threads(2) shared(i,Mesh) private(tid)
+#pragma omp parallel num_threads(2) shared(i,Mesh, Front) private(tid)
   {
     tid = omp_get_thread_num();
     printf("tid: %d\n",tid);
     if (tid == 0){
       while (!mg_front_empty(&Front)){
-        if (i == 306)
+//        if (i >= 10)
           printf("it = %d nElem = %d\n",i,Mesh->nElem);
         //advance front
         ierr=error(mg_advance_front(Mesh, Metric, &Front));
-//        printf("hit a key to continue\n");
-//        scanf("%c\n",cmd);
+        printf("hit a key to continue\n");
+        scanf("%c\n",cmd);
         if (ierr != err_OK) {
           //      call(mg_show_mesh(Mesh));
           //      call(mg_mesh_2_matlab(Mesh, &Front,"mesh_error.m"));
@@ -2378,7 +2322,7 @@ int main(int argc, char *argv[])
     else{
       printf("tid: %d\n",tid);
       // if (Mesh->nElem >= 5){
-      ierr = error(mg_show_mesh(Mesh));
+      ierr = error(mg_show_mesh(Mesh, &Front));
       //      sprintf(MeshName, "mesh_at_%d.m",i);
       //      call(mg_mesh_2_matlab(Mesh, &Front, MeshName));
       //}
@@ -2391,7 +2335,7 @@ int main(int argc, char *argv[])
   call(mg_mesh_2_matlab(Mesh, &Front, "mesh_final.m"));
   printf("Number of triangles: %d\nDone.\n",Mesh->nElem);
   
-  call(mg_show_mesh(Mesh));
+  call(mg_show_mesh(Mesh, NULL));
   
   mg_destroy_mesh(Mesh);
   //destroy hash table

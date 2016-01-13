@@ -51,6 +51,7 @@ void mg_init_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
   PlotInfo->tree_on    = false;
   PlotInfo->ellipse_on = false;
   PlotInfo->elem_on    = false;
+  PlotInfo->front_on   = false;
   
   //set plot limits
   plwind(xlim[0], xlim[1], ylim[0], ylim[1] );
@@ -125,10 +126,53 @@ int mg_plot_ellipse(mg_Ellipse *ellipse)
 }
 
 /******************************************************************/
-/* function:  mg_plot_mesh */
-int mg_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
+/* function:  mg_plot_front */
+int mg_plot_front(mg_Mesh *Mesh, mg_Front *Front)
 {
-  int ierr, f, node0, node1, dim = Mesh->Dim, n, e, in, node;
+  int iloop, node0, node1, dim = Mesh->Dim;
+  bool first;
+  double x[2], y[2];
+  mg_Loop *Loop;
+  mg_FaceData *face;
+  mg_FrontFace *FFace;
+  PLBOOL fill = 0;
+  static PLFLT arrow_x[6] = { -0.5, 0.5, 0.3, 0.5, 0.3, 0.5 };
+  static PLFLT arrow_y[6] = { 0.0, 0.0, 0.2, 0.0, -0.2, 0.0 };
+  
+  plcol0(10);
+  plwidth(3);
+  
+  for (iloop = 0; iloop < Front->nloop; iloop++) {
+    Loop = Front->loop[iloop];
+    if (Loop->FacesInLoop->nEntry > 0){
+      FFace = Loop->head;
+      first = true;
+      while (FFace != Loop->head || first) {
+        first = false;
+        face = FFace->face;
+        node0 = face->node[0];
+        node1 = face->node[1];
+        x[0] = Mesh->Coord[node0*dim];
+        x[1] = Mesh->Coord[node1*dim];
+        y[0] = Mesh->Coord[node0*dim+1];
+        y[1] = Mesh->Coord[node1*dim+1];
+        plline(2,x,y);
+        plpoin(1, x+1, y+1, 3);
+        FFace = FFace->next;
+      }
+    }
+  }
+  
+  
+  return err_OK;
+}
+
+/******************************************************************/
+/* function:  mg_plot_mesh */
+int mg_plot_mesh(mg_Mesh *Mesh, mg_Front *Front,
+                 mg_MeshPlot *PlotInfo)
+{
+  int ierr, f, node0, node1, dim = Mesh->Dim, e, in, node;
   double x[3], y[3], xlim[2],ylim[2], coord[6];
   char text[10];
   mg_Ellipse Ellipse;
@@ -136,6 +180,7 @@ int mg_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
   plflush();
   plclear();
   plcol0( 1 );
+  plwidth(1);
   
   xlim[0] = PlotInfo->range[0];
   xlim[1] = PlotInfo->range[1];
@@ -187,6 +232,12 @@ int mg_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo)
     }
   }
   
+  if (PlotInfo->front_on) {
+    if (Front != NULL){
+      call(mg_plot_front(Mesh, Front));
+    }
+  }
+  
   return err_OK;
 }
 
@@ -199,11 +250,11 @@ void mg_close_plot_mesh(void)
 
 /******************************************************************/
 /* function:  mg_show_mesh */
-int mg_show_mesh(mg_Mesh *Mesh)
+int mg_show_mesh(mg_Mesh *Mesh, mg_Front *Front)
 {
-  int ierr, n;
+  int ierr, n, elem;
   bool open = true, refresh = false;
-  double range[4];
+  double range[4], coord[2], tri[8];
   int cursorval;
   mg_MeshPlot PlotInfo;
   
@@ -212,12 +263,10 @@ int mg_show_mesh(mg_Mesh *Mesh)
   mg_init_plot_mesh(Mesh, &PlotInfo);
   
   //plot mesh
-  call(mg_plot_mesh(Mesh, &PlotInfo));
+  call(mg_plot_mesh(Mesh, Front, &PlotInfo));
   
   while (open) {
     cursorval = plGetCursor( &gin );
-//    printf("cursorval = %d type: %d wx: %1.2e wy: %1.2e dx: %1.2e dy: %1.2e key: %s button: %d\n",
-//           cursorval, gin.type,gin.wX,gin.wY,gin.dX,gin.dY,gin.string, gin.button);
     //zoom
     if (strcmp(gin.string,"z")==0){
       while (1) {
@@ -253,9 +302,36 @@ int mg_show_mesh(mg_Mesh *Mesh)
     }
     
     //show elem numbers
-    if (strcmp(gin.string,"s")==0){
+    if (strcmp(gin.string,"i")==0){
       PlotInfo.elem_on = !PlotInfo.elem_on;
       refresh = true;
+    }
+    
+    //show front
+    if (strcmp(gin.string,"f")==0){
+      PlotInfo.front_on = !PlotInfo.front_on;
+      refresh = true;
+    }
+    
+    //show element
+    if (strcmp(gin.string,"s")==0){
+      printf("Select element:\n");
+      cursorval = plGetCursor( &gin );
+      coord[0] = gin.wX;
+      coord[1] = gin.wY;
+      ierr = err_NOT_FOUND;
+      while (ierr == err_NOT_FOUND) {
+        ierr = mg_find_elem_frm_coord(Mesh, rand()%Mesh->nElem, coord, &elem);
+      }
+      printf("elem: %d\n",elem);
+      plcol0( 15 );
+      for (n = 0; n < Mesh->Elem[elem].nNode; n++) {
+        tri[n] = Mesh->Coord[Mesh->Elem[elem].node[n]*2+0];
+        tri[4+n] = Mesh->Coord[Mesh->Elem[elem].node[n]*2+1];
+      }
+      tri[n] = Mesh->Coord[Mesh->Elem[elem].node[0]*2+0];
+      tri[4+n] = Mesh->Coord[Mesh->Elem[elem].node[0]*2+1];
+      plline(4,tri+0,tri+4);
     }
     
     //reset range
@@ -277,10 +353,10 @@ int mg_show_mesh(mg_Mesh *Mesh)
       break;
     }
     
-//    if (refresh){
-      call(mg_plot_mesh(Mesh, &PlotInfo));
-//      trefresh = false;
-//    }
+    if (refresh){
+      call(mg_plot_mesh(Mesh, Front, &PlotInfo));
+      refresh = false;
+    }
     
   }
   

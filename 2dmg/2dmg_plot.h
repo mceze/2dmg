@@ -22,6 +22,7 @@ typedef struct
   bool tree_on;
   bool ellipse_on;
   bool elem_on;
+  bool front_on;
 }
 mg_MeshPlot;
 
@@ -34,8 +35,13 @@ void mg_init_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo);
 int mg_plot_ellipse(mg_Ellipse *ellipse);
 
 /******************************************************************/
+/* function:  mg_plot_front */
+int mg_plot_front(mg_Mesh *Mesh, mg_Front *Front);
+
+/******************************************************************/
 /* function:  mg_plot_mesh */
-int mg_plot_mesh(mg_Mesh *Mesh, mg_MeshPlot *PlotInfo);
+int mg_plot_mesh(mg_Mesh *Mesh, mg_Front *Front,
+                 mg_MeshPlot *PlotInfo);
 
 /******************************************************************/
 /* function:  mg_close_plot_mesh */
@@ -43,6 +49,6 @@ void mg_close_plot_mesh(void);
 
 /******************************************************************/
 /* function:  mg_show_mesh */
-int mg_show_mesh(mg_Mesh *Mesh);
+int mg_show_mesh(mg_Mesh *Mesh, mg_Front *Front);
 
 #endif /* defined(___dmg___dmg_plot__) */

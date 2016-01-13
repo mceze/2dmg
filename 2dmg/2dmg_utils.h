@@ -152,4 +152,9 @@ int mg_mesh_segment(mg_Segment *Seg, mg_Metric *Metric, int np, double *scale,
 /* frees a linked list composed of mg_Item*/
 void mg_free_linked_list(struct mg_Item *Item);
 
+/******************************************************************/
+/* function: mg_calc_face_info */
+/* calculates face properties */
+int mg_calc_face_info(mg_Mesh *Mesh);
+
 #endif /* defined(___dmg___dmg_utils__) */
